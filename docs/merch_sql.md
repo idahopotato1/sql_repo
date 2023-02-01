@@ -850,7 +850,7 @@ FROM (
 ) AGG
 ORDER BY 1 , 2 , 3
 ```
-### Planogram Schematic Fixture 
+## Planogram Schematic Fixture 
 ``` sql
 SELECT 
 POG.Planogram_Nm,
@@ -893,7 +893,7 @@ AND UPC.SMIC_CATEGORY_ID IN ('3001','3004','3002')
 GROUP BY 1,2,3,4;
 ```
 
-### Distribution voids
+## Distribution voids
 ``` sql
 SELECT
 DIVISION_NM,
@@ -1039,7 +1039,7 @@ GROUP BY 1,2,3,4,5,6)TB
 GROUP BY 1,2,3,4,5,6;
 ```
 
-### Sales with Household and customer data penetration
+## Sales with Household and customer data penetration
   
   ```sql
   SELECT

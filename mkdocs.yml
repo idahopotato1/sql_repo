@@ -20,5 +20,6 @@ nav:
     - Merch SQL Repo: merch_sql.md
     - Supply Chain SQL Repo: supplychain_sql.md
     - Operation SQL Repo: operation_sql.md
+    - Pricing Execution: pricing_execution.md
     - DB2 Repo: db2.md
     - Azure: azure.md
