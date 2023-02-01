@@ -3,7 +3,7 @@ site_url: http://pgv0117ab.safeway.com/users/wzhu004/site/index.html
 theme:
   name: material
   logo: assets/logo.png
-  favicon: assets/logo2.png
+  favicon: assets/logo.png
   # features:
   #   - content.tabs.link
 plugins:
