@@ -1,0 +1,24 @@
+site_name: Snowflake EDM SQL Repository
+site_url: http://pgv0117ab.safeway.com/users/wzhu004/site/index.html
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/logo2.png
+  # features:
+  #   - content.tabs.link
+plugins:
+  - search:
+      lang: en
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+nav:
+    - Home: index.md
+    - Merch SQL Repo: merch_sql.md
+    - Supply Chain SQL Repo: supplychain_sql.md
+    - Operation SQL Repo: operation_sql.md
+    - DB2 Repo: db2.md
+    - Azure: azure.md

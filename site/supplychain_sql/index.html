@@ -1,0 +1,935 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="http://pgv0117ab.safeway.com/users/wzhu004/site/index.html/supplychain_sql/">
+      
+      
+        <link rel="prev" href="../merch_sql/">
+      
+      
+        <link rel="next" href="../operation_sql/">
+      
+      <link rel="icon" href="../assets/logo2.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.9">
+    
+    
+      
+        <title>Supply Chain SQL Repo - Snowflake EDM SQL Repository</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#supply-chain-sql" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Snowflake EDM SQL Repository" class="md-header__button md-logo" aria-label="Snowflake EDM SQL Repository" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Snowflake EDM SQL Repository
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Supply Chain SQL Repo
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Snowflake EDM SQL Repository" class="md-nav__button md-logo" aria-label="Snowflake EDM SQL Repository" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Snowflake EDM SQL Repository
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../merch_sql/" class="md-nav__link">
+        Merch SQL Repo
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Supply Chain SQL Repo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Supply Chain SQL Repo
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#store-inventory" class="md-nav__link">
+    Store Inventory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warehouse-inventory-activities" class="md-nav__link">
+    Warehouse Inventory Activities
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#store-order-delivery" class="md-nav__link">
+    Store Order Delivery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warehouse-shipment-to-store" class="md-nav__link">
+    Warehouse Shipment to Store
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warehouse-order-qty-pack" class="md-nav__link">
+    Warehouse Order Qty Pack
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-plan-for-supply-chain" class="md-nav__link">
+    Volume plan for supply chain.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#all-warehouse-items" class="md-nav__link">
+    All Warehouse Items
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operation_sql/" class="md-nav__link">
+        Operation SQL Repo
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../db2/" class="md-nav__link">
+        DB2 Repo
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../azure/" class="md-nav__link">
+        Azure
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#store-inventory" class="md-nav__link">
+    Store Inventory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warehouse-inventory-activities" class="md-nav__link">
+    Warehouse Inventory Activities
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#store-order-delivery" class="md-nav__link">
+    Store Order Delivery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warehouse-shipment-to-store" class="md-nav__link">
+    Warehouse Shipment to Store
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warehouse-order-qty-pack" class="md-nav__link">
+    Warehouse Order Qty Pack
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-plan-for-supply-chain" class="md-nav__link">
+    Volume plan for supply chain.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#all-warehouse-items" class="md-nav__link">
+    All Warehouse Items
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="supply-chain-sql">Supply Chain SQL<a class="headerlink" href="#supply-chain-sql" title="Permanent link">&para;</a></h1>
+<h2 id="store-inventory">Store Inventory<a class="headerlink" href="#store-inventory" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span>
+<span class="w">        </span><span class="n">corporate_item_cd</span><span class="p">,</span>
+<span class="w">        </span><span class="n">retail_item_dsc</span><span class="p">,</span>
+<span class="w">        </span><span class="n">distribution_center_id</span><span class="p">,</span>
+<span class="w">        </span><span class="n">rog_id</span><span class="p">,</span>
+<span class="w">        </span><span class="n">txn_dte</span><span class="p">,</span>
+<span class="w">        </span><span class="k">sum</span><span class="p">(</span><span class="n">onhand_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">onhand_qty</span><span class="p">,</span>
+<span class="w">        </span><span class="k">sum</span><span class="p">(</span><span class="n">oos_day_flg</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">oos_day_flg</span>
+<span class="w">        </span><span class="k">from</span>
+<span class="w">        </span><span class="p">(</span><span class="k">SELECT</span><span class="w">  </span><span class="k">DISTINCT</span><span class="w"> </span>
+<span class="w">        </span><span class="k">C</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span><span class="p">,</span>
+<span class="w">        </span><span class="k">C</span><span class="p">.</span><span class="n">RETAIL_ITEM_DSC</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">SOC</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="p">,</span>
+<span class="w">        </span><span class="n">lpad</span><span class="p">(</span><span class="n">rs</span><span class="p">.</span><span class="n">FACILITY_NBR</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">STORE_ID</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">rs</span><span class="p">.</span><span class="n">DIVISION_ID</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">STORE_DIVISION</span><span class="p">,</span>
+<span class="w">        </span><span class="n">SOC</span><span class="p">.</span><span class="n">DISTRIBUTION_CENTER_ID</span><span class="p">,</span>
+<span class="w">        </span><span class="n">SOC</span><span class="p">.</span><span class="n">ROG_ID</span><span class="p">,</span>
+<span class="w">        </span><span class="n">ii</span><span class="p">.</span><span class="n">ONHAND_QTY</span><span class="p">,</span>
+<span class="w">        </span><span class="n">ii</span><span class="p">.</span><span class="n">TXN_DTE</span><span class="p">,</span>
+<span class="w">        </span><span class="n">ii</span><span class="p">.</span><span class="n">WEEK_ID</span><span class="p">,</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">ONHAND_QTY</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">end</span><span class="w"> </span><span class="n">OOS_DAY_FLG</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w">    </span><span class="p">(</span>
+<span class="w">            </span><span class="k">SELECT</span>
+<span class="w">                  </span><span class="n">CL</span><span class="p">.</span><span class="n">CALENDAR_DT</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">TXN_DTE</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                  </span><span class="n">CL</span><span class="p">.</span><span class="n">FISCAL_YEAR_NBR</span><span class="o">||</span><span class="n">CL</span><span class="p">.</span><span class="n">FISCAL_WEEK_NBR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">WEEK_ID</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">FACILITY_INTEGRATION_ID</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">ONHAND_QTY</span>
+<span class="w">            </span><span class="k">FROM</span><span class="w">   </span><span class="p">(</span>
+<span class="w">                    </span><span class="k">SELECT</span><span class="w">  </span><span class="n">FACILITY_INTEGRATION_ID</span>
+<span class="w">                            </span><span class="p">,</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="w">                            </span><span class="p">,</span><span class="n">TXN_DTE</span>
+<span class="w">                            </span><span class="p">,</span><span class="n">ITEM_QTY</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ONHAND_QTY</span>
+<span class="w">                            </span><span class="p">,</span><span class="n">lead</span><span class="p">(</span><span class="n">TXN_DTE</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="k">CURRENT_DATE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">over</span><span class="p">(</span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">FACILITY_INTEGRATION_ID</span><span class="p">,</span><span class="w"> </span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">TXN_DTE</span><span class="w"> </span><span class="k">asc</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">lead_txn_dte</span>
+<span class="w">                    </span><span class="k">FROM</span><span class="w">    </span><span class="p">(</span>
+<span class="w">                                </span><span class="k">SELECT</span><span class="w">  </span><span class="n">II</span><span class="p">.</span><span class="n">FACILITY_INTEGRATION_ID</span><span class="p">,</span><span class="w"> </span><span class="n">II</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="p">,</span><span class="w"> </span><span class="nb">DATE</span><span class="p">(</span><span class="n">II</span><span class="p">.</span><span class="n">TRANSACTION_TS</span><span class="p">)</span><span class="w"> </span><span class="n">TXN_DTE</span><span class="p">,</span><span class="w"> </span><span class="n">II</span><span class="p">.</span><span class="n">ITEM_QTY</span>
+<span class="w">                                </span><span class="k">FROM</span><span class="w">    </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">INVENTORY_ITEM</span><span class="w"> </span><span class="n">II</span>
+<span class="w">                                </span><span class="k">WHERE</span><span class="w">   </span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">                                </span><span class="k">AND</span><span class="w">     </span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span>
+<span class="w">                                </span><span class="k">AND</span><span class="w">     </span><span class="n">INVENTORY_TYPE_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;PP&#39;</span>
+<span class="w">                                </span><span class="k">AND</span><span class="w">     </span><span class="nb">DATE</span><span class="p">(</span><span class="n">TRANSACTION_TS</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w">  </span><span class="k">current_date</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span>
+<span class="w">                                </span><span class="n">QUALIFY</span><span class="w"> </span><span class="n">ROW_NUMBER</span><span class="p">()</span><span class="w"> </span>
+<span class="w">                                        </span><span class="n">OVER</span><span class="p">(</span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">II</span><span class="p">.</span><span class="n">FACILITY_INTEGRATION_ID</span><span class="p">,</span><span class="w"> </span><span class="n">II</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="p">,</span><span class="w"> </span><span class="nb">DATE</span><span class="p">(</span><span class="n">TRANSACTION_TS</span><span class="p">)</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">TRANSACTION_TS</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span>
+<span class="w">                              </span><span class="p">)</span>
+<span class="w">                    </span><span class="p">)</span><span class="w"> </span><span class="n">inv</span>
+<span class="w">            </span><span class="k">join</span><span class="w">    </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">CALENDAR</span><span class="w"> </span><span class="n">cl</span><span class="w"> </span>
+<span class="w">              </span><span class="k">on</span><span class="w">    </span><span class="n">cl</span><span class="p">.</span><span class="n">CALENDAR_DT</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">inv</span><span class="p">.</span><span class="n">txn_dte</span><span class="w"> </span>
+<span class="w">             </span><span class="k">AND</span><span class="w">    </span><span class="n">cl</span><span class="p">.</span><span class="n">CALENDAR_DT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lead_txn_dte</span><span class="w"> </span>
+<span class="w">            </span><span class="k">WHERE</span><span class="w">   </span><span class="n">CL</span><span class="p">.</span><span class="n">CALENDAR_DT</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="k">current_date</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">AND</span><span class="w">     </span><span class="n">CL</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">        </span><span class="p">)</span><span class="w"> </span><span class="n">II</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w">   </span><span class="p">(</span>
+<span class="w">        </span><span class="k">select</span><span class="w"> </span><span class="o">*</span>
+<span class="w">        </span><span class="k">from</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">STORE_ORDER_CATALOG</span><span class="w"> </span><span class="n">soc</span><span class="w"> </span>
+<span class="w">        </span><span class="k">WHERE</span><span class="w">   </span><span class="n">SOC</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">        </span><span class="k">AND</span><span class="w">     </span><span class="n">SOC</span><span class="p">.</span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span>
+<span class="w">        </span><span class="k">AND</span><span class="w">     </span><span class="n">SOC</span><span class="p">.</span><span class="n">PERPETUAL_INVENTORY_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Y&#39;</span>
+<span class="w">        </span><span class="n">QUALIFY</span><span class="w"> </span><span class="n">row_number</span><span class="p">()</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="p">(</span><span class="n">partition</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">store_facility_integration_id</span><span class="p">,</span><span class="w"> </span><span class="n">corporate_item_integration_id</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">dw_first_effective_dt</span><span class="w"> </span><span class="k">desc</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">)</span><span class="w"> </span><span class="n">SOC</span><span class="w">   </span><span class="k">ON</span><span class="w"> </span><span class="n">SOC</span><span class="p">.</span><span class="n">store_facility_integration_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">II</span><span class="p">.</span><span class="n">FACILITY_INTEGRATION_ID</span><span class="w"> </span>
+<span class="w">                </span><span class="k">AND</span><span class="w"> </span><span class="n">SOC</span><span class="p">.</span><span class="n">corporate_item_integration_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">II</span><span class="p">.</span><span class="n">corporate_item_integration_id</span>
+<span class="w">                </span><span class="k">AND</span><span class="w"> </span><span class="n">II</span><span class="p">.</span><span class="n">TXN_DTE</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="n">AUTHORIZATION_FIRST_EFFECTIVE_TS</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">AUTHORIZATION_LAST_EFFECTIVE_TS</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w">    </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">CORPORATE_ITEM</span><span class="w"> </span><span class="k">C</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SOC</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SMIC_GROUP</span><span class="w"> </span><span class="n">SG</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SG</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SMIC_CATEGORY</span><span class="w"> </span><span class="n">SC</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SC</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">SMIC_CATEGORY_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SC</span><span class="p">.</span><span class="n">SMIC_CATEGORY_CD</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SMIC_CLASS</span><span class="w"> </span><span class="n">SCL</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCL</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">SMIC_CATEGORY_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCL</span><span class="p">.</span><span class="n">SMIC_CATEGORY_CD</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">SMIC_CLASS_CD</span><span class="o">=</span><span class="n">SCL</span><span class="p">.</span><span class="n">SMIC_CLASS_CD</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w">    </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">RETAIL_STORE</span><span class="w"> </span><span class="n">RS</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">RS</span><span class="p">.</span><span class="n">FACILITY_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SOC</span><span class="p">.</span><span class="n">STORE_FACILITY_INTEGRATION_ID</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w">    </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">FACILITY_ADDRESS</span><span class="w"> </span><span class="n">FA</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">RS</span><span class="p">.</span><span class="n">FACILITY_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FA</span><span class="p">.</span><span class="n">FACILITY_INTEGRATION_ID</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w">   </span><span class="k">C</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">    </span><span class="k">AND</span><span class="w">     </span><span class="n">SG</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">    </span><span class="k">AND</span><span class="w">     </span><span class="n">SC</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">    </span><span class="k">AND</span><span class="w">     </span><span class="n">SCL</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">    </span><span class="k">AND</span><span class="w">     </span><span class="n">RS</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">    </span><span class="k">AND</span><span class="w">     </span><span class="n">RS</span><span class="p">.</span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span>
+<span class="w">    </span><span class="k">AND</span><span class="w">     </span><span class="n">FA</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="w">    </span><span class="k">AND</span><span class="w">     </span><span class="n">FA</span><span class="p">.</span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span>
+</code></pre></div>
+<h2 id="warehouse-inventory-activities">Warehouse Inventory Activities<a class="headerlink" href="#warehouse-inventory-activities" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">select</span>
+<span class="w">      </span><span class="n">cic</span><span class="p">.</span><span class="n">corporate_item_cd</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">cic</span><span class="p">.</span><span class="n">ship_unit_pack_qty</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">winv</span><span class="p">.</span><span class="n">warehouse_id</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">wh</span><span class="p">.</span><span class="n">distribution_center_id</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">warehouse_nm</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">transaction_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sum_transaction_qty</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">available_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sum_available_qty</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">allocated_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sum_allocated_qty</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">blocked_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sum_blocked_qty</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">inbound_transit_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sum_inbound_transit_qty</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">day_inbound_transit_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sum_day_inbound_transit_qty</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">sum_order_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sum_on_order_qty</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">total_onhand_qty</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sum_total_onhand_qty</span>
+<span class="w">    </span><span class="k">from</span><span class="w"> </span><span class="n">edm_views_prd</span><span class="p">.</span><span class="n">dw_views</span><span class="p">.</span><span class="n">inventory_balance</span><span class="w"> </span><span class="n">winv</span>
+<span class="w">    </span><span class="k">join</span><span class="w"> </span><span class="n">edm_views_prd</span><span class="p">.</span><span class="n">dw_views</span><span class="p">.</span><span class="n">corporate_item</span><span class="w"> </span><span class="n">cic</span>
+<span class="w">    </span><span class="k">on</span><span class="w"> </span><span class="n">cic</span><span class="p">.</span><span class="n">corporate_item_integration_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">winv</span><span class="p">.</span><span class="n">corporate_item_integration_id</span><span class="w"> </span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="n">cic</span><span class="p">.</span><span class="n">dw_first_effective_dt</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">cic</span><span class="p">.</span><span class="n">dw_last_effective_dt</span><span class="w"> </span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">cic</span><span class="p">.</span><span class="n">corporation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="c1">-- join edm_views_prd.dw_views.supply_chain_item sci</span>
+<span class="w">   </span><span class="c1">-- on sci.corporate_item_integration_id = winv.corporate_item_integration_id</span>
+<span class="w">   </span><span class="c1">-- and current_date between sci.dw_first_effective_dt and sci.dw_last_effective_dt</span>
+<span class="w">    </span><span class="k">join</span><span class="w"> </span><span class="n">edm_views_prd</span><span class="p">.</span><span class="n">dw_views</span><span class="p">.</span><span class="n">warehouse</span><span class="w"> </span><span class="n">wh</span>
+<span class="w">    </span><span class="k">on</span><span class="w"> </span><span class="n">wh</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">winv</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">wh</span><span class="p">.</span><span class="n">corporation_id</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="n">wh</span><span class="p">.</span><span class="n">dw_first_effective_dt</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">wh</span><span class="p">.</span><span class="n">dw_last_effective_dt</span>
+<span class="w">    </span><span class="k">join</span>
+<span class="w">    </span><span class="p">(</span><span class="w"> </span><span class="k">select</span>
+<span class="w">    </span><span class="n">warehouse_id</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">corporate_item_integration_id</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">max</span><span class="p">(</span><span class="n">transaction_ts</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">max_ts</span>
+
+<span class="w">    </span><span class="k">from</span><span class="w"> </span><span class="n">edm_views_prd</span><span class="p">.</span><span class="n">dw_views</span><span class="p">.</span><span class="n">inventory_balance</span>
+<span class="w">    </span><span class="k">where</span>
+<span class="w">    </span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">    </span><span class="k">group</span><span class="w"> </span><span class="k">by</span>
+<span class="w">    </span><span class="n">warehouse_id</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">corporate_item_integration_id</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">mxts</span>
+<span class="w">    </span><span class="k">on</span><span class="w"> </span><span class="n">mxts</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">winv</span><span class="p">.</span><span class="n">warehouse_id</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">mxts</span><span class="p">.</span><span class="n">corporate_item_integration_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">winv</span><span class="p">.</span><span class="n">corporate_item_integration_id</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">mxts</span><span class="p">.</span><span class="n">max_ts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">winv</span><span class="p">.</span><span class="n">transaction_ts</span><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">cic</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">11101812</span><span class="p">)</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">winv</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">winv</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span><span class="w"> </span>
+
+<span class="w">    </span><span class="k">left</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">distribution_center_id</span><span class="p">,</span><span class="w"> </span><span class="n">corporate_item_cd</span><span class="p">,</span><span class="w"> </span><span class="k">max</span><span class="p">(</span><span class="n">sum_order_qty</span><span class="p">)</span><span class="w">  </span><span class="k">as</span><span class="w"> </span><span class="n">sum_order_qty</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="ss">&quot;EDM_BIZOPS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;MERCHAPPS&quot;</span><span class="p">.</span><span class="ss">&quot;zhu_warehouse_future_po&quot;</span><span class="w"> </span>
+<span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">promised_delivery_ts</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">po</span><span class="w"> </span>
+<span class="w">    </span><span class="k">on</span><span class="w"> </span><span class="n">po</span><span class="p">.</span><span class="n">distribution_center_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wh</span><span class="p">.</span><span class="n">distribution_center_id</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">po</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cic</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span>
+
+<span class="w">    </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span>
+</code></pre></div>
+<h2 id="store-order-delivery">Store Order Delivery<a class="headerlink" href="#store-order-delivery" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">SCHEDULE_GROUP_CD</span><span class="w">         </span><span class="k">AS</span><span class="w"> </span><span class="n">DPATS_GROUP_CD</span><span class="p">,</span><span class="w">     </span>
+<span class="w">    </span><span class="n">RETAIL_STORE_FACILITY_NBR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">STORE_ID</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DATA_BATCH_ID</span><span class="w">             </span><span class="k">AS</span><span class="w"> </span><span class="n">DATA_BATCH_CD</span><span class="p">,</span>
+<span class="w">    </span><span class="n">EFFECTIVE_DT</span><span class="w">              </span><span class="k">AS</span><span class="w"> </span><span class="n">SCHED_EFF_DT</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CASE</span><span class="w"> </span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SUNDAY&#39;</span><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="w">  </span><span class="k">THEN</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SUNDAY&#39;</span><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">7</span><span class="w">  </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;MONDAY&#39;</span><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">9</span><span class="w">  </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;MONDAY&#39;</span><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">8</span><span class="w">  </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TUESDAY&#39;</span><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TUESDAY&#39;</span><span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">9</span><span class="w">  </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;WEDNESDAY&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;WEDNESDAY&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;THURSDAY&#39;</span><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;THURSDAY&#39;</span><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;FRIDAY&#39;</span><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;FRIDAY&#39;</span><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SATURDAY&#39;</span><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">  </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SATURDAY&#39;</span><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ORDER_DT</span><span class="p">,</span>
+<span class="n">SCHEDULE_CUTOFF_TM</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">POLL_TM</span><span class="p">,</span>
+<span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span><span class="w">  </span><span class="k">AS</span><span class="w"> </span><span class="n">PICK_DT</span><span class="p">,</span>
+<span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Delivery_Week_Day_Nbr</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">DELIVERY_DT</span><span class="p">,</span>
+<span class="n">DATEADD</span><span class="p">(</span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Process_Week_Day_Nbr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">Offset_Value_Week_Day_Nbr</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">Effective_Dt</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">AVAIL_DT</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SHIPMENT_SCHEDULE</span><span class="w"> </span><span class="n">SCHED</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SHIPMENT_SCHEDULE_DETAIL</span><span class="w"> </span><span class="n">SDET</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">SHIPMENT_SCHEDULE_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDET</span><span class="p">.</span><span class="n">SHIPMENT_SCHEDULE_INTEGRATION_ID</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">D1_RETAIL_STORE</span><span class="w"> </span><span class="n">STR</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SCHED</span><span class="p">.</span><span class="n">DESTINATION_FACILITY_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STR</span><span class="p">.</span><span class="n">FACILITY_INTEGRATION_ID</span>
+
+<span class="k">WHERE</span><span class="w"> </span><span class="n">SCHEDULE_GROUP_CD</span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;25&#39;</span>
+<span class="c1">--WHERE sched_eff_dt =&#39;2022-04-17&#39;</span>
+
+<span class="k">AND</span><span class="w"> </span><span class="n">RETAIL_STORE_FACILITY_NBR</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;1953&#39;</span><span class="p">)</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">EFFECTIVE_DT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2022-04-24&#39;</span>
+
+<span class="k">AND</span><span class="w"> </span><span class="n">DATA_BATCH_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0129&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">DATA_BATCH_ID</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;5601&#39;</span><span class="p">,</span><span class="s1">&#39;5602&#39;</span><span class="p">,</span><span class="s1">&#39;5603&#39;</span><span class="p">,</span><span class="s1">&#39;5604&#39;</span><span class="p">,</span><span class="s1">&#39;5605&#39;</span><span class="p">,</span><span class="s1">&#39;5606&#39;</span><span class="p">,</span><span class="s1">&#39;5607&#39;</span><span class="p">,</span><span class="s1">&#39;5608&#39;</span><span class="p">,</span><span class="s1">&#39;5613&#39;</span><span class="p">,</span>
+<span class="mi">5614</span><span class="s1">&#39;,&#39;</span><span class="mi">5615</span><span class="s1">&#39;,&#39;</span><span class="mi">5616</span><span class="s1">&#39;,&#39;</span><span class="mi">5651</span><span class="s1">&#39;,&#39;</span><span class="mi">8811</span><span class="s1">&#39;,&#39;</span><span class="mi">8812</span><span class="s1">&#39;,&#39;</span><span class="mi">8826</span><span class="s1">&#39;,&#39;</span><span class="mi">8832</span><span class="s1">&#39;,&#39;</span><span class="mi">8834</span><span class="s1">&#39;,&#39;</span><span class="mi">8841</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="w">    </span><span class="c1">-- STORE_ID, order_dt;</span>
+</code></pre></div>
+<h2 id="warehouse-shipment-to-store">Warehouse Shipment to Store<a class="headerlink" href="#warehouse-shipment-to-store" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span>
+<span class="n">SCIH</span><span class="p">.</span><span class="n">DIVISION_ID</span><span class="p">,</span><span class="w"> </span>
+<span class="n">WHSE</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="p">,</span><span class="w"> </span><span class="c1">--WHSE_ID</span>
+<span class="n">WHSE</span><span class="p">.</span><span class="n">WAREHOUSE_NM</span><span class="p">,</span><span class="w"> </span><span class="c1">--whs.whse_nm, </span>
+<span class="n">SCIH</span><span class="p">.</span><span class="n">ORDER_NBR</span><span class="p">,</span>
+<span class="n">STORE</span><span class="p">.</span><span class="n">RETAIL_STORE_FACILITY_NBR</span><span class="p">,</span>
+<span class="n">DTE</span><span class="p">.</span><span class="n">FISCAL_YEAR_NBR</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">LPAD</span><span class="p">(</span><span class="n">DTE</span><span class="p">.</span><span class="n">FISCAL_PERIOD_NBR</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+<span class="n">TO_CHAR</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">SCID</span><span class="p">.</span><span class="n">SHIPPED_QTY</span><span class="p">),</span><span class="s1">&#39;999,999,999.99&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SHIPMENTS</span><span class="p">,</span><span class="w"> </span>
+<span class="n">SCIH</span><span class="p">.</span><span class="n">INVOICE_CREATE_DT</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SUPPLY_CHAIN_INVOICE_HEADER</span><span class="w"> </span><span class="n">SCIH</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SUPPLY_CHAIN_INVOICE_DETAIL</span><span class="w"> </span><span class="n">SCID</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SCIH</span><span class="p">.</span><span class="n">SUPPLY_CHAIN_INVOICE_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCID</span><span class="p">.</span><span class="n">SUPPLY_CHAIN_INVOICE_INTEGRATION_ID</span>
+<span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">SCID</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">D1_RETAIL_STORE</span><span class="w"> </span><span class="n">STORE</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SCIH</span><span class="p">.</span><span class="n">RETAIL_STORE_FACILITY_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STORE</span><span class="p">.</span><span class="n">FACILITY_INTEGRATION_ID</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">D0_FISCAL_DAY</span><span class="w"> </span><span class="n">DTE</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">DTE</span><span class="p">.</span><span class="n">CALENDAR_DT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCIH</span><span class="p">.</span><span class="n">INVOICE_CREATE_DT</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">DATA_BATCH</span><span class="w"> </span><span class="n">WDR</span><span class="w">  </span><span class="c1">--DSS.whse_databatch_rog wdr</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SCIH</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WDR</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">WAREHOUSE</span><span class="w"> </span><span class="n">WHSE</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">WHSE</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WDR</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span>
+
+<span class="k">WHERE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">SCIH</span><span class="p">.</span><span class="n">CORPORATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c1">--wsi.ship_corp_id = 1</span>
+<span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">WDR</span><span class="p">.</span><span class="n">PRIMARY_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Y&#39;</span>
+<span class="c1">--AND wsi.ship_corp_id = wsi.dest_corp_id</span>
+<span class="c1">--AND SCIH.INVOICE_CREATE_DT BETWEEN &#39;04/06/2022&#39; AND &#39;04/28/2022&#39; --CURRENT_DATE</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">SCIH</span><span class="p">.</span><span class="n">INVOICE_CREATE_DT</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">&#39;2022-04-06&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">&#39;2022-04-28&#39;</span><span class="w"> </span><span class="c1">--CURRENT_DATE</span>
+<span class="k">and</span><span class="w"> </span><span class="n">STORE</span><span class="p">.</span><span class="n">RETAIL_STORE_FACILITY_NBR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0169&#39;</span><span class="w"> </span><span class="c1">--wsi.store_id in (&#39;0169&#39;)</span>
+<span class="k">and</span><span class="w"> </span><span class="n">WHSE</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;5229&#39;</span><span class="w">  </span><span class="c1">--wsi.whse_cd= &#39;5229&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">SCIH</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">SCIH</span><span class="p">.</span><span class="n">DIVISION_ID</span><span class="p">,</span>
+<span class="n">SCIH</span><span class="p">.</span><span class="n">ORDER_NBR</span><span class="p">,</span><span class="w"> </span><span class="c1">--.wsi.whse_ordER_nbr,</span>
+
+<span class="n">WHSE</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="p">,</span><span class="w"> </span><span class="c1">--WHSE_ID</span>
+<span class="n">WHSE</span><span class="p">.</span><span class="n">WAREHOUSE_NM</span><span class="p">,</span><span class="w"> </span><span class="c1">--whs.whse_nm, </span>
+<span class="n">DTE</span><span class="p">.</span><span class="n">FISCAL_YEAR_NBR</span><span class="p">,</span><span class="w">  </span><span class="c1">--dte.period_id</span>
+<span class="n">DTE</span><span class="p">.</span><span class="n">FISCAL_PERIOD_NBR</span><span class="p">,</span><span class="w">  </span><span class="c1">--dte.period_id</span>
+<span class="n">SCIH</span><span class="p">.</span><span class="n">INVOICE_CREATE_DT</span>
+</code></pre></div>
+<h2 id="warehouse-order-qty-pack">Warehouse Order Qty Pack<a class="headerlink" href="#warehouse-order-qty-pack" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">warehouse_id</span><span class="p">,</span><span class="w"> </span><span class="n">order_pack_qty</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SUPPLY_CHAIN_ITEM</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">CORPORATE_ITEM</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">corporate_item_integration_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">corporate_item_integration_id</span>
+<span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">dw_first_effective_dt</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">dw_last_effective_dt</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">dw_first_effective_dt</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">dw_last_effective_dt</span><span class="w"> </span>
+<span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">73500114</span>
+</code></pre></div>
+<h2 id="volume-plan-for-supply-chain">Volume plan for supply chain.<a class="headerlink" href="#volume-plan-for-supply-chain" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="n">CAL</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span>
+<span class="w">    </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">PROMOTION_WEEK_ID</span>
+<span class="w">    </span><span class="p">,</span><span class="n">PROMOTION_WEEK_START_DT</span><span class="w"> </span>
+<span class="w">     </span><span class="k">FROM</span><span class="w"> </span>
+<span class="w">        </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">PROMOTION_WEEK_ID</span>
+<span class="w">        </span><span class="p">,</span><span class="n">DIVISION_ID</span>
+<span class="w">        </span><span class="p">,</span><span class="n">PROMOTION_WEEK_START_DT</span><span class="w"> </span>
+<span class="w">        </span><span class="p">,</span><span class="mi">1</span><span class="w"> </span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">D1_PROMOTION_CALENDAR_WEEK</span>
+<span class="w">        </span><span class="k">WHERE</span><span class="w"> </span><span class="n">PROMOTION_WEEK_END_DT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">CURRENT_DATE</span><span class="p">()</span>
+<span class="w">        </span><span class="k">AND</span><span class="w"> </span><span class="n">DIVISION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;19&#39;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">QUALIFY</span><span class="w"> </span><span class="n">ROW_NUMBER</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">DIVISION_ID</span><span class="p">,</span><span class="mi">1</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">PROMOTION_WEEK_ID</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span><span class="w">    </span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">WEEK_ID</span><span class="p">,</span>
+<span class="n">A</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">CIC</span><span class="p">,</span>
+<span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="p">,</span><span class="w"> </span>
+<span class="c1">--TRY_TO_NUMBER(WEEK1.DIVISION_ID) AS DIVISION_ID,</span>
+<span class="k">CASE</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;PORTLAND&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">19</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEATTLE&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">27</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;NOR CALIFORNIA&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">25</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SO CALIFORNIA&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">29</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SOUTHWEST&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">17</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;DENVER&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">5</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;MID-ATLANTIC&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">34</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;INTERMOUNTAIN&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">30</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;JEWEL&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">32</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SOUTHERN&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">20</span>
+<span class="k">WHEN</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">DIVISION_NM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SHAWS&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">33</span>
+<span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">DIVISION_ID</span><span class="p">,</span><span class="w">    </span>
+<span class="n">A</span><span class="p">.</span><span class="n">ROG_ID</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ROG</span><span class="p">,</span>
+<span class="k">C</span><span class="p">.</span><span class="n">DISTRIBUTION_CENTER_ID</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">DC</span><span class="p">,</span>
+<span class="n">E</span><span class="p">.</span><span class="n">UPC_NBR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">UPC</span><span class="p">,</span>
+<span class="n">ITM</span><span class="p">.</span><span class="n">SHIP_UNIT_PACK_QTY</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Case size&quot;</span><span class="p">,</span>
+<span class="k">C</span><span class="p">.</span><span class="n">VENDOR_ID</span><span class="o">||</span><span class="k">C</span><span class="p">.</span><span class="n">VENDOR_SUB_ACCOUNT_ID</span><span class="o">||</span><span class="k">C</span><span class="p">.</span><span class="n">WIMS_SUB_VENDOR_NBR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">VEND_KEY</span><span class="p">,</span>
+<span class="n">WEEK2</span><span class="p">.</span><span class="n">PROMOTION_WEEK_ID</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Time-shifted week ID&quot;</span><span class="p">,</span>
+<span class="n">WEEK2</span><span class="p">.</span><span class="n">PROMOTION_WEEK_START_DT</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Calendar date&quot;</span><span class="p">,</span>
+<span class="n">WEEK2</span><span class="p">.</span><span class="n">PROMOTION_WEEK_START_DT</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">364</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">CALENDAR_DT</span><span class="p">,</span><span class="w">    </span>
+<span class="n">ROUND</span><span class="p">((</span><span class="n">D</span><span class="p">.</span><span class="n">LEAD_TIME_DYS</span><span class="o">+</span><span class="mi">7</span><span class="p">)</span><span class="o">/</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Total lead time (weeks)&quot;</span><span class="p">,</span>
+<span class="k">SUM</span><span class="p">(</span><span class="n">PROMOTED_UNIT_NBR</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Promoted units&quot;</span><span class="p">,</span>
+<span class="k">SUM</span><span class="p">(</span><span class="n">NON_PROMO_UNIT_NBR</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Non-promoted units&quot;</span><span class="p">,</span>
+<span class="ss">&quot;Promoted units&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;Non-promoted units&quot;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Total Units&quot;</span><span class="p">,</span>
+<span class="n">DIV0</span><span class="p">((</span><span class="ss">&quot;Promoted units&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;Non-promoted units&quot;</span><span class="p">),</span><span class="n">ITM</span><span class="p">.</span><span class="n">SHIP_UNIT_PACK_QTY</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Total Cases&quot;</span><span class="w"> </span>
+
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">PROMO_PERF_RPT</span><span class="w"> </span><span class="n">A</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">CORPORATE_ITEM</span><span class="w"> </span><span class="n">B</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">CORPORATE_ITEM_UPC_REFERENCE</span><span class="w"> </span><span class="n">E</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">E</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">E</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
+<span class="w">            </span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="w">            </span><span class="p">,</span><span class="n">DISTRIBUTION_CENTER_ID</span>
+<span class="w">            </span><span class="p">,</span><span class="n">WAREHOUSE_ID</span>
+<span class="w">            </span><span class="p">,</span><span class="n">ROG_ID</span>
+<span class="w">            </span><span class="p">,</span><span class="n">VENDOR_ID</span>
+<span class="w">            </span><span class="p">,</span><span class="n">VENDOR_SUB_ACCOUNT_ID</span>
+<span class="w">            </span><span class="p">,</span><span class="n">WIMS_SUB_VENDOR_NBR</span>
+<span class="w">            </span><span class="k">FROM</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">STORE_ORDER_CATALOG</span><span class="w"> </span>
+<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">AND</span><span class="w"> </span><span class="n">DISTRIBUTION_CENTER_ID</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="w">            </span><span class="k">AND</span><span class="w"> </span><span class="n">WIMS_SUB_VENDOR_NBR</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">C</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">ROG_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">ROG_ID</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">VENDOR_ID</span><span class="p">,</span><span class="n">VENDOR_SUB_ACCOUNT_ID</span><span class="p">,</span><span class="n">WIMS_SUB_VENDOR_NBR</span><span class="p">,</span><span class="n">LEAD_TIME_DYS</span><span class="p">,</span><span class="n">WAREHOUSE_ID</span><span class="p">,</span><span class="n">DISTRIBUTION_CENTER_ID</span><span class="w"> </span>
+<span class="w">            </span><span class="k">FROM</span><span class="w">  </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">VENDOR_WAREHOUSE</span><span class="w"> </span>
+<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">DISTRIBUTION_CENTER_ID</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;&#39;</span>
+<span class="w">            </span><span class="n">QUALIFY</span><span class="w"> </span><span class="n">ROW_NUMBER</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">WAREHOUSE_ID</span><span class="p">,</span><span class="n">VENDOR_ID</span><span class="p">,</span><span class="n">VENDOR_SUB_ACCOUNT_ID</span><span class="p">,</span><span class="n">WIMS_SUB_VENDOR_NBR</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">DW_LAST_EFFECTIVE_DT</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">D</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">D</span><span class="p">.</span><span class="n">DISTRIBUTION_CENTER_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">DISTRIBUTION_CENTER_ID</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">D</span><span class="p">.</span><span class="n">VENDOR_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">VENDOR_ID</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">D</span><span class="p">.</span><span class="n">VENDOR_SUB_ACCOUNT_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">VENDOR_SUB_ACCOUNT_ID</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">D</span><span class="p">.</span><span class="n">WIMS_SUB_VENDOR_NBR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">WIMS_SUB_VENDOR_NBR</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">D</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span>
+<span class="cm">/*INNER JOIN CAL WEEK1</span>
+<span class="cm">    ON TO_NUMBER(WEEK1.DIVISION_ID)::INTEGER = A.DIVISION_ID  </span>
+<span class="cm">    AND WEEK1.PROMOTION_WEEK_ID = A.WEEK_ID*/</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">CAL</span><span class="w"> </span><span class="n">WEEK1</span>
+<span class="w">    </span><span class="c1">--ON WEEK1.DIVISION_NM = A.DIVISION_NM</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">WEEK1</span><span class="p">.</span><span class="n">PROMOTION_WEEK_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">WEEK_ID</span><span class="w"> </span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">D1_PROMOTION_CALENDAR_WEEK</span><span class="w"> </span><span class="n">WEEK2</span>
+<span class="w">    </span><span class="c1">--ON WEEK2.DIVISION_ID = WEEK1.DIVISION_ID</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">WEEK2</span><span class="p">.</span><span class="n">PROMOTION_WEEK_START_DT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WEEK1</span><span class="p">.</span><span class="n">PROMOTION_WEEK_START_DT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ROUND</span><span class="p">((</span><span class="n">D</span><span class="p">.</span><span class="n">LEAD_TIME_DYS</span><span class="o">+</span><span class="mi">7</span><span class="p">)</span><span class="o">/</span><span class="mi">7</span><span class="p">)</span><span class="o">*</span><span class="mi">7</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">WEEK2</span><span class="p">.</span><span class="n">DIVISION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;19&#39;</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SUPPLY_CHAIN_ITEM</span><span class="w"> </span><span class="n">ITM</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">ITM</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">ITM</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">C</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">ITM</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">ITM</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="k">WHERE</span><span class="w"> </span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span>
+<span class="c1">--AND CATEGORY_ID IN (2501,2505,2510,2515,2520,2525,2530,2535,3001,3002,3003,3004)</span>
+<span class="c1">--AND QUARTER_ID IN (20221,20222,20223,20224,20231) </span>
+<span class="k">AND</span><span class="w"> </span><span class="n">DEPARTMENT_ID</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">301</span><span class="p">,</span><span class="mi">303</span><span class="p">,</span><span class="mi">311</span><span class="p">,</span><span class="mi">314</span><span class="p">,</span><span class="mi">317</span><span class="p">,</span><span class="mi">336</span><span class="p">)</span>
+<span class="cm">/*AND A.CORPORATE_ITEM_CD IN (30020337,30020334,30020425,30040167,30040160,30040207,30040199,30040213,30040128,30040162,</span>
+<span class="cm">                     30010374,30010376,25010054,25010057,25250643,25250644,30040053,30040087,30040089,30040083,</span>
+<span class="cm">                     30040077,30040064,30020183,30020326,30020327,25250643,25250644)*/</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">);</span>
+</code></pre></div>
+<h2 id="all-warehouse-items">All Warehouse Items<a class="headerlink" href="#all-warehouse-items" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">select</span>
+<span class="w">  </span><span class="k">distinct</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="n">DIVISION</span><span class="p">,</span>
+<span class="w">  </span><span class="n">sci</span><span class="p">.</span><span class="n">distribution_center_id</span><span class="w"> </span><span class="n">DST_CNTR</span><span class="p">,</span>
+<span class="w">  </span><span class="n">sci</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="n">FACILITY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ci</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="n">CORP_ITEM_CD</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ci</span><span class="p">.</span><span class="n">Item_Dsc</span><span class="w"> </span><span class="n">ITEM_DESCRIPTION</span><span class="p">,</span>
+<span class="w">  </span><span class="k">case</span>
+<span class="w">    </span><span class="k">when</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;20%&#39;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">System_Specific_Item_Id</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">branch_item_cd</span>
+<span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="n">WHS_ITEM</span><span class="p">,</span>
+<span class="w">  </span><span class="n">sci</span><span class="p">.</span><span class="n">Ship_Unit_Pack_Qty</span><span class="w"> </span><span class="n">PACK_WHSE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">sci</span><span class="p">.</span><span class="n">warehouse_item_status_cd</span><span class="w"> </span><span class="n">STATUS_DST</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ci</span><span class="p">.</span><span class="n">Size_Qty</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">Size_UOM_Cd</span><span class="w"> </span><span class="k">SIZE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">wc</span><span class="p">.</span><span class="n">ITEM_BILLING_COST_AMT</span><span class="w"> </span><span class="n">IB_COST</span><span class="p">,</span>
+<span class="w">  </span><span class="n">wc</span><span class="p">.</span><span class="n">VENDOR_ID</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="n">vendor_nm</span><span class="w"> </span><span class="n">VENDOR</span><span class="p">,</span>
+<span class="w">  </span><span class="k">coalesce</span><span class="p">(</span><span class="n">ifc</span><span class="p">.</span><span class="n">SINGLE_SMOOTHED_VALUE_NBR</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">SSV1</span><span class="p">,</span>
+<span class="w">  </span><span class="k">cast</span><span class="p">(</span>
+<span class="w">    </span><span class="n">concat</span><span class="p">(</span>
+<span class="w">      </span><span class="n">lpad</span><span class="p">(</span><span class="n">ssc</span><span class="p">.</span><span class="n">smic_group_cd</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="p">),</span>
+<span class="w">      </span><span class="n">lpad</span><span class="p">(</span><span class="n">ssc</span><span class="p">.</span><span class="n">SMIC_Category_Cd</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="p">),</span>
+<span class="w">      </span><span class="n">lpad</span><span class="p">(</span><span class="n">ssc</span><span class="p">.</span><span class="n">SMIC_Class_Cd</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="p">),</span>
+<span class="w">      </span><span class="n">lpad</span><span class="p">(</span><span class="n">ssc</span><span class="p">.</span><span class="n">SMIC_Sub_Class_Cd</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nb">int</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">CODE_KEY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">m</span><span class="p">.</span><span class="n">team_mgr_cd</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">team_mgr_nm</span><span class="w"> </span><span class="n">MANAGER</span><span class="p">,</span>
+<span class="w">  </span><span class="n">b</span><span class="p">.</span><span class="n">buyer_id</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">buyer_nm</span><span class="w"> </span><span class="n">BUYER</span><span class="p">,</span>
+<span class="w">  </span><span class="k">case</span>
+<span class="w">    </span><span class="k">when</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">distribution_center_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;WSPK&#39;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;32&#39;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">whse</span><span class="p">.</span><span class="n">OLD_DISTRIBUTION_CENTER_CD</span>
+<span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">DC_ID</span><span class="p">,</span>
+<span class="w">  </span><span class="k">case</span>
+<span class="w">    </span><span class="k">when</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;3345&#39;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;04&#39;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">whse</span><span class="p">.</span><span class="n">PHYSICAL_WAREHOUSE_GROUP_ID</span>
+<span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">WH_ID</span><span class="p">,</span>
+<span class="w">  </span><span class="n">sc</span><span class="p">.</span><span class="n">Section_Cd</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="n">Section_Nm</span><span class="w"> </span><span class="n">RETAIL_SECTION</span><span class="p">,</span>
+<span class="w">  </span><span class="n">dept</span><span class="p">.</span><span class="n">department_id</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">dept</span><span class="p">.</span><span class="n">department_nm</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">FORECAST</span><span class="p">,</span>
+<span class="w">  </span><span class="k">g</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">g</span><span class="p">.</span><span class="n">SMIC_GROUP_DSC</span><span class="w"> </span><span class="n">GROUP_CLASSIFICATION</span><span class="p">,</span>
+<span class="w">  </span><span class="n">cat</span><span class="p">.</span><span class="n">SMIC_Group_Cd</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">smic_category_nm</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">SMIC_Category_DSC</span><span class="w"> </span><span class="n">SMIC_CLASSIFICATION</span>
+<span class="k">from</span>
+<span class="w">  </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">Supply_Chain_Item</span><span class="w"> </span><span class="n">sci</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">corporate_item</span><span class="w"> </span><span class="n">ci</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">corporate_item_integration_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">corporate_item_integration_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">select</span>
+<span class="w">      </span><span class="o">*</span>
+<span class="w">    </span><span class="k">from</span>
+<span class="w">      </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">vendor_warehouse_item_cost</span>
+<span class="w">    </span><span class="k">where</span>
+<span class="w">      </span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">      </span><span class="k">and</span><span class="w"> </span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span><span class="w"> </span><span class="n">QUALIFY</span><span class="w"> </span><span class="n">row_number</span><span class="p">()</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="n">partition</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">WAREHOUSE_ID</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="w">        </span><span class="k">order</span><span class="w"> </span><span class="k">by</span>
+<span class="w">          </span><span class="n">source_creation_dt</span><span class="w"> </span><span class="k">desc</span>
+<span class="w">      </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="n">wc</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">wc</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">division_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">wc</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">warehouse_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">wc</span><span class="p">.</span><span class="n">corporate_item_integration_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">corporate_item_integration_id</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">SMIC_Sub_Class</span><span class="w"> </span><span class="n">ssc</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">smic_group_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssc</span><span class="p">.</span><span class="n">smic_group_cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">smic_category_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssc</span><span class="p">.</span><span class="n">smic_category_cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">smic_class_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssc</span><span class="p">.</span><span class="n">smic_class_cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">smic_sub_class_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssc</span><span class="p">.</span><span class="n">smic_sub_class_cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ssc</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ssc</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">smic_group</span><span class="w"> </span><span class="k">g</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="k">g</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">SMIC_Group_Cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="k">g</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="k">g</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">smic_category</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">SMIC_group_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">SMIC_Group_Cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">SMIC_Category_nm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">SMIC_Category_Cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">warehouse</span><span class="w"> </span><span class="n">whse</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">whse</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">division_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">whse</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">warehouse_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">whse</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">whse</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">buyer</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">buyer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">buyer_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_BIZOPS_VIEWS</span><span class="p">.</span><span class="n">WMMGROPT</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">BUYER_MANAGER_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">TEAM_MGR_CD</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">vendor_master</span><span class="w"> </span><span class="n">vm</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">wc</span><span class="p">.</span><span class="n">VENDOR_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="n">vendor_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">Retail_Section</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">Section_Cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">Section_Cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">department</span><span class="w"> </span><span class="n">dept</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">dept</span><span class="p">.</span><span class="n">department_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">Retail_Department_Id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">dept</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">dept</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">Section</span><span class="w"> </span><span class="n">sc</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="n">section_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">section_cd</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="w">  </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">Item_forecast</span><span class="w"> </span><span class="n">ifc</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">wc</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifc</span><span class="p">.</span><span class="n">division_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">wc</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifc</span><span class="p">.</span><span class="n">warehouse_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">wc</span><span class="p">.</span><span class="n">corporate_item_integration_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifc</span><span class="p">.</span><span class="n">corporate_item_integration_id</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ifc</span><span class="p">.</span><span class="n">dw_current_version_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ifc</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span>
+<span class="k">where</span>
+<span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">sci</span><span class="p">.</span><span class="n">distribution_center_id</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;W%&#39;</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">whse</span><span class="p">.</span><span class="n">WAREHOUSE_ID</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">BUYER_ID</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span>
+<span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">vm</span><span class="p">.</span><span class="n">vendor_status_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;A&#39;</span>
+<span class="w">    </span><span class="k">or</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="n">vendor_status_cd</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">null</span>
+<span class="w">  </span><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>
+      
+    
+  </body>
+</html>

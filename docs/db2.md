@@ -1,0 +1,97 @@
+# DB2 SQL
+
+## All Items With Vendor Contact
+
+~~~ sql
+SELECT DISTINCT
+                PG.PROMO_GRP_SK AS PG_ID,
+                PG.PROMO_GRP_NM,
+                PG.UNIT_TYP_CD AS UT,
+                PG.PROMO_TYP_GRP_CD AS PGT,
+                PG.DIV_ID AS DIV,
+                wds.vend_num,
+                COALESCE(PDI.CORP_ITEM_CD, ITM.CORP_ITEM_CD) AS CIC_EXPECTED,
+                COALESCE(DLV.DEAL_VEND_NM,'') AS VENDOR,
+                COALESCE(PCG.DIV_PROMO_GRP_CD, 0) AS CIG,
+                IRX.CORP_ITEM_CD AS CIC_FOUND,
+                           CASE
+                            WHEN PRI.BRKR_NM IS NULL THEN 'VC1'
+                            WHEN VC1.CONT_NM IS NULL THEN 'BR1'
+             END AS CONT1,
+                COALESCE(PRI.BRKR_NM,VC1.CONT_NM) AS PRIMARY_NM,
+                COALESCE
+                (PRI.BRKR_EMAIL_TXT, VC1.CONT_EMAIL_TXT) AS PRIMARY_EMAIL,
+                COALESCE
+                (SEC.BRKR_NM,VC2.CONT_NM, '') AS SECOND_NM,
+                COALESCE
+                (SEC.BRKR_EMAIL_TXT,VC2.CONT_EMAIL_TXT, '') AS SECOND_EMAIL,
+                COALESCE
+                (THD.BRKR_NM,VC3.CONT_NM, '') AS THIRD_NAME,
+                COALESCE
+                (THD.BRKR_EMAIL_TXT,VC3.CONT_EMAIL_TXT, '') AS THIRD_EMAIL,
+                  PG.PROMO_GRP_SK AS PG_ID,
+                PG.PROMO_GRP_NM
+FROM SQLDATA.PPAPPRGP_TABLE PG
+
+LEFT JOIN SQLDATA.PPAPPGC_TABLE JP
+                ON JP.PROMO_GRP_SK = PG.PROMO_GRP_SK
+                AND JP.CONT_ROLE_NM = 'PRIMARY'
+LEFT JOIN SQLDATA.PPAPPBC_TABLE PRI
+                ON PRI.BRKR_CONT_SK = JP.BRKR_CONT_SK
+                AND PRI.DIV_ID = PG.DIV_ID
+                AND JP.VEND_CONT_SK = 0
+LEFT JOIN SQLDATA.PPAPDLVC_TABLE VC1
+                ON VC1.VEND_CONT_SK = JP.VEND_CONT_SK
+                AND VC1.DIV_ID = PG.DIV_ID
+                AND JP.BRKR_CONT_SK = 0
+LEFT JOIN SQLDATA.PPAPPGI_TABLE ITM
+                ON ITM.PROMO_GRP_SK = PG.PROMO_GRP_SK
+LEFT JOIN SQLDATA.PPAPPGCG_TABLE PCG
+                ON PCG.PROMO_GRP_SK = PG.PROMO_GRP_SK
+LEFT JOIN SQLDATA.PPAPPGC_TABLE JP2
+                ON JP2.PROMO_GRP_SK = PG.PROMO_GRP_SK
+                AND JP2.CONT_ROLE_NM = 'SECONDARY'
+LEFT JOIN SQLDATA.PPAPPBC_TABLE SEC
+                ON SEC.BRKR_CONT_SK = JP2.BRKR_CONT_SK
+                AND SEC.DIV_ID = PG.DIV_ID
+                AND JP2.VEND_CONT_SK = 0
+LEFT JOIN SQLDATA.PPAPDLVC_TABLE VC2
+                ON VC2.VEND_CONT_SK = JP2.VEND_CONT_SK
+                AND VC2.DIV_ID = PG.DIV_ID
+                AND JP2.BRKR_CONT_SK = 0
+LEFT JOIN SQLDATA.PPAPPGC_TABLE JP3
+                ON JP3.PROMO_GRP_SK = PG.PROMO_GRP_SK
+                AND JP3.CONT_ROLE_NM = 'TEAM LEAD'
+LEFT JOIN SQLDATA.PPAPPBC_TABLE THD
+                ON THD.BRKR_CONT_SK = JP3.BRKR_CONT_SK
+                AND THD.DIV_ID = PG.DIV_ID
+                AND JP3.VEND_CONT_SK = 0
+LEFT JOIN SQLDATA.PPAPDLVC_TABLE VC3
+                ON VC3.VEND_CONT_SK = JP3.VEND_CONT_SK
+                AND VC3.DIV_ID = PG.DIV_ID
+                AND JP3.BRKR_CONT_SK = 0
+LEFT JOIN SQLDATA.PPAPPDI_TABLE PDI
+                ON PDI.DIV_PROMO_GRP_CD = PCG.DIV_PROMO_GRP_CD
+                AND PDI.DIVISION_ID = PCG.DIV_ID
+LEFT JOIN SQLDATA.PPAPDLV_TABLE DLV
+                ON DLV.DEAL_VEND_SK = PG.DEAL_VEND_SK
+LEFT JOIN SQLDAT3.SSITMCDS_TABLE ICD
+                ON ICD.CORP_ITEM_CD = PDI.CORP_ITEM_CD
+                OR ICD.CORP_ITEM_CD = ITM.CORP_ITEM_CD
+LEFT JOIN SQLDATA.SSITMROG_TABLE IRG
+                ON IRG.CORP = '001'
+                --AND (IRG.DIVISION = PG.DIV_ID OR IRG.DIVISION in ('32','99'))
+                AND IRG.CORP_ITEM_CD = ICD.CORP_ITEM_CD
+LEFT JOIN SQLDATA.SSITMURX_TABLE IRX
+                ON IRX.CORP = IRG.CORP
+                AND IRX.ROG = IRG.ROG
+                AND IRX.CORP_ITEM_CD = IRG.CORP_ITEM_CD
+                AND IRX.UNIT_TYPE = PG.UNIT_TYP_CD
+LEFT JOIN SQLDAT3.SSITMWDS WDS
+                ON wds.corp_item_cd = icd.corp_item_cd
+                AND wds.division = pg.div_id
+--WHERE PG.DIV_ID in ('32','99')
+--And PG.PROMO_GRP_SK = '32'
+ORDER BY 1, 7, 8
+~~~
+
