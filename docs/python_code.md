@@ -998,7 +998,8 @@ trap "kill $FLASK_PID" EXIT
                                                         }   
 ~~~
 ##### keep the app updated
-<!-- To use an updater module in your Electron app, you'll need to include the module in your project and configure it to check for updates, download updates, and install them.
+~~~markdown
+To use an updater module in your Electron app, you'll need to include the module in your project and configure it to check for updates, download updates, and install them.
 
 Here's an example using the electron-updater module:
 
@@ -1025,4 +1026,4 @@ In your Electron app, configure the updater module to download updates from the 
 When you want to release a new version of your Electron app, create a new release in GitHub with the updated files and the updater module will download and install the update for your users.
 
 By using GitHub Releases to host updates, you can simplify the update process for your Electron app and provide a reliable and easy-to-use distribution method for your users. This approach can be especially useful if you have a small user base or if you don't need the advanced features of a more complex update server.
--->
+~~~
