@@ -555,3 +555,445 @@ share_file_in_onedrive(file_id, "eddie.wy.zhu@gmail.com")
 df = check_and_retrieve_modified_file(file_id)
 print(df)
 ~~~
+
+#### create an eletron app to do that 
+~~~python 
+from flask import Flask, request, jsonify
+import openpyxl
+import pandas as pd
+import requests
+
+app = Flask(__name__)
+
+@app.route('/create_folder', methods=['POST'])
+def create_folder_in_onedrive():
+    data = request.get_json()
+    foldername = data['folder_name']
+    access_token = data['access_token']
+
+    endpoint = 'https://graph.microsoft.com/v1.0/me/drive/root/children'
+    r = requests.get(endpoint, headers={'Authorization': 'Bearer ' + access_token})
+    data = {'name': foldername, 'folder': {}, '@microsoft.graph.conflictBehavior': 'rename'}
+    r = requests.post(endpoint, json=data, headers={'Authorization': 'Bearer ' + access_token})
+    return jsonify({'response': r.json()})
+
+@app.route('/copy_file', methods=['POST'])
+def copy_file_in_onedrive():
+    data = request.get_json()
+    file_id = data['file_id']
+    folder_id = data['folder_id']
+    access_token = data['access_token']
+
+    endpoint = f'https://graph.microsoft.com/v1.0/me/drive/items/{file_id}/copy'
+    data = {'parentReference': {'id': folder_id}}
+    r = requests.post(endpoint, json=data, headers={'Authorization': 'Bearer ' + access_token})
+    return jsonify({'response': r.json()})
+
+@app.route('/modify_file', methods=['POST'])
+def modify_excel_file_in_onedrive():
+    data = request.get_json()
+    file_id = data['file_id']
+    access_token = data['access_token']
+
+    endpoint = f'https://graph.microsoft.com/v1.0/me/drive/items/{file_id}/content'
+    r = requests.get(endpoint, headers={'Authorization': 'Bearer ' + access_token}, stream=True)
+    df = pd.read_excel(r.raw)
+    df['new_column'] = 'new_value'
+    buffer = io.BytesIO()
+    writer = pd.ExcelWriter(buffer, engine='openpyxl')
+    book = openpyxl.load_workbook(r.raw)
+    writer.book = book
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
+    writer.save()
+    file = buffer.getvalue()
+    endpoint = f'https://graph.microsoft.com/v1.0/me/drive/items/{file_id}/content'
+    r = requests.put(endpoint, data=file, headers={'Authorization': 'Bearer ' + access_token, 'Content-Type':
+    'Content-Length': len(file)})
+    return jsonify({'response': r.json()})
+
+@app.route('/share_file', methods=['POST'])
+def share_file_in_onedrive():
+    data = request.get_json()
+    file_id = data['file_id']
+    email = data['email']
+    access_token = data['access_token']
+
+    endpoint = f'https://graph.microsoft.com/v1.0/me/drive/items/{file_id}/invite'
+    data = {
+        'recipients': [
+            {
+                'email': email
+            }
+        ],
+        'requireSignIn': False,
+        'sendInvitation': True,
+        'roles': [
+            'write'
+        ]
+    }
+    r = requests.post(endpoint, json=data, headers={'Authorization': 'Bearer ' + access_token})
+    return jsonify({'response': r.json()})
+
+@app.route('/check_file', methods=['POST'])
+def check_and_retrieve_modified_file():
+    data = request.get_json()
+    file_id = data['file_id']
+    access_token = data['access_token']
+
+    endpoint = f'https://graph.microsoft.com/v1.0/me/drive/items/{file_id}/content'
+    r = requests.get(endpoint, headers={'Authorization': 'Bearer ' + access_token}, stream=True)
+    df = pd.read_excel(r.raw)
+    return jsonify({'data': df.to_dict()})
+
+if __name__ == '__main__':
+    app.run()
+~~~
+#### frontend
+~~~javascript
+const {app, BrowserWindow, ipcMain} = require('electron')
+const path = require('path')
+const url = require('url')
+
+let mainWindow
+
+function createWindow () {
+  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+  mainWindow.on('closed', function () {
+    mainWindow = null
+  })
+}
+
+app.on('ready', createWindow)
+
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('activate', function () {
+  if (mainWindow === null) {
+    createWindow()
+  }
+})
+
+ipcMain.on('create_folder', (event, folder_name, access_token) => {
+  fetch('http://localhost:5000/create_folder', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      folder_name: folder_name,
+      access_token: access_token
+    })
+  })
+  .then(res => res.json())
+  .then(json => {
+    event.sender.send('create_folder_response', json)
+  })
+})
+
+ipcMain.on('copy_file', (event, file_id, folder_id, access_token) => {
+  fetch('http://localhost:5000/copy_file', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      file_id: file_id,
+      folder_id: folder_id,
+      access_token: access_token
+    })
+  })
+  .then(res => res.json())
+  .then(json => {
+    event.sender.send('copy_file_response', json)
+  })
+})
+
+ipcMain.on('modify_file', (event, file_id, access_token) => {
+  fetch('http://localhost:5000/modify_file', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      file_id: file_id,
+      access_token: access_token
+    })
+  })
+  .then(res => res.json())
+  .then(json => {
+    event.sender.send('modify_file_response', json)
+  })
+})
+
+ipcMain.on('share_file', (event, file_id, email, access_token) => {
+  fetch('http://localhost:5000/share_file', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      file_id: file_id,
+     
+      email: email,
+      access_token: access_token
+    })
+  })
+  .then(res => res.json())
+  .then(json => {
+    event.sender.send('share_file_response', json)
+  })
+})
+
+ipcMain.on('check_file', (event, file_id, access_token) => {
+  fetch('http://localhost:5000/check_file', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      file_id: file_id,
+      access_token: access_token
+    })
+  })
+  .then(res => res.json())
+  .then(json => {
+    event.sender.send('check_file_response', json)
+  })
+})
+~~~ 
+##### html file
+~~~html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>OneDrive App</title>
+  </head>
+  <body>
+    <h1>Create Folder</h1>
+    <form>
+      <input type="text" id="folder_name" placeholder="Folder Name">
+      <input type="text" id="access_token" placeholder="Access Token">
+      <button id="create_folder_button">Create Folder</button>
+    </form>
+    <br><br>
+    <h1>Copy File</h1>
+    <form>
+      <input type="text" id="file_id" placeholder="File ID">
+      <input type="text" id="folder_id" placeholder="Folder ID">
+      <input type="text" id="access_token" placeholder="Access Token">
+      <button id="copy_file_button">Copy File</button>
+    </form>
+    <br><br>
+    <h1>Modify File</h1>
+    <form>
+      <input type="text" id="file_id" placeholder="File ID">
+      <input type="text" id="access_token" placeholder="Access Token">
+      <button id="modify_file_button">Modify File</button>
+    </form>
+    <br><br>
+    <h1>Share File</h1>
+    <form>
+      <input type="text" id="file_id" placeholder="File ID">
+      <input type="text" id="email" placeholder="Email">
+      <input type="text" id="access_token" placeholder="Access Token">
+      <button id="share_file_button">Share File</button>
+    </form>
+    <br><br>
+    <h1>Check File</h1>
+    <form>
+      <input type="text" id="file_id" placeholder="File ID">
+      <input type="text" id="access_token" placeholder="Access Token">
+      <button id="check_file_button">Check File</button>
+    </form>
+    <script>
+      const {ipcRenderer} = require('electron')
+      const createFolderButton = document.getElementById('create_folder_button')
+      const copyFileButton = document.getElementById('copy_file_button')
+      const modifyFileButton = document.getElementById('modify_file_button')
+      const shareFileButton = document.getElementById('share_file_button')
+      const checkFileButton = document.getElementById('check_file_button')
+      createFolderButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        const folderName = document.getElementById('folder_name').value
+        const accessToken = document.getElementById('access_token').value
+        ipcRenderer.send('create_folder', folderName, accessToken)
+      })
+      copyFileButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        const fileId = document.getElementById('file_id').value
+        const folderId = document.getElementById('folder_id').value
+                const accessToken = document.getElementById('access_token').value
+        ipcRenderer.send('copy_file', fileId, folderId, accessToken)
+      })
+      modifyFileButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        const fileId = document.getElementById('file_id').value
+        const accessToken = document.getElementById('access_token').value
+        ipcRenderer.send('modify_file', fileId, accessToken)
+      })
+      shareFileButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        const fileId = document.getElementById('file_id').value
+        const email = document.getElementById('email').value
+        const accessToken = document.getElementById('access_token').value
+        ipcRenderer.send('share_file', fileId, email, accessToken)
+      })
+      checkFileButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        const fileId = document.getElementById('file_id').value
+        const accessToken = document.getElementById('access_token').value
+        ipcRenderer.send('check_file', fileId, accessToken)
+      })
+      ipcRenderer.on('create_folder_response', (event, arg) => {
+        console.log(arg)
+      })
+      ipcRenderer.on('copy_file_response', (event, arg) => {
+        console.log(arg)
+      })
+      ipcRenderer.on('modify_file_response', (event, arg) => {
+        console.log(arg)
+      })
+      ipcRenderer.on('share_file_response', (event, arg) => {
+        console.log(arg)
+      })
+      ipcRenderer.on('check_file_response', (event, arg) => {
+        console.log(arg)
+      })
+    </script>
+  </body>
+</html>
+~~~ 
+##### script to start flask and electron in the package single app - start-app.sh
+~~~bash
+#!/usr/bin/env bash
+
+# Start the Flask backend
+FLASK_APP=app.py FLASK_ENV=development flask run &
+
+# Store the PID of the Flask backend
+FLASK_PID=$!
+
+# Start the Electron frontend
+electron .
+
+# Kill the Flask backend when Electron exits
+trap "kill $FLASK_PID" EXIT
+~~~
+
+##### forge to package the app
+~~~json
+{
+  "name": "onedrive-app",
+  "productName": "OneDrive App",
+  "version": "1.0.0",
+  "description": "OneDrive App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint .",
+    "dist": "electron-forge make --platform=win32 --arch=x64"
+  },
+  "repository": {
+    "type": "git",
+    "url": "..."
+    },
+    "keywords": [
+        "electron",
+        "electron-forge",
+        "react",
+        "webpack"
+        ],
+        "author": {
+            "name": "..."
+            },
+            "license": "MIT",
+            "config": {
+                "forge": {
+                    "packagerConfig": {
+                        // start the app with the start-app.sh script
+                        "executableName": "start-app.sh",
+                    },
+                    "makers": [
+                        {
+                            "name": "@electron-forge/maker-squirrel",
+                            "config": {
+                                "name": "onedrive_app"
+                                }
+                                },
+                                {
+                                    "name": "@electron-forge/maker-zip",
+                                    "platforms": [
+                                        "darwin"
+                                        ]
+                                        },
+                                        {
+                                            "name": "@electron-forge/maker-deb",
+                                            "config": {}
+                                            },
+                                            {
+                                                "name": "@electron-forge/maker-rpm",
+                                                "config": {}
+                                                }
+                                                ]
+                                                }
+                                                },
+                                                "devDependencies": {
+                                                    "@babel/core": "^7.4.5",
+                                                    "@babel/preset-env": "^7.4.5",
+                                                    "@babel/preset-react": "^7.0.0",
+                                                    "@electron-forge/cli": "^6.0.0-beta.50",
+                                                    "@electron-forge/maker-deb": "^6.0.0-beta.50",
+                                                    "@electron-forge/maker-rpm": "^6.0.0-beta.50",
+                                                    "@electron-forge/maker-squirrel": "^6.0.0-beta.50",
+                                                    "@electron-forge/maker-zip": "^6.0.0-beta.50",
+                                                    "@electron-forge/plugin-webpack": "^6.0.0-beta.50",
+                                                    "babel-loader": "^8.0.6",
+                                                    "css-loader": "^3.2.0",
+                                                    "electron": "^6.0.0",
+                                                    "electron-is-dev": "^1.1.0",
+                                                    "eslint": "^6.1.0",
+                                                    "eslint-config-airbnb": "^18.0.1",
+                                                    "eslint-config-prettier": "^6.0.0",
+                                                    "eslint-plugin-import": "^2.18.2",
+                                                    "eslint-plugin-jsx-a11y": "^6.2.3",
+                                                    "eslint-plugin-prettier": "^3.1.1",
+                                                    "eslint-plugin-react": "^7.14.3",
+                                                    "node-sass": "^4.12.0",
+                                                    "prettier": "^1.18.2",
+                                                    "react": "^16.8.6",
+                                                    "react-dom": "^16.8.6",
+                                                    "sass-loader": "^7.1.0",
+                                                    "style-loader": "^1.0.0",
+                                                    "webpack": "^4.35.2"
+                                                    },
+                                                    "dependencies": {
+                                                        "electron-is-dev": "^1.1.0",
+                                                        "electron-store": "^4.0.0",
+                                                        "electron-updater": "^4.0.6",
+                                                        "express": "^4.17.1",
+                                                        "flask": "^1.1.1",
+                                                        "flask-cors": "^3.0.8",
+                                                        "flask-restful": "^0.3.7",
+                                                        "flask-sqlalchemy": "^2.4.1",
+                                                        "flask-wtf": "^0.14.3",
+                                                        "python-shell": "^2.0.3",
+                                                        "request": "^2.88.0",
+                                                        "request-promise": "^4.2.4",
+                                                        "sqlite3": "^4.1.1",
+                                                        "wtf-forms": "^2.3.3"
+                                                        }
+                                                        }   
+~~~

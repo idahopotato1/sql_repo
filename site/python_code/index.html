@@ -390,6 +390,47 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#create-an-eletron-app-to-do-that" class="md-nav__link">
+    create an eletron app to do that
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend" class="md-nav__link">
+    frontend
+  </a>
+  
+    <nav class="md-nav" aria-label="frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#html-file" class="md-nav__link">
+    html file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script-to-start-flask-and-electron-in-the-package-single-app-start-appsh" class="md-nav__link">
+    script to start flask and electron in the package single app - start-app.sh
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forge-to-package-the-app" class="md-nav__link">
+    forge to package the app
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -501,6 +542,47 @@
   <a href="#now-lets-add-all-the-functions-together-to-create-an-app-to-create-a-folder-in-onedrive-copy-a-file-from-onedrive-and-paste-it-in-the-folder-that-was-just-created-and-then-add-a-dataframe-into-the-file-use-the-openpyxl-to-format-the-dataframe-and-finally-share-the-file-with-somebody-we-will-also-need-to-check-if-scope-has-been-granted" class="md-nav__link">
     now, let's add all the functions together to create an app to create a folder in onedrive, copy a file from onedrive and paste it in the folder that was just created. and then, add a dataframe into the file. use the openpyxl to format the dataframe. and finally, share the file with somebody. we will also need to check if scope has been granted
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-an-eletron-app-to-do-that" class="md-nav__link">
+    create an eletron app to do that
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend" class="md-nav__link">
+    frontend
+  </a>
+  
+    <nav class="md-nav" aria-label="frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#html-file" class="md-nav__link">
+    html file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script-to-start-flask-and-electron-in-the-package-single-app-start-appsh" class="md-nav__link">
+    script to start flask and electron in the package single app - start-app.sh
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forge-to-package-the-app" class="md-nav__link">
+    forge to package the app
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1067,6 +1149,441 @@
 <span class="n">share_file_in_onedrive</span><span class="p">(</span><span class="n">file_id</span><span class="p">,</span> <span class="s2">&quot;eddie.wy.zhu@gmail.com&quot;</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">check_and_retrieve_modified_file</span><span class="p">(</span><span class="n">file_id</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="create-an-eletron-app-to-do-that">create an eletron app to do that<a class="headerlink" href="#create-an-eletron-app-to-do-that" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">import</span> <span class="nn">openpyxl</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/create_folder&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">create_folder_in_onedrive</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="n">foldername</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span>
+    <span class="n">access_token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;access_token&#39;</span><span class="p">]</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="s1">&#39;https://graph.microsoft.com/v1.0/me/drive/root/children&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">access_token</span><span class="p">})</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">foldername</span><span class="p">,</span> <span class="s1">&#39;folder&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;@microsoft.graph.conflictBehavior&#39;</span><span class="p">:</span> <span class="s1">&#39;rename&#39;</span><span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">access_token</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()})</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/copy_file&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">copy_file_in_onedrive</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="n">file_id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;file_id&#39;</span><span class="p">]</span>
+    <span class="n">folder_id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;folder_id&#39;</span><span class="p">]</span>
+    <span class="n">access_token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;access_token&#39;</span><span class="p">]</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/me/drive/items/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s1">/copy&#39;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;parentReference&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">folder_id</span><span class="p">}}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">access_token</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()})</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/modify_file&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">modify_excel_file_in_onedrive</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="n">file_id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;file_id&#39;</span><span class="p">]</span>
+    <span class="n">access_token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;access_token&#39;</span><span class="p">]</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/me/drive/items/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s1">/content&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">access_token</span><span class="p">},</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">raw</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;new_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;new_value&#39;</span>
+    <span class="n">buffer</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelWriter</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;openpyxl&#39;</span><span class="p">)</span>
+    <span class="n">book</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">load_workbook</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">raw</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">book</span> <span class="o">=</span> <span class="n">book</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Sheet1&#39;</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/me/drive/items/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s1">/content&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">file</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">access_token</span><span class="p">,</span> <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span>
+    <span class="s1">&#39;Content-Length&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">file</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()})</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/share_file&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">share_file_in_onedrive</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="n">file_id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;file_id&#39;</span><span class="p">]</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
+    <span class="n">access_token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;access_token&#39;</span><span class="p">]</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/me/drive/items/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s1">/invite&#39;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;recipients&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s1">&#39;requireSignIn&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;sendInvitation&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;roles&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">&#39;write&#39;</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">access_token</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()})</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/check_file&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">check_and_retrieve_modified_file</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="n">file_id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;file_id&#39;</span><span class="p">]</span>
+    <span class="n">access_token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;access_token&#39;</span><span class="p">]</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/me/drive/items/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s1">/content&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">access_token</span><span class="p">},</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">raw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()})</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="frontend">frontend<a class="headerlink" href="#frontend" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="nx">app</span><span class="p">,</span><span class="w"> </span><span class="nx">BrowserWindow</span><span class="p">,</span><span class="w"> </span><span class="nx">ipcMain</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;electron&#39;</span><span class="p">)</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">)</span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nx">mainWindow</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">createWindow</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">mainWindow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">BrowserWindow</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="mf">800</span><span class="p">,</span><span class="w"> </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="mf">600</span><span class="p">})</span>
+<span class="w">  </span><span class="nx">mainWindow</span><span class="p">.</span><span class="nx">loadURL</span><span class="p">(</span><span class="nx">url</span><span class="p">.</span><span class="nx">format</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">pathname</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;index.html&#39;</span><span class="p">),</span>
+<span class="w">    </span><span class="nx">protocol</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;file:&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">slashes</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">}))</span>
+<span class="w">  </span><span class="nx">mainWindow</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;closed&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">mainWindow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">}</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;ready&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">createWindow</span><span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;window-all-closed&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">platform</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;darwin&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">app</span><span class="p">.</span><span class="nx">quit</span><span class="p">()</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;activate&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">mainWindow</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">createWindow</span><span class="p">()</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">})</span>
+
+<span class="nx">ipcMain</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;create_folder&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">folder_name</span><span class="p">,</span><span class="w"> </span><span class="nx">access_token</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;http://localhost:5000/create_folder&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;application/json&#39;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">folder_name</span><span class="o">:</span><span class="w"> </span><span class="nx">folder_name</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">access_token</span><span class="o">:</span><span class="w"> </span><span class="nx">access_token</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">json</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">event</span><span class="p">.</span><span class="nx">sender</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;create_folder_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">json</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+
+<span class="nx">ipcMain</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;copy_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">file_id</span><span class="p">,</span><span class="w"> </span><span class="nx">folder_id</span><span class="p">,</span><span class="w"> </span><span class="nx">access_token</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;http://localhost:5000/copy_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;application/json&#39;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">file_id</span><span class="o">:</span><span class="w"> </span><span class="nx">file_id</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">folder_id</span><span class="o">:</span><span class="w"> </span><span class="nx">folder_id</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">access_token</span><span class="o">:</span><span class="w"> </span><span class="nx">access_token</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">json</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">event</span><span class="p">.</span><span class="nx">sender</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;copy_file_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">json</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+
+<span class="nx">ipcMain</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;modify_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">file_id</span><span class="p">,</span><span class="w"> </span><span class="nx">access_token</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;http://localhost:5000/modify_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;application/json&#39;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">file_id</span><span class="o">:</span><span class="w"> </span><span class="nx">file_id</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">access_token</span><span class="o">:</span><span class="w"> </span><span class="nx">access_token</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">json</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">event</span><span class="p">.</span><span class="nx">sender</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;modify_file_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">json</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+
+<span class="nx">ipcMain</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;share_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">file_id</span><span class="p">,</span><span class="w"> </span><span class="nx">email</span><span class="p">,</span><span class="w"> </span><span class="nx">access_token</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;http://localhost:5000/share_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;application/json&#39;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">file_id</span><span class="o">:</span><span class="w"> </span><span class="nx">file_id</span><span class="p">,</span>
+
+<span class="w">      </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="nx">email</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">access_token</span><span class="o">:</span><span class="w"> </span><span class="nx">access_token</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">json</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">event</span><span class="p">.</span><span class="nx">sender</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;share_file_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">json</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+
+<span class="nx">ipcMain</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;check_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">file_id</span><span class="p">,</span><span class="w"> </span><span class="nx">access_token</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;http://localhost:5000/check_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;application/json&#39;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">file_id</span><span class="o">:</span><span class="w"> </span><span class="nx">file_id</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">access_token</span><span class="o">:</span><span class="w"> </span><span class="nx">access_token</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">json</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">event</span><span class="p">.</span><span class="nx">sender</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;check_file_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">json</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+</code></pre></div>
+<h5 id="html-file">html file<a class="headerlink" href="#html-file" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>OneDrive App<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Create Folder<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">form</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;folder_name&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Folder Name&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;access_token&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Access Token&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;create_folder_button&quot;</span><span class="p">&gt;</span>Create Folder<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Copy File<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">form</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;file_id&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;File ID&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;folder_id&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Folder ID&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;access_token&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Access Token&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;copy_file_button&quot;</span><span class="p">&gt;</span>Copy File<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Modify File<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">form</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;file_id&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;File ID&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;access_token&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Access Token&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;modify_file_button&quot;</span><span class="p">&gt;</span>Modify File<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Share File<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">form</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;file_id&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;File ID&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Email&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;access_token&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Access Token&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;share_file_button&quot;</span><span class="p">&gt;</span>Share File<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Check File<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">form</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;file_id&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;File ID&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;access_token&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Access Token&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;check_file_button&quot;</span><span class="p">&gt;</span>Check File<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="nx">ipcRenderer</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;electron&#39;</span><span class="p">)</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">createFolderButton</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;create_folder_button&#39;</span><span class="p">)</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">copyFileButton</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;copy_file_button&#39;</span><span class="p">)</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">modifyFileButton</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;modify_file_button&#39;</span><span class="p">)</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">shareFileButton</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;share_file_button&#39;</span><span class="p">)</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">checkFileButton</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;check_file_button&#39;</span><span class="p">)</span>
+<span class="w">      </span><span class="nx">createFolderButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">folderName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;folder_name&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">accessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;access_token&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;create_folder&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">folderName</span><span class="p">,</span><span class="w"> </span><span class="nx">accessToken</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">copyFileButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">fileId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;file_id&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">folderId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;folder_id&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">                </span><span class="kd">const</span><span class="w"> </span><span class="nx">accessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;access_token&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;copy_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">fileId</span><span class="p">,</span><span class="w"> </span><span class="nx">folderId</span><span class="p">,</span><span class="w"> </span><span class="nx">accessToken</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">modifyFileButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">fileId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;file_id&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">accessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;access_token&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;modify_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">fileId</span><span class="p">,</span><span class="w"> </span><span class="nx">accessToken</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">shareFileButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">fileId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;file_id&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">accessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;access_token&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;share_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">fileId</span><span class="p">,</span><span class="w"> </span><span class="nx">email</span><span class="p">,</span><span class="w"> </span><span class="nx">accessToken</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">checkFileButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">fileId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;file_id&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">accessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;access_token&#39;</span><span class="p">).</span><span class="nx">value</span>
+<span class="w">        </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;check_file&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">fileId</span><span class="p">,</span><span class="w"> </span><span class="nx">accessToken</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;create_folder_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">arg</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;copy_file_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">arg</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;modify_file_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">arg</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;share_file_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">arg</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="nx">ipcRenderer</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;check_file_response&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">,</span><span class="w"> </span><span class="nx">arg</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<h5 id="script-to-start-flask-and-electron-in-the-package-single-app-start-appsh">script to start flask and electron in the package single app - start-app.sh<a class="headerlink" href="#script-to-start-flask-and-electron-in-the-package-single-app-start-appsh" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
+
+<span class="c1"># Start the Flask backend</span>
+<span class="nv">FLASK_APP</span><span class="o">=</span>app.py<span class="w"> </span><span class="nv">FLASK_ENV</span><span class="o">=</span>development<span class="w"> </span>flask<span class="w"> </span>run<span class="w"> </span><span class="p">&amp;</span>
+
+<span class="c1"># Store the PID of the Flask backend</span>
+<span class="nv">FLASK_PID</span><span class="o">=</span><span class="nv">$!</span>
+
+<span class="c1"># Start the Electron frontend</span>
+electron<span class="w"> </span>.
+
+<span class="c1"># Kill the Flask backend when Electron exits</span>
+<span class="nb">trap</span><span class="w"> </span><span class="s2">&quot;kill </span><span class="nv">$FLASK_PID</span><span class="s2">&quot;</span><span class="w"> </span>EXIT
+</code></pre></div>
+<h5 id="forge-to-package-the-app">forge to package the app<a class="headerlink" href="#forge-to-package-the-app" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;onedrive-app&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;productName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OneDrive App&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OneDrive App&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;main&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;main.js&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;scripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;electron-forge start&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;package&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;electron-forge package&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;make&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;electron-forge make&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;publish&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;electron-forge publish&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lint&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eslint .&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;dist&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;electron-forge make --platform=win32 --arch=x64&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;git&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;keywords&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;electron&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;electron-forge&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;react&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;webpack&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;author&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;license&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;forge&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;packagerConfig&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="c1">// start the app with the start-app.sh script</span>
+<span class="w">                        </span><span class="nt">&quot;executableName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;start-app.sh&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;makers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                        </span><span class="p">{</span>
+<span class="w">                            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@electron-forge/maker-squirrel&quot;</span><span class="p">,</span>
+<span class="w">                            </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;onedrive_app&quot;</span>
+<span class="w">                                </span><span class="p">}</span>
+<span class="w">                                </span><span class="p">},</span>
+<span class="w">                                </span><span class="p">{</span>
+<span class="w">                                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@electron-forge/maker-zip&quot;</span><span class="p">,</span>
+<span class="w">                                    </span><span class="nt">&quot;platforms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                                        </span><span class="s2">&quot;darwin&quot;</span>
+<span class="w">                                        </span><span class="p">]</span>
+<span class="w">                                        </span><span class="p">},</span>
+<span class="w">                                        </span><span class="p">{</span>
+<span class="w">                                            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@electron-forge/maker-deb&quot;</span><span class="p">,</span>
+<span class="w">                                            </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                                            </span><span class="p">},</span>
+<span class="w">                                            </span><span class="p">{</span>
+<span class="w">                                                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@electron-forge/maker-rpm&quot;</span><span class="p">,</span>
+<span class="w">                                                </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                                                </span><span class="p">}</span>
+<span class="w">                                                </span><span class="p">]</span>
+<span class="w">                                                </span><span class="p">}</span>
+<span class="w">                                                </span><span class="p">},</span>
+<span class="w">                                                </span><span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                                                    </span><span class="nt">&quot;@babel/core&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^7.4.5&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;@babel/preset-env&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^7.4.5&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;@babel/preset-react&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^7.0.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;@electron-forge/cli&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.0.0-beta.50&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;@electron-forge/maker-deb&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.0.0-beta.50&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;@electron-forge/maker-rpm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.0.0-beta.50&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;@electron-forge/maker-squirrel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.0.0-beta.50&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;@electron-forge/maker-zip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.0.0-beta.50&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;@electron-forge/plugin-webpack&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.0.0-beta.50&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;babel-loader&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^8.0.6&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;css-loader&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^3.2.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;electron&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.0.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;electron-is-dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^1.1.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;eslint&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.1.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;eslint-config-airbnb&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^18.0.1&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;eslint-config-prettier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.0.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;eslint-plugin-import&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^2.18.2&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;eslint-plugin-jsx-a11y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.2.3&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;eslint-plugin-prettier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^3.1.1&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;eslint-plugin-react&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^7.14.3&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;node-sass&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.12.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;prettier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^1.18.2&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;react&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^16.8.6&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;react-dom&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^16.8.6&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;sass-loader&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^7.1.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;style-loader&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^1.0.0&quot;</span><span class="p">,</span>
+<span class="w">                                                    </span><span class="nt">&quot;webpack&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.35.2&quot;</span>
+<span class="w">                                                    </span><span class="p">},</span>
+<span class="w">                                                    </span><span class="nt">&quot;dependencies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                                                        </span><span class="nt">&quot;electron-is-dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^1.1.0&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;electron-store&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;electron-updater&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.0.6&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;express&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.17.1&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;flask&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^1.1.1&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;flask-cors&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^3.0.8&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;flask-restful&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^0.3.7&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;flask-sqlalchemy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^2.4.1&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;flask-wtf&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^0.14.3&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;python-shell&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^2.0.3&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;request&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^2.88.0&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;request-promise&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.2.4&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;sqlite3&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.1.1&quot;</span><span class="p">,</span>
+<span class="w">                                                        </span><span class="nt">&quot;wtf-forms&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^2.3.3&quot;</span>
+<span class="w">                                                        </span><span class="p">}</span>
+<span class="w">                                                        </span><span class="p">}</span><span class="w">   </span>
 </code></pre></div>
 
 
