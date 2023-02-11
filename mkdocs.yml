@@ -23,3 +23,4 @@ nav:
     - Pricing Execution: pricing_execution.md
     - DB2 Repo: db2.md
     - Azure: azure.md
+    - Python: python_code.md
