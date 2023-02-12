@@ -24,3 +24,4 @@ nav:
     - DB2 Repo: db2.md
     - Azure: azure.md
     - Python: python_code.md
+    - Decision Making: decision_making_algorithm.md
