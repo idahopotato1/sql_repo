@@ -435,6 +435,27 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#this-is-the-code-to-parse-the-url-to-get-the-file-id" class="md-nav__link">
+    this is the code to parse the URL to get the file id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-is-to-access-the-file-shared-with-you-if-the-file-is-in-one-drive" class="md-nav__link">
+    this is to access the file shared with you if the file is in one drive
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-is-to-access-the-file-shared-with-you-if-the-file-is-in-sharepoint" class="md-nav__link">
+    this is to access the file shared with you if the file is in sharepoint
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -608,6 +629,27 @@
           <li class="md-nav__item">
   <a href="#keep-the-app-updated" class="md-nav__link">
     keep the app updated
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-is-the-code-to-parse-the-url-to-get-the-file-id" class="md-nav__link">
+    this is the code to parse the URL to get the file id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-is-to-access-the-file-shared-with-you-if-the-file-is-in-one-drive" class="md-nav__link">
+    this is to access the file shared with you if the file is in one drive
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-is-to-access-the-file-shared-with-you-if-the-file-is-in-sharepoint" class="md-nav__link">
+    this is to access the file shared with you if the file is in sharepoint
   </a>
   
 </li>
@@ -1644,6 +1686,55 @@ In your Electron app, configure the updater module to download updates from the 
 When you want to release a new version of your Electron app, create a new release in GitHub with the updated files and the updater module will download and install the update for your users.
 
 By using GitHub Releases to host updates, you can simplify the update process for your Electron app and provide a reliable and easy-to-use distribution method for your users. This approach can be especially useful if you have a small user base or if you don&#39;t need the advanced features of a more complex update server.
+</code></pre></div>
+<h5 id="this-is-the-code-to-parse-the-url-to-get-the-file-id">this is the code to parse the URL to get the file id<a class="headerlink" href="#this-is-the-code-to-parse-the-url-to-get-the-file-id" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">urllib.parse</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://rxsafeway-my.sharepoint.com/:x:/r/personal/wzhu004_safeway_com/_layouts/15/Doc.aspx?sourcedoc=%7B8A54C385-AAA8-44AB-B23F-A354E47BFE8A%7D&amp;file=Book%201.xlsx&amp;action=default&amp;mobileredirect=true&amp;cid=3e24b0c4-e164-4abc-bd6b-001c2cc1eaad&#39;</span>
+<span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">query_params</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qs</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+<span class="n">file_id</span> <span class="o">=</span> <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;sourcedoc&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">file_id</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="this-is-to-access-the-file-shared-with-you-if-the-file-is-in-one-drive">this is to access the file shared with you if the file is in one drive<a class="headerlink" href="#this-is-to-access-the-file-shared-with-you-if-the-file-is-in-one-drive" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># Replace ACCESS_TOKEN with the access token obtained from authentication</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer ACCESS_TOKEN&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span>
+<span class="p">}</span>
+
+<span class="c1"># Replace FILE_ID with the ID of the shared Excel file</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/drives/FILE_ID/items/FILE_ID/content&#39;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="c1"># The response content is the binary data of the Excel file</span>
+    <span class="n">excel_file_content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to retrieve Excel file. Response code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="this-is-to-access-the-file-shared-with-you-if-the-file-is-in-sharepoint">this is to access the file shared with you if the file is in sharepoint<a class="headerlink" href="#this-is-to-access-the-file-shared-with-you-if-the-file-is-in-sharepoint" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># Replace ACCESS_TOKEN with the access token obtained from authentication</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer ACCESS_TOKEN&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span>
+<span class="p">}</span>
+
+<span class="c1"># Replace FILE_ID with the ID of the shared Excel file</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/shares/FILE_ID/driveItem/content&#39;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="c1"># The response content is the binary data of the Excel file</span>
+    <span class="n">excel_file_content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to retrieve Excel file. Response code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 

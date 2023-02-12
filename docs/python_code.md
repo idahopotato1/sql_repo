@@ -1027,3 +1027,60 @@ When you want to release a new version of your Electron app, create a new releas
 
 By using GitHub Releases to host updates, you can simplify the update process for your Electron app and provide a reliable and easy-to-use distribution method for your users. This approach can be especially useful if you have a small user base or if you don't need the advanced features of a more complex update server.
 ~~~
+
+##### this is the code to parse the URL to get the file id
+~~~python
+import urllib.parse
+
+url = 'https://rxsafeway-my.sharepoint.com/:x:/r/personal/wzhu004_safeway_com/_layouts/15/Doc.aspx?sourcedoc=%7B8A54C385-AAA8-44AB-B23F-A354E47BFE8A%7D&file=Book%201.xlsx&action=default&mobileredirect=true&cid=3e24b0c4-e164-4abc-bd6b-001c2cc1eaad'
+parsed_url = urllib.parse.urlparse(url)
+query_params = urllib.parse.parse_qs(parsed_url.query)
+file_id = query_params['sourcedoc'][0]
+print(file_id)
+~~~
+
+##### this is to access the file shared with you if the file is in one drive
+~~~python
+import requests
+
+# Replace ACCESS_TOKEN with the access token obtained from authentication
+headers = {
+    'Authorization': 'Bearer ACCESS_TOKEN',
+    'Accept': 'application/json'
+}
+
+# Replace FILE_ID with the ID of the shared Excel file
+url = f'https://graph.microsoft.com/v1.0/drives/FILE_ID/items/FILE_ID/content'
+
+response = requests.get(url, headers=headers)
+
+if response.status_code == 200:
+    # The response content is the binary data of the Excel file
+    excel_file_content = response.content
+else:
+    print(f'Failed to retrieve Excel file. Response code: {response.status_code}')
+
+~~~
+
+##### this is to access the file shared with you if the file is in sharepoint
+~~~python
+import requests
+
+# Replace ACCESS_TOKEN with the access token obtained from authentication
+headers = {
+    'Authorization': 'Bearer ACCESS_TOKEN',
+    'Accept': 'application/json'
+}
+
+# Replace FILE_ID with the ID of the shared Excel file
+url = f'https://graph.microsoft.com/v1.0/shares/FILE_ID/driveItem/content'
+
+response = requests.get(url, headers=headers)
+
+if response.status_code == 200:
+    # The response content is the binary data of the Excel file
+    excel_file_content = response.content
+else:
+    print(f'Failed to retrieve Excel file. Response code: {response.status_code}')
+
+~~~
