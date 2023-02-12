@@ -98,6 +98,15 @@ best_option = max(scores, key=scores.get)
 print(f'The best option is: {best_option}')
 ~~~
 
+~~~markdown
+Convergent and divergent decision making are two distinct approaches to problem solving and decision making.
+
+Convergent decision making is a process in which individuals or organizations focus on finding a single, optimal solution to a problem. This approach is often used in situations where the problem and its solution are well-defined and there is a clear right or wrong answer. Convergent decision making is focused on finding the best solution as quickly as possible and often involves a step-by-step process of evaluating and eliminating options until the best solution is found.
+
+Divergent decision making, on the other hand, is a process in which individuals or organizations focus on generating a wide range of possible solutions to a problem. This approach is often used in situations where the problem is complex and there is no clear right or wrong answer. Divergent decision making is focused on generating as many potential solutions as possible, encouraging creativity and innovation. This process helps organizations to explore new ideas and find unexpected solutions to complex problems.
+
+In conclusion, convergent and divergent decision making are two distinct approaches to problem solving and decision making, each with its own strengths and weaknesses. The best approach to use depends on the specific problem and the desired outcome. In some situations, a combination of both approaches may be used to find the best solution.
+~~~
 
 
 
