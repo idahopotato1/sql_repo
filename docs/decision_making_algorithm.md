@@ -244,3 +244,52 @@ The fourth point is that functional relationships can exist within the system, b
 
 Overall, these points emphasize the importance of understanding the relationships between the entities in a system, and how those relationships give rise to emergent properties and behaviors. By understanding the functional relationships within a system, systems thinkers can identify opportunities for improvement, anticipate potential problems, and design interventions that can help the system achieve its goals more effectively.
 ```
+#### computational thinking in system thinking 
+```markdown
+Sure, here’s a more detailed explanation of each of those points:
+
+Think about a system as form and function – form is what the system is, the function is what it does: This means that when we’re analyzing a system, we should understand both its structure (the physical components, entities, and relationships) as well as its purpose (what it’s designed to achieve or do).
+
+Think about the entities of the system – they have a form that enables their function: In any system, there are different entities (components or actors) that have specific roles and functions. To understand how the system works, it’s important to analyze each of these entities, their properties, and how they interact with other entities.
+
+Think about the relationships – the structure that enables the interactions: The relationships between the entities in a system are what enable them to work together towards a common goal. Analyzing these relationships (how they’re structured, how information or resources flow, etc.) is key to understanding how the system functions.
+
+Understand how the functions of entities interact to produce emergence and value: Emergence refers to the idea that a system can produce outcomes or properties that aren’t inherent in any individual entity or component. By understanding how the entities and relationships in a system work together, we can identify emergent properties and behaviors that can add value or create problems.
+
+By approaching systems thinking in this way, we can break down complex systems into their component parts, analyze how those parts work together, and identify potential areas for improvement or optimization. This can be useful in a wide range of contexts, from understanding the supply chain of a business to analyzing the ecological impact of human activity.
+
+Key Takeaways:
+
+A system is an entity with interrelated and interdependent parts. It is defined by its modules, by the boundaries between the modules, and by their interaction.
+The computational systems thinking design process is as follows: database -> choose modules -> compose modules -> simulate and verify -> fabricate.
+```
+
+#### solution neutral 
+```markdown
+Architecture is a representation of entities organized in a way that supports reasoning about the entities and describes behaviors and relationships amongst the entities. 
+A concept is a product or system vision, idea, notion, or mental image that maps function to form in brief. It is a simplification of the system architecture that allows for high-level reasoning.
+A solution-neutral function explains a function without specifying the solution that allows one to achieve that function. Solution-neutral is not an absolute property but rather a spectrum of more solution-neutral to less solution-neutral.
+Architecture is a way to organize and reason about entities, including their behaviors and relationships. It provides a high-level view of a system that can be used to guide its development and evolution.
+
+A concept is a high-level idea or vision for a product or system that maps function to form. It is often used in the early stages of development to help define the goals and scope of the system.
+
+A solution-neutral function is a way to describe a function without specifying a specific solution or implementation. It allows for more flexibility and creativity in finding solutions to meet the function, and is often used in the early stages of design.
+
+Together, these concepts provide a framework for thinking about and designing complex systems. By using architecture to organize and reason about entities, concepts to define the goals and scope of a system, and solution-neutral functions to describe what a system should do without specifying how it should do it, designers and developers can create innovative and effective solutions to complex problems.
+
+Yes, the transition point from solution-neutral to solution-specific marks the point at which design parameters and technology choices become more explicit.
+
+At the solution-neutral end of the spectrum, functions are described without reference to any specific solution or implementation. As a result, design parameters and technology choices are not yet explicit, and there is more flexibility to explore different solutions.
+
+As a design moves towards the solution-specific end of the spectrum, design parameters and technology choices become more explicit. This is necessary to enable value-related functions to be executed and enabled by form, and to establish the vocabulary and architecture of the system. At this point, the designer must make more concrete decisions about how the system will be implemented, including the level of technology to be used.
+
+In general, the transition from solution-neutral to solution-specific marks the point at which a design becomes more concrete and detailed, and moves from the realm of high-level vision and concept to the realm of practical implementation. This transition is critical to the success of any design project, as it sets the stage for the development of a detailed architecture and the implementation of a functional system.
+
+Yes, these are correct definitions of sensitivity and connectivity.
+
+Sensitivity refers to the degree to which a particular decision or input affects the output or performance of a system. Sensitivity analysis is a technique used to evaluate the sensitivity of a system to changes in specific inputs or parameters, and is often used to identify the most critical inputs or factors affecting system performance.
+
+Connectivity, on the other hand, refers to the degree to which making a particular decision or change affects other decisions or parts of a system. In other words, connectivity measures the interdependence of different parts of a system, and how changes to one part can ripple through the rest of the system. Connectivity analysis is often used to identify potential bottlenecks, dependencies, or conflicts within a system, and to optimize the system for overall performance.
+
+Both sensitivity and connectivity are important concepts in systems thinking and analysis, and are often used in conjunction with other techniques and methods to understand and improve the performance of complex systems.
+```

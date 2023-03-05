@@ -25,3 +25,4 @@ nav:
     - Azure: azure.md
     - Python: python_code.md
     - Decision Making: decision_making_algorithm.md
+    - SQL Intepretation: translating_sql.md
