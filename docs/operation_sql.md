@@ -361,37 +361,38 @@ SELECT zz.store_id as store_id
                    WHEN     s.avg_week_item_qty < 1 THEN 'Y' ELSE 'N' END AS slow_moving_ind
 --              ,             CASE WHEN zz.bay_shelf_nbr = 1 AND zz.max_bay_shelf_nbr <> 1 THEN 'Y' ELSE 'N' END AS low_shelf_ind
 --              ,             CASE WHEN zz.bay_shelf_nbr = zz.max_bay_shelf_nbr AND zz.bay_shelf_nbr <> 1 THEN 'Y' ELSE 'N' END AS hi_shelf_ind    
-,             CASE WHEN zz.Item_dsc LIKE 'BANQ%MEGA%' THEN 1
-   WHEN zz.Item_dsc LIKE 'BANQ%' THEN 2
-   WHEN zz.Item_dsc LIKE 'MICHELINA%BOWL%' THEN 3
-   WHEN zz.Item_dsc LIKE 'MICHELINA%' THEN 4
-   WHEN CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '4805%' THEN 5
-   WHEN (zz.Item_dsc LIKE 'DANNON%') AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT)>10) THEN 6
-   WHEN (zz.Item_dsc LIKE 'EL MONT%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 7
-   WHEN (zz.Item_dsc LIKE 'JOSE OLE%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 8
-   WHEN (zz.Item_dsc LIKE 'REDS%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 9
-   WHEN (zz.Item_dsc LIKE 'TINAS%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 10
-   WHEN CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '4310%'  AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT) > 8) THEN 11
-   WHEN (CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '47%')
-AND NOT
-(zz.Item_dsc LIKE 'GREEN GIANT%'
-OR zz.Item_dsc LIKE 'GG%'
-OR zz.Item_dsc LIKE 'BIRDS EYE%'
-OR zz.Item_dsc LIKE 'BE %'
-OR zz.Item_dsc LIKE 'BESF %'
-OR zz.Item_dsc LIKE 'PICTSWEET%'
-OR zz.Item_dsc LIKE 'PICST%'
-OR zz.Item_dsc LIKE 'PCTS%'
-OR zz.Item_dsc LIKE 'PIC %'
-OR zz.Item_dsc LIKE '%POT%'
-OR zz.Item_dsc LIKE '%TOT%'
-OR zz.Item_dsc LIKE '%HASH%'
-OR zz.Item_dsc LIKE '%FRIES%'
-OR zz.Item_dsc LIKE 'ORE IDA%')
-AND (zz.VERTICAL_CNT::integer BETWEEN 1 AND 2) THEN 12                                
+,             CASE 
+--    WHEN zz.Item_dsc LIKE 'BANQ%MEGA%' THEN 1
+--    WHEN zz.Item_dsc LIKE 'BANQ%' THEN 2
+--    WHEN zz.Item_dsc LIKE 'MICHELINA%BOWL%' THEN 3
+--    WHEN zz.Item_dsc LIKE 'MICHELINA%' THEN 4
+--    WHEN CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '4805%' THEN 5
+--    WHEN (zz.Item_dsc LIKE 'DANNON%') AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT)>10) THEN 6
+--    WHEN (zz.Item_dsc LIKE 'EL MONT%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 7
+--    WHEN (zz.Item_dsc LIKE 'JOSE OLE%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 8
+--    WHEN (zz.Item_dsc LIKE 'REDS%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 9
+--    WHEN (zz.Item_dsc LIKE 'TINAS%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 10
+--    WHEN CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '4310%'  AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT) > 8) THEN 11
+--    WHEN (CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '47%')
+-- AND NOT
+-- (zz.Item_dsc LIKE 'GREEN GIANT%'
+-- OR zz.Item_dsc LIKE 'GG%'
+-- OR zz.Item_dsc LIKE 'BIRDS EYE%'
+-- OR zz.Item_dsc LIKE 'BE %'
+-- OR zz.Item_dsc LIKE 'BESF %'
+-- OR zz.Item_dsc LIKE 'PICTSWEET%'
+-- OR zz.Item_dsc LIKE 'PICST%'
+-- OR zz.Item_dsc LIKE 'PCTS%'
+-- OR zz.Item_dsc LIKE 'PIC %'
+-- OR zz.Item_dsc LIKE '%POT%'
+-- OR zz.Item_dsc LIKE '%TOT%'
+-- OR zz.Item_dsc LIKE '%HASH%'
+-- OR zz.Item_dsc LIKE '%FRIES%'
+-- OR zz.Item_dsc LIKE 'ORE IDA%')
+-- AND (zz.VERTICAL_CNT::integer BETWEEN 1 AND 2) THEN 12                                
 	WHEN (try_to_number(zz.DEPT_SECTION_ID) = 325) AND (zz.size_qty BETWEEN 0.75 AND 1) AND (zz.size_uom_cd LIKE 'OZ') THEN 13
-	WHEN (zz.Item_dsc LIKE '%ROLLS%') AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT) >= 32) THEN 14
-	WHEN (zz.Item_dsc LIKE '%HUNGRY MAN%' OR zz.Item_dsc LIKE 'HM%') AND (zz.VERTICAL_CNT > 1) THEN 15
+	-- WHEN (zz.Item_dsc LIKE '%ROLLS%') AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT) >= 32) THEN 14
+	-- WHEN (zz.Item_dsc LIKE '%HUNGRY MAN%' OR zz.Item_dsc LIKE 'HM%') AND (zz.VERTICAL_CNT > 1) THEN 15
 	   ELSE NULL END AS special_item_cd
 
 FROM
