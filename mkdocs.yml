@@ -23,6 +23,9 @@ nav:
     - Pricing Execution: pricing_execution.md
     - DB2 Repo: db2.md
     - Azure: azure.md
-    - Python: python_code.md
+    - Graph API: python_code.md
     - Decision Making: decision_making_algorithm.md
     - SQL Intepretation: translating_sql.md
+    - Code Snippets: code_snippets.md
+    - Useful Websites: useful_websites.md
+    
