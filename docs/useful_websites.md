@@ -25,6 +25,8 @@
 * [Data Science at Scale](http://www.datascienceassn.org/sites/default/files/DSA-Data-Science-at-Scale.pdf)
 * [Data Science for Social Good](http://www.datascienceforsocialgood.org/)
 * [Hugging Face](https://huggingface.co/models/)
+* [OpenAI](https://openai.com/blog/)
+* [OpenAi Github](https://github.com/orgs/openai/repositories)
 
 ```
 
@@ -61,7 +63,7 @@
 * [External API ](https://learn.microsoft.com/en-us/office/dev/scripts/develop/external-calls)
 ```
 
-### Statistics
+#### Statistics
 ```markdown
 * [Bayesian Methods](https://towardsdatascience.com/bayesian-inference-intuition-and-example-148fd8fb95d6)
 ```
