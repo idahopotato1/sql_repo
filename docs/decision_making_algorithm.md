@@ -787,3 +787,83 @@ Monitor progress: Regularly track progress towards the set goals and targets. Ad
 
 By operationalizing value with attributes, organizations can gain a better understanding of their performance, make data-driven decisions, and prioritize resources to maximize value creation.
 ```
+#### Axioms of Utility Theory
+```markdown
+Axioms of Utility Theory
+One of the benefits of using an axiomatically based theory is that it is “correct” as long as the axioms hold. Such theories for decision making are deemed to be normative. That is, they describe how people should make decisions (if they adhered to the axioms, usually related to concepts of being “rational”). Research has shown that people do not really make decisions in such a “rational” manner but rather succumb to various heuristics and biases due to limited resources, such as attention, cognitive capacity, memory, training, and available information.
+
+However, after being shown the axioms, decision makers often express a desire to make decisions in such a way that the axioms do hold. This means you can use normative decision theories, such as utility theory, in a prescriptive manner. That is, the decisions made with the assistance of these techniques could be better than those made unassisted. Any user of such decision theories needs to understand the underlying axioms and how to best apply them (i.e., utility theory is unlikely to predict how a decision maker might make a decision if left unassisted).
+
+The existence of single attribute utility theory, as described in the previous section, relies on five basic axioms (de Neufville 1990) — that is, the assumptions about the situations. These axioms are:
+
+Relative Preference  
+As the name suggests, the axiom states the existence of relative preference from a set of all of the outcomes. It is also called the axiom of completeness, and it basically asserts that, for every pair of outcomes from a set of all of the outcomes, a person will either prefer one or the other or will show indifference between the two options. 
+
+Mathematically, this can be represented as one of the following: 
+
+X1 > X2          
+X1 ~ X2
+X1 < X2
+This represents reasonable assumptions. In real life, people may encounter situations where the possible outcomes have slightly different attributes, and thus they may be undecided regarding which solution to pick or to fairly assess or compare them on the same scale. But, even in these situations, they eventually make a decision that is aligned with their preference for the given choices.
+
+Transitivity
+The axiom of transitivity states that you can infer a preference order between a pair of consequences given that you know the preference order between those consequences and a given intermediate consequence. In other words, given X1, X2 and X3, if you know that X1 > X2 and X2 > X3, then you can say that X1 > X3.
+
+This assumption is valid for a group with a common set of attributes or preferences. However, this might not hold for a group that has a diverse set of attributes, since the implied conditions that determine a preference order between one pair of consequences might not be valid for another pair. 
+
+Monotonicity
+The axiom of monotonicity, in simple terms, states that more of a good thing is better. A more formal definition states that the value of an item in a series is the weighted average of the values of the extreme. Given the greatest and the least value as Xmax and Xmin respectively, for all Xi, Xj within the series, where Xmax >= Xi, Xj >= Xmin, there is a number w that ranges between zero and one (0 w 1), such that some other Xk, lying between Xi and Xj, can be expressed as V(Xk) = wV(Xi) + (1 - w)V(Xj).
+
+This can only be true if the preferences are monotonic. 
+
+Existence
+This axiom of utility functions is straightforward: it states that the probability of each outcome (consequences) exists and could be quantified for the given set of possible outcomes. The axiom is easy to verify as valid; however, it might be difficult to properly and accurately quantify the probability of some specific outcomes.
+
+Substitution
+As the name suggests, the probability monotonicity axiom states that a person prefers a greater chance of receiving a prize, given a particular outcome, rather than a lesser chance. In other words, given that we have two choices, each with the same uncertain outcomes X1 and X2, where X1 is preferred to X2, a person will prefer the choice with the greater probability of getting X1 (and the complementary, lesser probability of getting X2). The axiom assumes that the person’s preferences are linear in probability — i.e., for a given outcome, the better (or worse, depending on the criteria) the probability, the more value the person derives.
+```
+#### Considerations for Utility Elicitation
+```markdown
+In addition to ensuring adherence to the assumptions of the theory, it is important to recognize the limitations in implementation as well. Decision makers must have preferences about the attributes for them to be useful. A common mistake made when implementing the multi-attribute utility approach is to select the attributes for the decision makers. The attribute selection process should be performed in close collaboration with decision making, actively involving them in the discussions until an agreed set of attributes have been derived. 
+
+Another issue regarding attributes is the need to ensure that they are the appropriate decision metrics for the process. According to Smith et al. (1990), such sets must satisfy the following characteristics:
+
+Completeness: The set characterizes all important factors to be considered in the decision-making process.
+Comprehensiveness: Each attribute adequately characterizes its associated objective.
+Importance: Each attribute is significant in that it has the potential to affect the preference ordering.
+Measurability: Each attribute can be somehow quantified.
+Familiarity: Decision makers must have a preference about each attribute. 
+Non-redundancy: Two attributes should not measure the same objective to avoid double counting.
+Independence: Each attribute must be perceived as independent of one another in order to ensure MAUA form (see Utility Independence Assumption).
+It is important to remember that the human mind can typically only consider 7 ± 2 attributes simultaneously (Miller 1956). Beyond seven attributes, the decision maker will tend to focus solely on the most important attributes and will underweight the additional attributes. (This number will limit the number of attributes that can be considered during the corner point interviews.)
+
+Additionally, it is important to be aware of human cognitive limitations. Kahneman and Tversky (1979) proposed that people in fact do not make decisions based on the absolute level of an outcome but rather in terms of gains or losses. They outlined four biases in how people actually make decisions that are inconsistent with traditional utility theory. These biases are: 
+
+People make decisions based on changes of wealth rather than the absolute level.
+People are loss-averse. People weight a loss of $100 about twice as much as a gain of $100.
+People are risk-seeking in the loss domain and risk-averse in the gain domain.
+People subjectively interpret probabilities.
+When eliciting utility information from decision makers (either formally or informally), it is important to put the interviewee at ease and appreciate the challenge of uncovering latent value models when a person is limited by the above issues. In particular, there are a number of techniques developed over the years to help reduce the stress of an interview, speed up the process itself, and provide for validation of the results. Typically interviews involve three rounds: 
+
+Conversation around what the decision criteria might be (e.g., brainstorming, value-focused thinking, or value hierarchies) and results in a ranked list of attributes with their associated acceptance ranges.
+Confirmation of the attributes and elicitation of their single attribute utility functions, usually via a lottery-based questionnaire (see de Neufville 1990, for example) and weights for the multi-attribute utility function.
+Validation of the single and multi-attribute utility functions via a number of alternatives rank comparisons (i.e., decision maker ranks alternatives by judgment and is compared to rankings by utility functions) and consistency checks (e.g., re-elicitation of points within utility functions). A caution here is that utility theory is normative and not descriptive, and therefore unaided decision making is likely to diverge from the predictions of the theory. This means that “validation” is more of a conversation rather than a simple check that the utility approach comes to the same conclusion as the decision maker.
+```
+#### Considerations for Multiple Decision Makers
+```markdown
+One of the biggest concerns when applying decision analysis is effectively managing the issue of multiple decision makers. Different decision makers might access a system on different attributes, or they might have a different preference hierarchy for the attributes. In either case, a different utility function for each of the stakeholders is required, and it is difficult to compare values across these different utility functions. Only by making certain value assumptions can a single aggregate utility metric be defined.
+
+For example, preferences of people can be stack ranked from the most important to the least important, which allows you to aggregate utility using weighted preference. Keeney and Raiffa (1993) recommend using a “supra-decision maker” model, where one person creates a multi-attribute utility function whose single attribute utility functions are the multi-attribute utility functions of each decision maker. The weights for each decision maker are then subjectively determined by the supra-decision maker.
+
+Economist Kenneth Arrow won the Nobel Prize partly for showing that no aggregation method exists without making someone dictator (i.e., imposing preferences on others); or, in other words, no consistent, equitable method for social choice exists (Arrow 1963). Scott and Antonosson (2000), however, propose that Arrow’s Theorem may not apply to engineering design, since it is not a “social choice problem.” Comparisons of strength of preference, coupled with questioning the necessity of equity for engineering design, may allow for the creation of aggregate decision maker functions for design.
+
+Considerations for Multiple Decision Makers.png 
+
+It is often most useful to keep decision maker preferences separate, as this avoids potential imposition of preferences and running afoul of the issues above. Not aggregating the decision makers avoids the creation of intransitivity of the group preference, allowing the decision makers to resolve conflicts via negotiation (Fitzgerald and Ross 2014). In this way, the designers would avoid biasing the decision tools and instead highlight important tensions in the preferences and their consequences on the set of alternatives.
+
+References
+
+Keeney, R. L. and Raiffa, H. 1993. Decisions with Multiple Objectives — Preferences and Value Trade-Offs. Cambridge, Cambridge University Press.
+Arrow, K. J. 1963. Social Choice and Individual Values. New Haven, Yale University Press.
+Scott, M. J. and Antonosson, E. K. 2000. Arrow's Theorem and Engineering Design Decision Making. Research in Engineering Design 11(4): 218-228.
+```
