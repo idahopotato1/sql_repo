@@ -709,7 +709,7 @@ create or replace view EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 as
               f.spice_pack_ind, 
               f.slow_moving_ind, 
               f.special_item_cd, 
-              CASE WHEN (jk.upc_id IS NOT NULL AND a.Parent_Operating_Area_Cd = '32') THEN f.HORIZONTAL_CNT --jewel kehe
+              CASE WHEN (jk.upc_id IS NOT NULL ) THEN f.HORIZONTAL_CNT --jewel kehe
 				   WHEN f.special_item_cd IN (13) THEN 24 
 				   WHEN f.slow_moving_ind = 'Y' and f.dept_section_id IN ('311', '312') THEN f.HORIZONTAL_CNT ----------APPLY ONLY TO f.dept_section_id IN (311,312)---------
 				   WHEN f.large_pet_supply_20 = 'Y' THEN 2 
@@ -759,7 +759,7 @@ create or replace view EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 as
                   AND HDR.DW_CURRENT_VERSION_IND = TRUE 
                   AND DTL.DW_LOGICAL_DELETE_IND = FALSE 
                   AND DTL.DW_CURRENT_VERSION_IND = TRUE 
-                  AND RETAIL_STORE.division_id = '32' 
+                  
                   AND HDR.RECEIVE_DT > current_Date - 364 
                   AND HDR.VENDOR_ID = '006446' 
                 GROUP BY 1) jk 
@@ -787,7 +787,7 @@ SELECT
   CASE WHEN f.store_id IS NULL THEN p.corp_item_cd ELSE f.corp_item_cd END AS corp_item_cd, 
   CASE WHEN f.store_id IS NULL THEN p.upc_id ELSE f.upc_id END AS upc_id, 
   CASE WHEN f.store_id IS NULL THEN p.upc_dsc ELSE f.upc_dsc END AS upc_dsc, 
-  CASE WHEN candy.store_id IS NOT NULL THEN candy.total_ps WHEN f.store_id IS NOT NULL THEN f.ps_value WHEN f.parent_op_area_cd IS NOT NULL THEN f.ps_value ELSE p.ps_value END AS ps_value, 
+  CASE WHEN f.store_id IS NOT NULL THEN f.ps_value WHEN candy.store_id IS NOT NULL THEN candy.total_ps WHEN f.parent_op_area_cd IS NOT NULL THEN f.ps_value ELSE p.ps_value END AS ps_value, END AS ps_value, 
   CASE WHEN f.store_id IS NULL THEN NULL ELSE 'Y' END AS custom_ps_ind 
 FROM 
   
