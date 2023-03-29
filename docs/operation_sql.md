@@ -787,7 +787,8 @@ SELECT
   CASE WHEN f.store_id IS NULL THEN p.corp_item_cd ELSE f.corp_item_cd END AS corp_item_cd, 
   CASE WHEN f.store_id IS NULL THEN p.upc_id ELSE f.upc_id END AS upc_id, 
   CASE WHEN f.store_id IS NULL THEN p.upc_dsc ELSE f.upc_dsc END AS upc_dsc, 
-  CASE WHEN f.store_id IS NOT NULL THEN f.ps_value WHEN candy.store_id IS NOT NULL THEN candy.total_ps WHEN f.parent_op_area_cd IS NOT NULL THEN f.ps_value ELSE p.ps_value END AS ps_value, END AS ps_value, 
+  CASE WHEN (f.store_id IS NOT NULL or f.parent_op_area_cd IS NOT NULL ) THEN f.ps_value WHEN candy.store_id IS NOT NULL THEN candy.total_ps ELSE p.ps_value END AS ps_value,
+ -- CASE WHEN f.store_id IS NOT NULL THEN f.ps_value WHEN candy.store_id IS NOT NULL THEN candy.total_ps WHEN f.parent_op_area_cd IS NOT NULL THEN f.ps_value ELSE p.ps_value END AS ps_value, END AS ps_value, 
   CASE WHEN f.store_id IS NULL THEN NULL ELSE 'Y' END AS custom_ps_ind 
 FROM 
   
