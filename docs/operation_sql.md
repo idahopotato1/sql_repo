@@ -55,7 +55,7 @@ order by 1,3,4,8;
 ### Far PS Queries 
 ~~~ sql
 STEP 1 - 
-create or replace view EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_ITEM_STORE_PLANOGRAM as
+create or replace table EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_ITEM_STORE_PLANOGRAM_T as
  SELECT  z.store_upc store_upc
 ,        z.store_id store_id
 ,        z.rog_id
@@ -71,7 +71,7 @@ create or replace view EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_ITEM_STORE_PLANOGRAM as
 --                  ,        z.bay_shelf_nbr
 ,        z.STORE_SCHEMATIC_EFFECTIVE_START_DT 
 ,        z.STORE_SCHEMATIC_EFFECTIVE_END_DT 
-,        z.large_pet_supply_3
+--,        z.large_pet_supply_3
 ,        z.large_pet_supply_20
 ,        z.spice_pack_ind
 --                  ,        max(z.bay_shelf_nbr) OVER (PARTITION BY z.fxtr_cd) AS max_bay_shelf_nbr
@@ -92,8 +92,8 @@ FROM
 ,               psi.VERTICAL_CNT
 ,               psi.STORE_SCHEMATIC_EFFECTIVE_START_DT 
 ,               psi.STORE_SCHEMATIC_EFFECTIVE_END_DT 
-,               CASE WHEN u.SMIC_category_id = 525 OR u.SMIC_class_id = 53015 OR u.SMIC_category_id = 604 THEN 'Y' ELSE 'N' END AS spice_pack_ind
-,               CASE WHEN c.Corporate_Item_Integration_Id IS NOT NULL THEN 'Y' ELSE 'N' END AS large_pet_supply_3
+,               CASE WHEN u.SMIC_category_id = 525 OR u.SMIC_class_id = 53015 THEN 'Y' ELSE 'N' END AS spice_pack_ind
+--,               CASE WHEN c.Corporate_Item_Integration_Id IS NOT NULL THEN 'Y' ELSE 'N' END AS large_pet_supply_3
 ,               CASE WHEN c2.Corporate_Item_Integration_Id IS NOT NULL THEN 'Y' ELSE 'N' END AS large_pet_supply_20
 --                  ,               dense_rank() OVER (PARTITION BY pfs.fxtr_cd ORDER BY pfs.shelf_y_coord_nbr) AS bay_shelf_nbr                                                                                                                                                                                               
 
@@ -200,8 +200,8 @@ GROUP BY 1,2,3,4,5,6,7,8) psi
 	GROUP BY 1,2,3
 		) ss
 	  ON ss.store_upc = psi.FACILITY_NBR || '-' || psi.upc_NBR                                                                                                                                                                               
-		JOIN EDM_VIEWS_PRD.DW_EDW_VIEWS.lu_stock_sect st
-		ON st.stock_sect_nbr = p.Stocking_Section_Nbr
+	--	JOIN EDM_VIEWS_PRD.DW_EDW_VIEWS.lu_stock_sect st
+	--	ON st.stock_sect_nbr = p.Stocking_Section_Nbr
 		JOIN EDM_VIEWS_PRD.DW_VIEWS.D1_UPC u
 		ON u.upc_nbr = psi.upc_NBR                     
 	--USE FOR KEHE
@@ -220,10 +220,10 @@ GROUP BY 1,2,3,4,5,6,7,8) psi
        and c.dw_logical_delete_ind = FALSE
       and u.SAFEWAY_UPC_IND <> FALSE 
     and c.dw_current_version_ind = True
-	AND (((c.size_qty >= 48 AND c.size_uom_cd = 'OZ') OR (c.size_qty >= 3 AND c.size_uom_cd = 'LB')) AND ((c.size_qty < 320 AND c.size_uom_cd = 'OZ') OR (c.size_qty < 20 AND c.size_uom_cd = 'LB')))
-	AND u.smic_category_id IN (3207,3202,3210)
-	AND c.corporation_id = '001'
-	AND u.smic_group_id = 32
+--	AND (((c.size_qty >= 48 AND c.size_uom_cd = 'OZ') OR (c.size_qty >= 3 AND c.size_uom_cd = 'LB')) AND ((c.size_qty < 320 AND c.size_uom_cd = 'OZ') OR (c.size_qty < 20 AND c.size_uom_cd = 'LB')))
+--	AND u.smic_category_id IN (3207,3202,3210)
+--	AND c.corporation_id = '001'
+--	AND u.smic_group_id = 32
 	GROUP BY 1,2,3
 ) c
 ON u.Corporate_Item_Integration_Id = c.Corporate_Item_Integration_Id
@@ -261,12 +261,12 @@ AND u.CORPORATE_ITEM_CD  > 0
 --AND a.rog_id = 23
 --USE FOR KEHE (check JOIN above)
 --AND b.vend_nbr = '006446'                                                                                          
-GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
 ) z            
-GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17;
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16;
 
 STEP 2 -
-create or replace view EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_SALES_BY_ITEM_STORE (
+create or replace table EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_SALES_BY_ITEM_STORE_T (
 store_upc,
 store_id ,
 upc_nbr ,
@@ -340,7 +340,7 @@ ON w.store_id || '-' || w.upc_nbr = z.store_id || '-' || z.upc_nbr
             GROUP BY 1,2,3,4;
 
 STEP 3 - 
-create or replace view EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_ITEM_SALES_COMBINED as
+create or replace table EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_ITEM_SALES_COMBINED_T as
 SELECT zz.store_id as store_id
 ,             zz.rog_id
 ,             zz.DEPT_SECTION_ID as dept_section_id
@@ -352,7 +352,7 @@ SELECT zz.store_id as store_id
 --              ,             zz.bay_shelf_nbr
 ,             zz.STORE_SCHEMATIC_EFFECTIVE_START_DT
 ,             zz.STORE_SCHEMATIC_EFFECTIVE_END_DT
-,             zz.large_pet_supply_3
+--,             zz.large_pet_supply_3
 ,             zz.large_pet_supply_20
 ,             zz.spice_pack_ind
 ,             case when s.avg_week_item_qty is null then 0 else s.avg_week_item_qty end as avg_week_item_qty
@@ -362,43 +362,43 @@ SELECT zz.store_id as store_id
 --              ,             CASE WHEN zz.bay_shelf_nbr = 1 AND zz.max_bay_shelf_nbr <> 1 THEN 'Y' ELSE 'N' END AS low_shelf_ind
 --              ,             CASE WHEN zz.bay_shelf_nbr = zz.max_bay_shelf_nbr AND zz.bay_shelf_nbr <> 1 THEN 'Y' ELSE 'N' END AS hi_shelf_ind    
 ,             CASE 
---    WHEN zz.Item_dsc LIKE 'BANQ%MEGA%' THEN 1
---    WHEN zz.Item_dsc LIKE 'BANQ%' THEN 2
---    WHEN zz.Item_dsc LIKE 'MICHELINA%BOWL%' THEN 3
---    WHEN zz.Item_dsc LIKE 'MICHELINA%' THEN 4
---    WHEN CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '4805%' THEN 5
---    WHEN (zz.Item_dsc LIKE 'DANNON%') AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT)>10) THEN 6
---    WHEN (zz.Item_dsc LIKE 'EL MONT%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 7
---    WHEN (zz.Item_dsc LIKE 'JOSE OLE%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 8
---    WHEN (zz.Item_dsc LIKE 'REDS%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 9
---    WHEN (zz.Item_dsc LIKE 'TINAS%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 10
---    WHEN CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '4310%'  AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT) > 8) THEN 11
---    WHEN (CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '47%')
--- AND NOT
--- (zz.Item_dsc LIKE 'GREEN GIANT%'
--- OR zz.Item_dsc LIKE 'GG%'
--- OR zz.Item_dsc LIKE 'BIRDS EYE%'
--- OR zz.Item_dsc LIKE 'BE %'
--- OR zz.Item_dsc LIKE 'BESF %'
--- OR zz.Item_dsc LIKE 'PICTSWEET%'
--- OR zz.Item_dsc LIKE 'PICST%'
--- OR zz.Item_dsc LIKE 'PCTS%'
--- OR zz.Item_dsc LIKE 'PIC %'
--- OR zz.Item_dsc LIKE '%POT%'
--- OR zz.Item_dsc LIKE '%TOT%'
--- OR zz.Item_dsc LIKE '%HASH%'
--- OR zz.Item_dsc LIKE '%FRIES%'
--- OR zz.Item_dsc LIKE 'ORE IDA%')
--- AND (zz.VERTICAL_CNT::integer BETWEEN 1 AND 2) THEN 12                                
+--   WHEN zz.Item_dsc LIKE 'BANQ%MEGA%' THEN 1
+--   WHEN zz.Item_dsc LIKE 'BANQ%' THEN 2
+--   WHEN zz.Item_dsc LIKE 'MICHELINA%BOWL%' THEN 3
+--   WHEN zz.Item_dsc LIKE 'MICHELINA%' THEN 4
+--   WHEN CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '4805%' THEN 5
+--   WHEN (zz.Item_dsc LIKE 'DANNON%') AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT)>10) THEN 6
+--   WHEN (zz.Item_dsc LIKE 'EL MONT%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 7
+--   WHEN (zz.Item_dsc LIKE 'JOSE OLE%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 8
+--   WHEN (zz.Item_dsc LIKE 'REDS%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 9
+--   WHEN (zz.Item_dsc LIKE 'TINAS%') AND (zz.size_qty BETWEEN 4 AND 5) AND (zz.size_uom_cd LIKE 'OZ') THEN 10
+--   WHEN CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '4310%'  AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT) > 8) THEN 11
+--   WHEN (CAST(zz.corporate_item_cd AS VARCHAR(9)) LIKE '47%')
+--AND NOT
+--(zz.Item_dsc LIKE 'GREEN GIANT%'
+--OR zz.Item_dsc LIKE 'GG%'
+--OR zz.Item_dsc LIKE 'BIRDS EYE%'
+--OR zz.Item_dsc LIKE 'BE %'
+--OR zz.Item_dsc LIKE 'BESF %'
+--OR zz.Item_dsc LIKE 'PICTSWEET%'
+--OR zz.Item_dsc LIKE 'PICST%'
+--OR zz.Item_dsc LIKE 'PCTS%'
+--OR zz.Item_dsc LIKE 'PIC %'
+--OR zz.Item_dsc LIKE '%POT%'
+--OR zz.Item_dsc LIKE '%TOT%'
+--OR zz.Item_dsc LIKE '%HASH%'
+--OR zz.Item_dsc LIKE '%FRIES%'
+--OR zz.Item_dsc LIKE 'ORE IDA%')
+--AND (zz.VERTICAL_CNT::integer BETWEEN 1 AND 2) THEN 12                                
 	WHEN (try_to_number(zz.DEPT_SECTION_ID) = 325) AND (zz.size_qty BETWEEN 0.75 AND 1) AND (zz.size_uom_cd LIKE 'OZ') THEN 13
-	-- WHEN (zz.Item_dsc LIKE '%ROLLS%') AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT) >= 32) THEN 14
-	-- WHEN (zz.Item_dsc LIKE '%HUNGRY MAN%' OR zz.Item_dsc LIKE 'HM%') AND (zz.VERTICAL_CNT > 1) THEN 15
+	--WHEN (zz.Item_dsc LIKE '%ROLLS%') AND (((zz.HORIZONTAL_CNT * zz.VERTICAL_CNT) + zz.HORIZONTAL_CNT) >= 32) THEN 14
+	--WHEN (zz.Item_dsc LIKE '%HUNGRY MAN%' OR zz.Item_dsc LIKE 'HM%') AND (zz.VERTICAL_CNT > 1) THEN 15
 	   ELSE NULL END AS special_item_cd
 
 FROM
 
 --######################################## 
-EDM_BIZOPS_PRD.MERCHAPPS.store_ps_item_store_planogram zz
+EDM_BIZOPS_PRD.MERCHAPPS.store_ps_item_store_planogram_T zz
 --######################################## 
 
 
@@ -409,7 +409,7 @@ EDM_BIZOPS_PRD.MERCHAPPS.store_ps_item_store_planogram zz
 LEFT JOIN
 
 --########################################         
- (select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_sales_by_item_store where AVG_WEEK_ITEM_QTY > 0 and UPC_NBR >0 and STORE_UPC <>'N/A' and STORE_ID <>'N/A')s
+ (select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_sales_by_item_store_t where AVG_WEEK_ITEM_QTY > 0 and UPC_NBR >0 and STORE_UPC <>'N/A' and STORE_ID <>'N/A')s
 --######################################## 
 
 ON zz.store_upc = s.store_upc
@@ -417,33 +417,33 @@ ON zz.store_upc = s.store_upc
 -- where s.store_upc <> 'N/A' and s.store_id <> 'N/A' and s.avg_week_item_qty  <> 'N/A'
 
 
-GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 
 STEP 4 -
-create or replace view EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_CUSTOM_PS_BY_REQUEST as
+create or replace table EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_CUSTOM_PS_BY_REQUEST_T as
 SELECT
-  a.Retail_Store_Facility_Nbr as store_id,
-  a.Parent_Operating_Area_Cd as parent_op_area_cd,
-  u.section_cd as dept_section_id,
-  u.smic_category_id as category_id,
+  a.STORE_ID as store_id,
+  a.division_id as parent_op_area_cd,
+  u.DEPT_SECTION_ID as dept_section_id,
+  u.CATEGORY_ID as category_id,
   '2020-01-01' AS start_date,
   '2020-01-01' AS end_date,
-  u.CONSUMER_SELLING_CD as csc_id,
-  u.corporate_item_cd as corp_item_cd,
-  u.upc_nbr as upc_id,
-  u.item_dsc as upc_dsc,
+  u.CSC_ID as csc_id,
+  u.CORP_ITEM_CD as corp_item_cd,
+  u.upc_id as upc_id,
+  u.UPC_DSC as upc_dsc,
   ff.ps_value
 FROM
   (select * from 
 (
     SELECT
-      a.Retail_Store_Facility_Nbr as Retail_Store_Facility_Nbr,
+      a.STORE_ID as STORE_ID,
       f.upc_id,
       f.ps_value
     FROM
       EDM_BIZOPS_PRD.SUPPLY_CHAIN.FAR_PS_CUSTOM_VALUES_MERGE_FINAL f
-      JOIN EDM_SANDBOX_PRD.MERCHAPPS.D1_RETAIL_STORE a ON try_to_number(a.Parent_Operating_Area_Cd) = f.parent_op_area_cd and a.division_id >0 and f.parent_op_area_cd >0
-    WHERE f.store_id IS NULL and a.Retail_Store_Facility_Nbr <> 'N/A'
+      JOIN EDM_BIZOPS_PRD.MERCHAPPS.LU_STORE a ON try_to_number(a.DIVISION_ID) = f.parent_op_area_cd and a.division_id >0 and f.parent_op_area_cd >0
+    WHERE f.store_id IS NULL 
       AND current_date BETWEEN f.first_eff_dt AND f.last_eff_dt
     GROUP BY 1,2,3
     UNION ALL
@@ -454,10 +454,10 @@ FROM
     FROM
       EDM_BIZOPS_PRD.SUPPLY_CHAIN.FAR_PS_CUSTOM_VALUES_MERGE_FINAL f
     WHERE f.store_id IS NOT NULL AND current_date BETWEEN f.first_eff_dt AND f.last_eff_dt and f.store_id >0
-    GROUP BY 1,2,3) where retail_store_facility_nbr > 0 and upc_id > 0 and (ps_value=0 or ps_value>0)
+    GROUP BY 1,2,3) where STORE_ID > 0 and upc_id > 0 and (ps_value=0 or ps_value>0)
   ) ff
-  JOIN edm_views_prd.dw_views.D1_UPC u ON u.upc_nbr = ff.upc_id and u.CORPORATE_ITEM_CD > 0
-  JOIN EDM_SANDBOX_PRD.MERCHAPPS.D1_RETAIL_STORE a ON try_to_number(a.Retail_Store_Facility_Nbr) = ff.Retail_Store_Facility_Nbr and a.division_id <> 'N/A'
+  JOIN EDM_BIZOPS_PRD.MERCHAPPS.ZHU_VERSION_LU_UPC u ON u.upc_id = ff.upc_id and u.CORP_ITEM_CD > 0
+  JOIN EDM_BIZOPS_PRD.MERCHAPPS.LU_STORE a ON a.STORE_ID = ff.STORE_ID and a.division_id <> 'N/A'
 WHERE 1 = 1
   --This is the third spot for filtering
   --AND a.Retail_Store_Facility_Nbr in ('0767')
@@ -470,7 +470,7 @@ WHERE 1 = 1
 GROUP BY  1,2,3,4,5,6,7,8,9,10,11
 
 STEP 5 -
-create or replace view EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_CHECKSTAND_CANDY as 
+create or replace table EDM_BIZOPS_PRD.MERCHAPPS.STORE_PS_CHECKSTAND_CANDY_T as 
 SELECT 
   a.Retail_Store_Facility_Nbr store_id, 
   a.Parent_Operating_Area_Cd  as parent_op_area_cd, 
@@ -654,7 +654,7 @@ FROM
   JOIN EDM_SANDBOX_PRD.MERCHAPPS.D1_RETAIL_STORE a ON a.facility_integration_id = z.facility_integration_id and a.division_id <> 'N/A'
 
 STEP 6 -
-create or replace view EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 as 
+create or replace table EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2_t as 
 
  SELECT 
       zzz.store_id, 
@@ -673,6 +673,7 @@ create or replace view EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 as
       CASE 
         WHEN zzz.dept_section_id = '317' AND zzz.parent_op_area_cd IN ('17', '19', '24', '27', '34') AND min(zzz.ps_value) < 4 THEN 4 
         WHEN zzz.dept_section_id = '317' AND zzz.class_id IN (440185, 440101, 471510, 473505, 470505, 470105, 473515, 471505, 449000, 470500, 470100, 471000, 480400, 440100, 440500, 473500, 471500, 470501, 473501, 470101, 473510, 471001) AND min(zzz.ps_value) < 4 THEN 4 
+        
         WHEN zzz.category_id in (2160) and zzz.parent_op_area_cd in (34) THEN CEIL (min(zzz.ps_value) * 1.5)
         ELSE min(zzz.ps_value) END AS ps_value --****************************************** below is to get upc and op area
     FROM 
@@ -704,27 +705,35 @@ create or replace view EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 as
               f.VERTICAL_CNT as vrtcl_face_cnt, 
               f.STORE_SCHEMATIC_EFFECTIVE_START_DT as pog_fxtr_start_dt, 
               f.STORE_SCHEMATIC_EFFECTIVE_END_DT pog_fxtr_end_dt, 
-              f.large_pet_supply_3, 
+      --        f.large_pet_supply_3, 
               f.large_pet_supply_20, 
               f.spice_pack_ind, 
               f.slow_moving_ind, 
               f.special_item_cd, 
-              CASE WHEN (jk.upc_id IS NOT NULL ) THEN f.HORIZONTAL_CNT --jewel kehe
+              CASE WHEN (jk.upc_id IS NOT NULL) THEN f.HORIZONTAL_CNT --jewel kehe
+          
 				   WHEN f.special_item_cd IN (13) THEN 24 
 				   WHEN f.slow_moving_ind = 'Y' and f.dept_section_id IN ('311', '312') THEN f.HORIZONTAL_CNT ----------APPLY ONLY TO f.dept_section_id IN (311,312)---------
-				   WHEN f.large_pet_supply_20 = 'Y' THEN 2 
-				   WHEN f.large_pet_supply_3 = 'Y' THEN f.HORIZONTAL_CNT 
+				  -- WHEN f.large_pet_supply_20 = 'Y' THEN 2  removed per Kinzie on 2/7
+				  -- WHEN f.large_pet_supply_3 = 'Y' THEN f.HORIZONTAL_CNT 
+           
 				   WHEN f.spice_pack_ind = 'Y' and c.size_uom_cd = 'OZ' and c.size_qty <= 3 THEN f.HORIZONTAL_CNT * 12 
                    WHEN f.spice_pack_ind = 'Y' and c.size_uom_cd = 'OZ' and c.size_qty > 3 THEN (f.HORIZONTAL_CNT * f.VERTICAL_CNT) + f.HORIZONTAL_CNT
+           WHEN (u.smic_category_id = 3210 and a.Parent_Operating_Area_Cd = 34) THEN (f.HORIZONTAL_CNT * f.VERTICAL_CNT) + f.HORIZONTAL_CNT
 				   WHEN (f.dept_section_id IN ('311', '312')) THEN f.HORIZONTAL_CNT ---****----APPLY TO a.Parent_Operating_Area_Cd IN (32), AND REMOVE SECTION 322 /changed to include all div 1/16/23 ---***--------
-				   WHEN f.dept_section_id IN ('317') and a.Parent_Operating_Area_Cd IN ('30') and f.store_id not in ('0339','1509','1708','3197') THEN CEIL (((f.HORIZONTAL_CNT * f.VERTICAL_CNT) + f.HORIZONTAL_CNT) * 1.5)
+				  -- WHEN f.dept_section_id IN ('317') and a.Parent_Operating_Area_Cd IN ('30') and f.store_id not in ('0339','1509','1708','3197') THEN CEIL (((f.HORIZONTAL_CNT * f.VERTICAL_CNT) + f.HORIZONTAL_CNT) * 1.5)
                    WHEN f.rog_id = 'SACG' AND u.smic_category_id IN (8855, 8856, 8857, 8858, 8859, 8863) AND f.avg_week_item_qty >= 7 THEN ((f.HORIZONTAL_CNT * f.VERTICAL_CNT) + f.VERTICAL_CNT) * 2 
+                   WHEN (u.smic_category_id = 3110) THEN f.HORIZONTAL_CNT 
+                   WHEN (u.smic_category_id = 1005 AND c.size_uom_cd = 'LB' and c.size_qty > 5) THEN f.HORIZONTAL_CNT 
 				   WHEN (u.SMIC_CLASS_ID = 80105 AND a.Parent_Operating_Area_Cd in (17, 32)) THEN f.HORIZONTAL_CNT --12pk can soda FOR Jewel/SW
 				   WHEN (u.SMIC_SUB_SUB_CLASS_ID = 34100100 AND a.Parent_Operating_Area_Cd = '32') THEN f.HORIZONTAL_CNT --Firelogs FOR Jewel
 				   WHEN (u.smic_category_id = 3430 AND a.Parent_Operating_Area_Cd = '32') THEN f.HORIZONTAL_CNT --bulk road salt FOR Jewel
+           WHEN (u.smic_category_id = 6515 or u.smic_category_id = 6520) then f.HORIZONTAL_CNT * f.VERTICAL_CNT
+           WHEN (u.smic_category_id = 1901 and c.size_uom_cd in ('CT', 'EA') and c.size_qty >= 32) THEN f.HORIZONTAL_CNT * f.VERTICAL_CNT
 				   WHEN (u.smic_category_id = 3401 AND c.size_uom_cd = 'LB' AND a.Parent_Operating_Area_Cd in ('30', '32')) THEN f.HORIZONTAL_CNT --charcoal FOR Jewel
 				   WHEN (u.SMIC_CLASS_ID = 329505  AND c.size_uom_cd = 'LB' AND a.Parent_Operating_Area_Cd IN ('25', '32')) THEN f.HORIZONTAL_CNT --bird seed FOR Jewel
-                   WHEN (f.dept_section_id in ('327', '335') AND c.size_uom_cd = 'LB' and c.size_qty > 4) THEN f.HORIZONTAL_CNT + 1 -- added on 1/16 to apply > 4lbs for charcoal / pet food / bird seed
+                   WHEN (f.dept_section_id in ('303', '308') and a.parent_operating_area_cd = '27') THEN f.HORIZONTAL_CNT
+                   WHEN (f.dept_section_id in ('327', '335') AND c.size_uom_cd = 'LB' and c.size_qty > 4) THEN f.HORIZONTAL_CNT  -- added on 1/16 to apply > 4lbs for charcoal / pet food / bird seed
 				   WHEN (u.SMIC_SUB_SUB_CLASS_ID = 8152005 AND a.Parent_Operating_Area_Cd = '17') THEN f.HORIZONTAL_CNT --Seltzer FOR SW  
 					ELSE (f.HORIZONTAL_CNT * f.VERTICAL_CNT) + f.HORIZONTAL_CNT 
 			   END AS ps_value, 
@@ -732,7 +741,7 @@ create or replace view EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 as
 			   END AS fast_ind 
             FROM 
               --######################################## 
-              EDM_BIZOPS_PRD.MERCHAPPS.store_ps_item_sales_combined f -- this is the combination of item and sales to determine slow moving items
+              EDM_BIZOPS_PRD.MERCHAPPS.store_ps_item_sales_combined_t f -- this is the combination of item and sales to determine slow moving items
               --######################################## 
               JOIN EDM_SANDBOX_PRD.MERCHAPPS.D1_RETAIL_STORE a ON a.Retail_Store_Facility_Nbr = f.store_id 
               JOIN EDM_VIEWS_PRD.DW_VIEWS.D1_UPC u ON u.upc_nbr = f.upc_nbr  and u.CORPORATE_ITEM_CD > 0
@@ -746,6 +755,10 @@ create or replace view EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 as
                   EDM_VIEWS_PRD.DW_VIEWS.RECEIVE_DELIVERY_INVOICE_HEADER_DSD HDR 
                   INNER JOIN EDM_VIEWS_PRD.DW_VIEWS.RECEIVE_DELIVERY_INVOICE_DETAIL_DSD DTL 
 					ON HDR.FACILITY_INTEGRATION_ID = DTL.FACILITY_INTEGRATION_ID 
+          JOIN 
+          (select distinct RETAIL_UPC_NBR as upc_nbr, store_facility_integration_id from EDM_VIEWS_PRD.DW_VIEWS.STORE_ORDER_CATALOG a 
+where  vendor_id = 6446 and a.dw_logical_delete_ind=False 
+and a.dw_current_version_ind=True) catalog on catalog.store_facility_integration_id = DTL.FACILITY_INTEGRATION_ID and catalog.upc_nbr = DTL.UPC_NBR
 					AND HDR.VENDOR_ID = DTL.VENDOR_ID 
 					AND HDR.BACKDOOR_VENDOR_SUB_ACCOUNT_ID = DTL.BACKDOOR_VENDOR_SUB_ACCOUNT_ID 
 					AND HDR.LOAD_DT = DTL.LOAD_DT --AND HDR.INVOICE_TYPE_CD = DTL.INVOICE_TYPE_CD 
@@ -759,7 +772,7 @@ create or replace view EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 as
                   AND HDR.DW_CURRENT_VERSION_IND = TRUE 
                   AND DTL.DW_LOGICAL_DELETE_IND = FALSE 
                   AND DTL.DW_CURRENT_VERSION_IND = TRUE 
-                  
+                 -- AND RETAIL_STORE.division_id = '32' 
                   AND HDR.RECEIVE_DT > current_Date - 364 
                   AND HDR.VENDOR_ID = '006446' 
                 GROUP BY 1) jk 
@@ -787,25 +800,30 @@ SELECT
   CASE WHEN f.store_id IS NULL THEN p.corp_item_cd ELSE f.corp_item_cd END AS corp_item_cd, 
   CASE WHEN f.store_id IS NULL THEN p.upc_id ELSE f.upc_id END AS upc_id, 
   CASE WHEN f.store_id IS NULL THEN p.upc_dsc ELSE f.upc_dsc END AS upc_dsc, 
-  CASE WHEN (f.store_id IS NOT NULL or f.parent_op_area_cd IS NOT NULL ) THEN f.ps_value WHEN candy.store_id IS NOT NULL THEN candy.total_ps ELSE p.ps_value END AS ps_value,
- -- CASE WHEN f.store_id IS NOT NULL THEN f.ps_value WHEN candy.store_id IS NOT NULL THEN candy.total_ps WHEN f.parent_op_area_cd IS NOT NULL THEN f.ps_value ELSE p.ps_value END AS ps_value, END AS ps_value, 
+  CASE WHEN (p.store_id = 3493 and p.ps_value < 2) THEN 2
+       WHEN (f.store_id IS NOT NULL or f.parent_op_area_cd IS NOT NULL ) THEN f.ps_value 
+       WHEN candy.store_id IS NOT NULL THEN candy.total_ps
+       WHEN (p.store_id = 3493 and p.ps_value < 2) THEN 2
+    ELSE p.ps_value 
+  END AS ps_value, 
+  --CASE WHEN f.store_id IS NOT NULL THEN f.ps_value WHEN candy.store_id IS NOT NULL THEN candy.total_ps WHEN f.parent_op_area_cd IS NOT NULL THEN f.ps_value ELSE p.ps_value END AS ps_value, 
   CASE WHEN f.store_id IS NULL THEN NULL ELSE 'Y' END AS custom_ps_ind 
 FROM 
   
 --######################################## 
-(select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2 where parent_op_area_cd >0 and store_id <> 'N/A' and parent_op_area_cd <> 'N/A') p 
+(select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2_t where parent_op_area_cd >0 and store_id <> 'N/A' and parent_op_area_cd <> 'N/A') p 
 --######################################## 
   
 FULL OUTER JOIN 
 --######################################## 
-(select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_custom_ps_by_request where (ps_value >0 or ps_value=0) and store_id >0 ) f 
+(select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_custom_ps_by_request_t where (ps_value >0 or ps_value=0) and store_id >0 ) f 
 --########################################
 
 ON f.store_id  || '-' || f.upc_id = p.store_id || '-' || p.upc_id and f.ps_value > 0 and  f.store_id > 0 and  f.upc_id > 0
 
 LEFT JOIN 
 --######################################## 
-(select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_checkstand_candy where (total_ps=0 or total_ps>0)) candy
+(select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_checkstand_candy_t where (total_ps=0 or total_ps>0)) candy
 --########################################  
         
 ON p.store_id  || '-' || p.upc_id = candy.store_id || '-' || candy.upc_id and total_ps > 0
