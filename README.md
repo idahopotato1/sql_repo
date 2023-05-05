@@ -22,5 +22,5 @@ powershefll
 1. cd actions-runner
 2. ./run.cmd
 
-# py -m venv snowflake_env 
-# .\snowflake_env\Scripts\activate
+# python3 -m venv snowflake_env 
+# source ./snowflake_env/bin/activate
