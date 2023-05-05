@@ -466,7 +466,7 @@ where
   
 ~~~
 
-### Fresh Order by Vendor 
+## Fresh Order by Vendor 
 ~~~sql 
 WITH STORE AS (
             SELECT FACILITY_INTEGRATION_ID, DIVISION_ID, ROG_ID, RETAIL_STORE_FACILITY_NBR AS STORE_ID
