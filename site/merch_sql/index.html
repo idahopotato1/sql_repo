@@ -1872,7 +1872,53 @@ FROM (SELECT A.UPC_ID
 <p>ON T1.UPC_ID = T2.UPC_ID
 AND T1.DIVISION_NM = T2.DIVISION_NM AND T1.WEEK_ID = T2.WEEK_ID) ) TB</p>
 <p>GROUP BY 1,2,3,4,5</p>
-<p>```</p>
+<div class="highlight"><pre><span></span><code>### ads, page, mods 
+```sql
+select 
+PAGE_IMAGE,
+WEEK_STARTING,
+CHANNEL,
+RETAILER,
+MARKET,
+DEPARTMENT,
+CATEGORY,
+BRAND,
+PRODUCT_SIZE,
+OFFER,
+OFFER_TYPE,
+AD_PRICE,
+NET_UNIT_PRICE,
+UNIT_PRICE,
+MUST_BUY,
+MEDIA_TYPE,
+PAGE_POSITION,
+COUNT(DISTINCT(UNIQUE_AD)) AS AD_COUNT,
+UPC as upc_id
+
+ 
+
+from &quot;EDM_VIEWS_PRD&quot;.&quot;DW_BIZOPS_VIEWS&quot;.&quot;ALBERTSONS_PROMO&quot; a
+join &quot;EDM_VIEWS_PRD&quot;.&quot;DW_BIZOPS_VIEWS&quot;.&quot;ALBERTSONS_PROMO_UPC&quot; b
+on a.top_crop_id = b.top_crop_id
+
+ 
+
+--Where CHANNEL LIKE (&#39;%Supermarkets%&#39;)
+--AND WEEK_STARTING &gt; DATE &#39;2022-03-01&#39;
+--AND CATEGORY = &#39;Coffee&#39;
+--AND BRAND = &#39;Folgers&#39;
+--and RETAILER like (&#39;%Ralphs%&#39;)
+--and UPC_ID in ()
+WHERE WEEK_STARTING BETWEEN (&#39;2022-04-10&#39;) AND (&#39;2023-04-16&#39;)
+AND PARENT_RETAILER IN (&#39;Walmart, INC&#39;,&#39;Kroger&#39;,&#39;Albertsons LLC Corp&#39;,&#39;Ahold Delhaize&#39;)
+--AND MARKET IN (&#39;Seattle, WA&#39;,&#39;Phoenix, AZ&#39;,&#39;Dallas, TX&#39;,&#39;Los Angeles, CA&#39;,&#39;Denver, CO&#39;,
+--               &#39;Boston, MA&#39;,&#39;Portland, OR&#39;,&#39;Chicago, IL&#39;,&#39;Philadelphia, PA&#39;,&#39;Lubbock, TX&#39;,
+--               &#39;Boise, ID&#39;,&#39;San Francisco, CA&#39;)
+and MARKET IN (&#39;Boise, ID&#39;)
+and Retailer in (&#39;Albertsons IM&#39;)
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,19
+ORDER BY AD_COUNT DESC
+</code></pre></div>
 
 
 

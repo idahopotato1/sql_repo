@@ -1282,6 +1282,53 @@ GROUP BY 1,2,3,4,5
 
 ```
 
+### ads, page, mods 
+```sql
+select 
+PAGE_IMAGE,
+WEEK_STARTING,
+CHANNEL,
+RETAILER,
+MARKET,
+DEPARTMENT,
+CATEGORY,
+BRAND,
+PRODUCT_SIZE,
+OFFER,
+OFFER_TYPE,
+AD_PRICE,
+NET_UNIT_PRICE,
+UNIT_PRICE,
+MUST_BUY,
+MEDIA_TYPE,
+PAGE_POSITION,
+COUNT(DISTINCT(UNIQUE_AD)) AS AD_COUNT,
+UPC as upc_id
+
+ 
+
+from "EDM_VIEWS_PRD"."DW_BIZOPS_VIEWS"."ALBERTSONS_PROMO" a
+join "EDM_VIEWS_PRD"."DW_BIZOPS_VIEWS"."ALBERTSONS_PROMO_UPC" b
+on a.top_crop_id = b.top_crop_id
+
+ 
+
+--Where CHANNEL LIKE ('%Supermarkets%')
+--AND WEEK_STARTING > DATE '2022-03-01'
+--AND CATEGORY = 'Coffee'
+--AND BRAND = 'Folgers'
+--and RETAILER like ('%Ralphs%')
+--and UPC_ID in ()
+WHERE WEEK_STARTING BETWEEN ('2022-04-10') AND ('2023-04-16')
+AND PARENT_RETAILER IN ('Walmart, INC','Kroger','Albertsons LLC Corp','Ahold Delhaize')
+--AND MARKET IN ('Seattle, WA','Phoenix, AZ','Dallas, TX','Los Angeles, CA','Denver, CO',
+--               'Boston, MA','Portland, OR','Chicago, IL','Philadelphia, PA','Lubbock, TX',
+--               'Boise, ID','San Francisco, CA')
+and MARKET IN ('Boise, ID')
+and Retailer in ('Albertsons IM')
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,19
+ORDER BY AD_COUNT DESC
+```
 
 
 [admonitions]: admonitions.md
