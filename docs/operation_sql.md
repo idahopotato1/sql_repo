@@ -100,7 +100,7 @@ FROM
 FROM
 	(SELECT * FROM  
 	(SELECT F.Facility_NBR
-,           u.upc_nbr
+,           psi.upc_nbr
 ,           psi.PLANOGRAM_ID
 ,           psf.Fixture_Id
 ,           psi.HORIZONTAL_CNT
@@ -112,8 +112,8 @@ JOIN EDM_VIEWS_PRD.DW_VIEWS.PLANOGRAM_STORE_FIXTURE psf
 ON psf.PLANOGRAM_ID = psi.PLANOGRAM_ID
 JOIN EDM_VIEWS_PRD.DW_VIEWS.FACILITY F
 ON psf.Facility_Integration_id = F.Facility_Integration_id
-JOIN EDM_VIEWS_PRD.DW_VIEWS.D1_UPC u
-ON u.CONSUMER_SELLING_CD = psi.CONSUMER_SELLING_CD and u.CORPORATE_ITEM_CD > 0
+-- JOIN EDM_VIEWS_PRD.DW_VIEWS.D1_UPC u
+-- ON u.CONSUMER_SELLING_CD = psi.CONSUMER_SELLING_CD and u.CORPORATE_ITEM_CD > 0
 WHERE 1=1
 AND current_date BETWEEN psf.STORE_SCHEMATIC_EFFECTIVE_START_DT - 14 AND psf.STORE_SCHEMATIC_EFFECTIVE_END_DT - 14
 AND psi.CONSUMER_SELLING_CD <> 0
@@ -710,7 +710,8 @@ create or replace table EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2_t as
               f.spice_pack_ind, 
               f.slow_moving_ind, 
               f.special_item_cd, 
-              CASE WHEN (jk.upc_id IS NOT NULL) THEN f.HORIZONTAL_CNT --jewel kehe
+              CASE WHEN (jk.upc_id IS NOT NULL) THEN f.HORIZONTAL_CNT + 1 -- change to all div,jewel kehe
+                 --  WHEN (jk.upc_id IS NOT NULL) and a.Parent_Operating_Area_Cd in ('25') THEN f.HORIZONTAL_CNT -- Norcal Kehe
           
 				   WHEN f.special_item_cd IN (13) THEN 24 
 				   WHEN f.slow_moving_ind = 'Y' and f.dept_section_id IN ('311', '312') THEN f.HORIZONTAL_CNT ----------APPLY ONLY TO f.dept_section_id IN (311,312)---------
@@ -732,8 +733,9 @@ create or replace table EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2_t as
            WHEN (u.smic_category_id = 1901 and c.size_uom_cd in ('CT', 'EA') and c.size_qty >= 32) THEN f.HORIZONTAL_CNT * f.VERTICAL_CNT
 				   WHEN (u.smic_category_id = 3401 AND c.size_uom_cd = 'LB' AND a.Parent_Operating_Area_Cd in ('30', '32')) THEN f.HORIZONTAL_CNT --charcoal FOR Jewel
 				   WHEN (u.SMIC_CLASS_ID = 329505  AND c.size_uom_cd = 'LB' AND a.Parent_Operating_Area_Cd IN ('25', '32')) THEN f.HORIZONTAL_CNT --bird seed FOR Jewel
-                   WHEN (f.dept_section_id in ('303', '308') and a.parent_operating_area_cd = '27') THEN f.HORIZONTAL_CNT
-                   WHEN (f.dept_section_id in ('327', '335') AND c.size_uom_cd = 'LB' and c.size_qty > 4) THEN f.HORIZONTAL_CNT  -- added on 1/16 to apply > 4lbs for charcoal / pet food / bird seed
+           WHEN (f.dept_section_id in ('303', '308') and a.parent_operating_area_cd in ('27', '25')) THEN f.HORIZONTAL_CNT * 2
+           WHEN (f.dept_section_id = '327' AND u.smic_category_id = 3206 AND c.size_uom_cd = 'OZ' AND c.size_qty >= 132) THEN f.HORIZONTAL_CNT
+           WHEN (f.dept_section_id in ('327', '335') AND c.size_uom_cd = 'LB' and c.size_qty > 4) THEN f.HORIZONTAL_CNT  -- added on 1/16 to apply > 4lbs for charcoal / pet food / bird seed
 				   WHEN (u.SMIC_SUB_SUB_CLASS_ID = 8152005 AND a.Parent_Operating_Area_Cd = '17') THEN f.HORIZONTAL_CNT --Seltzer FOR SW  
 					ELSE (f.HORIZONTAL_CNT * f.VERTICAL_CNT) + f.HORIZONTAL_CNT 
 			   END AS ps_value, 
@@ -749,34 +751,31 @@ create or replace table EDM_BIZOPS_PRD.MERCHAPPS.store_ps_final_step_2_t as
               AND c.DW_CURRENT_VERSION_IND = TRUE 
               AND c.DW_LOGICAL_DELETE_IND = FALSE 
               LEFT JOIN (
-                SELECT 
-                  DTL.UPC_NBR as upc_id 
-                FROM 
-                  EDM_VIEWS_PRD.DW_VIEWS.RECEIVE_DELIVERY_INVOICE_HEADER_DSD HDR 
-                  INNER JOIN EDM_VIEWS_PRD.DW_VIEWS.RECEIVE_DELIVERY_INVOICE_DETAIL_DSD DTL 
-					ON HDR.FACILITY_INTEGRATION_ID = DTL.FACILITY_INTEGRATION_ID 
-          JOIN 
-          (select distinct RETAIL_UPC_NBR as upc_nbr, store_facility_integration_id from EDM_VIEWS_PRD.DW_VIEWS.STORE_ORDER_CATALOG a 
-where  vendor_id = 6446 and a.dw_logical_delete_ind=False 
-and a.dw_current_version_ind=True) catalog on catalog.store_facility_integration_id = DTL.FACILITY_INTEGRATION_ID and catalog.upc_nbr = DTL.UPC_NBR
-					AND HDR.VENDOR_ID = DTL.VENDOR_ID 
-					AND HDR.BACKDOOR_VENDOR_SUB_ACCOUNT_ID = DTL.BACKDOOR_VENDOR_SUB_ACCOUNT_ID 
-					AND HDR.LOAD_DT = DTL.LOAD_DT --AND HDR.INVOICE_TYPE_CD = DTL.INVOICE_TYPE_CD 
-					AND HDR.VENDOR_INVOICE_NBR = DTL.VENDOR_INVOICE_NBR 
-                  INNER JOIN EDM_SANDBOX_PRD.MERCHAPPS.D1_RETAIL_STORE RETAIL_STORE 
-					ON RETAIL_STORE.FACILITY_INTEGRATION_ID = HDR.FACILITY_INTEGRATION_ID 
-					AND RETAIL_STORE.DW_LOGICAL_DELETE_IND = FALSE 
-					--AND RETAIL_STORE.DW_CURRENT_VERSION_IND = TRUE 
-                WHERE 1 = 1 
-                  AND HDR.DW_LOGICAL_DELETE_IND = FALSE 
-                  AND HDR.DW_CURRENT_VERSION_IND = TRUE 
-                  AND DTL.DW_LOGICAL_DELETE_IND = FALSE 
-                  AND DTL.DW_CURRENT_VERSION_IND = TRUE 
-                 -- AND RETAIL_STORE.division_id = '32' 
-                  AND HDR.RECEIVE_DT > current_Date - 364 
-                  AND HDR.VENDOR_ID = '006446' 
-                GROUP BY 1) jk 
-			ON jk.upc_id = f.upc_nbr) ff 
+                SELECT
+                  RETAIL_STORE.RETAIL_STORE_FACILITY_NBR as store_id,
+                  DTL.UPC_NBR as upc_id
+                FROM
+                  EDM_VIEWS_PRD.DW_VIEWS.RECEIVE_DELIVERY_INVOICE_HEADER_DSD HDR
+                  INNER JOIN EDM_VIEWS_PRD.DW_VIEWS.RECEIVE_DELIVERY_INVOICE_DETAIL_DSD DTL
+                    ON HDR.FACILITY_INTEGRATION_ID = DTL.FACILITY_INTEGRATION_ID
+                    AND HDR.VENDOR_ID = DTL.VENDOR_ID
+                    AND HDR.BACKDOOR_VENDOR_SUB_ACCOUNT_ID = DTL.BACKDOOR_VENDOR_SUB_ACCOUNT_ID
+                    AND HDR.LOAD_DT = DTL.LOAD_DT --AND HDR.INVOICE_TYPE_CD = DTL.INVOICE_TYPE_CD
+                    AND HDR.VENDOR_INVOICE_NBR = DTL.VENDOR_INVOICE_NBR
+                  INNER JOIN EDM_SANDBOX_PRD.MERCHAPPS.D1_RETAIL_STORE RETAIL_STORE
+                    ON RETAIL_STORE.FACILITY_INTEGRATION_ID = HDR.FACILITY_INTEGRATION_ID
+                    AND RETAIL_STORE.DW_LOGICAL_DELETE_IND = FALSE
+                    --AND RETAIL_STORE.DW_CURRENT_VERSION_IND = TRUE
+                WHERE 1 = 1
+                  AND HDR.DW_LOGICAL_DELETE_IND = FALSE
+                  AND HDR.DW_CURRENT_VERSION_IND = TRUE
+                  AND DTL.DW_LOGICAL_DELETE_IND = FALSE
+                  AND DTL.DW_CURRENT_VERSION_IND = TRUE
+                 -- AND RETAIL_STORE.division_id = '32'
+                  AND HDR.RECEIVE_DT > current_Date - 364
+                  AND HDR.VENDOR_ID in ('006446', '025017')
+                GROUP BY 1,2) jk
+            ON jk.upc_id = f.upc_nbr and jk.store_id = f.store_id) ff
 		  --****************************************** below is to get upc and op area
           JOIN EDM_SANDBOX_PRD.MERCHAPPS.D1_RETAIL_STORE a 
 			ON a.Retail_Store_Facility_Nbr = ff.store_id and a.division_id <> 'N/A'
@@ -801,8 +800,8 @@ SELECT
   CASE WHEN f.store_id IS NULL THEN p.upc_id ELSE f.upc_id END AS upc_id, 
   CASE WHEN f.store_id IS NULL THEN p.upc_dsc ELSE f.upc_dsc END AS upc_dsc, 
   CASE WHEN (p.store_id = 3493 and p.ps_value < 2) THEN 2
-       WHEN (f.store_id IS NOT NULL or f.parent_op_area_cd IS NOT NULL ) THEN f.ps_value 
        WHEN candy.store_id IS NOT NULL THEN candy.total_ps
+       WHEN (f.store_id IS NOT NULL or f.parent_op_area_cd IS NOT NULL ) THEN f.ps_value 
        WHEN (p.store_id = 3493 and p.ps_value < 2) THEN 2
     ELSE p.ps_value 
   END AS ps_value, 
