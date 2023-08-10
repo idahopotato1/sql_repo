@@ -710,7 +710,6 @@ GROUP BY 1,2,3,4,5;
 ```
 
 ## Random weight meat cost 
-
 ```sql
 WITH YPC AS (
     SELECT
@@ -721,8 +720,8 @@ WITH YPC AS (
     ,   DIV0 ( SUM ( CASE WHEN BASE_CORPORATE_ITEM_CD IN ( 88290059 , 88290061 , 88100217 , 88290060 , 880200497 , 880200259 , 88100109 )
                           THEN 0 - YIELD_PCT 
                           ELSE YIELD_PCT END ) , 100 ) AS PRIMAL_YIELD_ADJUSTMENT_PCT 
-                         // when the driver is a non primary code or direct loss (ground beef, stew meat, cube steak, bone, fat, or yield loss)
-                         // that driver's yield % is subtracted from the yield of the true driver
+                         -- when the driver is a non primary code or direct loss (ground beef, stew meat, cube steak, bone, fat, or yield loss)
+                         -- that drivers yield % is subtracted from the yield of the true driver
     FROM EDM_VIEWS_PRD.DW_VIEWS.PRIMAL_MEAT_ITEM_YIELD PRM
     JOIN EDM_VIEWS_PRD.DW_VIEWS.BASE_MEAT_ITEM_YIELD DRV
       ON PRM.DIVISION_ID = DRV.DIVISION_ID
@@ -850,6 +849,7 @@ FROM (
 ) AGG
 ORDER BY 1 , 2 , 3
 ```
+
 ## Planogram Schematic Fixture 
 ``` sql
 SELECT 
@@ -889,7 +889,6 @@ AND FXTR. SHELF_SURFACE_CD LIKE 'Pegboard'
 AND UPC.UPC_NBR = ITEM.UPC_NBR
 AND UPC.CORPORATION_ID = 1
 AND UPC.SMIC_CATEGORY_ID IN ('3001','3004','3002')
-
 GROUP BY 1,2,3,4;
 ```
 
@@ -1027,21 +1026,17 @@ GROUP BY 1,2,3,4,5,6,7)TB2
 
 GROUP BY 1,2,3,4,5,6,7)TB3
 
-
 JOIN EDM_VIEWS_PRD.DW_VIEWS.RETAIL_STORE_ITEM_LOCATION TAG
 ON TAG.UPC_NBR = TB3.UPC_NBR AND TAG.FACILITY_INTEGRATION_ID=TB3.FACILITY_INTEGRATION_ID
  AND TAG.DW_LOGICAL_DELETE_IND =FALSE AND TAG.DW_CURRENT_VERSION_IND =TRUE
 
-
 GROUP BY 1,2,3,4,5,6)TB
 --WHERE TB.DIVISION_NM = 'ACME' 
-
 GROUP BY 1,2,3,4,5,6;
 ```
 
 ## Sales with Household and customer data penetration
-  
-  ```sql
+```sql
   SELECT
 TB.UPC_ID as upc
 ,TB.ITEM_DSC as upc_dsc
@@ -1274,12 +1269,9 @@ FROM (SELECT A.UPC_ID
           AND FACTS.ANNUAL_LEVEL2_SEGMENT_ID IN (1,2,3,4)
         GROUP BY 1,2,3,4,5
         ) AS T2
-
 ON T1.UPC_ID = T2.UPC_ID
 AND T1.DIVISION_NM = T2.DIVISION_NM AND T1.WEEK_ID = T2.WEEK_ID) ) TB
-
 GROUP BY 1,2,3,4,5
-
 ```
 
 ### ads, page, mods 
