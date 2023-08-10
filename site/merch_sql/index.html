@@ -333,6 +333,19 @@
     Sales with Household and customer data penetration
   </a>
   
+    <nav class="md-nav" aria-label="Sales with Household and customer data penetration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ncrc-and-old-new-crc" class="md-nav__link">
+    NCRC and OLD NEW CRC
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -621,6 +634,19 @@
   <a href="#sales-with-household-and-customer-data-penetration" class="md-nav__link">
     Sales with Household and customer data penetration
   </a>
+  
+    <nav class="md-nav" aria-label="Sales with Household and customer data penetration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ncrc-and-old-new-crc" class="md-nav__link">
+    NCRC and OLD NEW CRC
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1918,6 +1944,101 @@ and MARKET IN (&#39;Boise, ID&#39;)
 and Retailer in (&#39;Albertsons IM&#39;)
 GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,19
 ORDER BY AD_COUNT DESC
+</code></pre></div>
+<h3 id="ncrc-and-old-new-crc">NCRC and OLD NEW CRC<a class="headerlink" href="#ncrc-and-old-new-crc" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span><span class="w">  </span><span class="n">ITEMS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="k">Select</span><span class="w"> </span><span class="k">distinct</span>
+<span class="n">CDS</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="p">,</span>
+<span class="n">CDS</span><span class="p">.</span><span class="n">DESC_ITEM</span><span class="p">,</span>
+<span class="n">APV</span><span class="p">.</span><span class="n">NAME</span><span class="p">,</span><span class="w">              </span>
+<span class="n">CDS</span><span class="p">.</span><span class="n">MANUF_TYPE_IND</span><span class="p">,</span>
+<span class="n">URX</span><span class="p">.</span><span class="n">PACK_RETAIL</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PACK</span><span class="p">,</span>
+<span class="n">URX</span><span class="p">.</span><span class="n">SIZE_DESC</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SIZE</span><span class="p">,</span>
+<span class="n">WDS</span><span class="p">.</span><span class="n">COST_VEND</span><span class="o">/</span><span class="n">CDS</span><span class="p">.</span><span class="n">VEND_CONV_FCTR</span><span class="o">/</span><span class="n">URX</span><span class="p">.</span><span class="n">PACK_RETAIL</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">UNIT_COST</span><span class="p">,</span><span class="w">              </span>
+<span class="n">CDS</span><span class="p">.</span><span class="n">RETAIL_SECT</span><span class="p">,</span>
+<span class="n">CDS</span><span class="p">.</span><span class="n">DISP_FLAG</span><span class="p">,</span>
+<span class="n">ROG</span><span class="p">.</span><span class="n">DIVISION</span><span class="p">,</span>
+<span class="n">CDS</span><span class="p">.</span><span class="n">GROUP_CD</span><span class="p">,</span>
+<span class="n">CDS</span><span class="p">.</span><span class="n">CTGRY_CD</span><span class="p">,</span><span class="w">               </span>
+<span class="c1">--URX.ROG,</span>
+<span class="n">OPT</span><span class="p">.</span><span class="n">NATIONAL_IND</span><span class="p">,</span>
+<span class="n">SCH</span><span class="p">.</span><span class="n">STORE_CT</span><span class="p">,</span>
+<span class="n">URX</span><span class="p">.</span><span class="n">COMMON_CD</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">CRC</span><span class="p">,</span>
+<span class="n">CIGS</span><span class="p">.</span><span class="n">DIV_PROMO_GRP_CD</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">CIG</span><span class="p">,</span>
+<span class="n">URX</span><span class="p">.</span><span class="n">STATUS_RUPC</span>
+
+<span class="k">from</span><span class="w"> </span><span class="ss">&quot;EDM_VIEWS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;DW_AIM_VIEWS&quot;</span><span class="p">.</span><span class="ss">&quot;SSIMS_SSITMCDS&quot;</span><span class="w"> </span><span class="n">CDS</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_VIEWS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;DW_AIM_VIEWS&quot;</span><span class="p">.</span><span class="ss">&quot;SSIMS_SSITMURX&quot;</span><span class="w"> </span><span class="n">URX</span>
+<span class="k">on</span><span class="w"> </span><span class="n">CDS</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">URX</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">URX</span><span class="p">.</span><span class="n">CORP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">001</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_VIEWS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;DW_AIM_VIEWS&quot;</span><span class="p">.</span><span class="ss">&quot;SSIMS_SSITMROG&quot;</span><span class="w"> </span><span class="n">ROG</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">URX</span><span class="p">.</span><span class="n">ROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">ROG</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">URX</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_VIEWS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;DW_AIM_VIEWS&quot;</span><span class="p">.</span><span class="ss">&quot;SSIMS_SSITMWDS&quot;</span><span class="w"> </span><span class="n">WDS</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">CORP_ORD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WDS</span><span class="p">.</span><span class="n">CORP</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">DIVISION_ORD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WDS</span><span class="p">.</span><span class="n">DIVISION</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">FACILITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WDS</span><span class="p">.</span><span class="n">FACILITY</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WDS</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_VIEWS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;DW_AIM_VIEWS&quot;</span><span class="p">.</span><span class="ss">&quot;SSIMS_APVMAS&quot;</span><span class="w"> </span><span class="n">APV</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">WDS</span><span class="p">.</span><span class="n">CORP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">APV</span><span class="p">.</span><span class="n">CORP</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">WDS</span><span class="p">.</span><span class="n">VEND_NUM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">APV</span><span class="p">.</span><span class="n">VEND_NUM</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">WDS</span><span class="p">.</span><span class="n">VEND_SUB_ACNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">APV</span><span class="p">.</span><span class="n">VEND_SUB_ACNT</span><span class="w">         </span>
+
+
+<span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_VIEWS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;DW_BIZOPS_VIEWS&quot;</span><span class="p">.</span><span class="ss">&quot;MEASMOPT&quot;</span><span class="w"> </span><span class="n">OPT</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">DIVISION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPT</span><span class="p">.</span><span class="n">DIV</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">CDS</span><span class="p">.</span><span class="n">GROUP_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPT</span><span class="p">.</span><span class="n">GROUP_CD</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">CDS</span><span class="p">.</span><span class="n">CTGRY_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPT</span><span class="p">.</span><span class="n">CTGRY_CD</span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_BIZOPS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;STRATEGIC_PRICING&quot;</span><span class="p">.</span><span class="ss">&quot;ITEMS_ON_SCHEMATIC_EB&quot;</span><span class="w"> </span><span class="n">SCH</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">URX</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCH</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">DIVISION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCH</span><span class="p">.</span><span class="n">DIVISION_ID</span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_VIEWS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;DW_AIM_VIEWS&quot;</span><span class="p">.</span><span class="ss">&quot;SSIMS_PPAPPDI&quot;</span><span class="w"> </span><span class="n">CIGS</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">DIVISION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CIGS</span><span class="p">.</span><span class="n">DIVISION_ID</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">CORP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CIGS</span><span class="p">.</span><span class="n">CORP_ID</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">URX</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CIGS</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span>
+
+<span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="k">distinct</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">DESC_ITEM</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">NAME</span><span class="p">,</span><span class="w">              </span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">MANUF_TYPE_IND</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">PACK</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="k">SIZE</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">UNIT_COST</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">RETAIL_SECT</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">DISP_FLAG</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">DIVISION</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">GROUP_CD</span><span class="p">,</span>
+<span class="c1">--ITEMS.ROG,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">NATIONAL_IND</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">STORE_CT</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">CRC</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">CIG</span><span class="p">,</span>
+<span class="n">ITEMS</span><span class="p">.</span><span class="n">STATUS_RUPC</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">PROMO_GRP_SK</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PROMO_GROUP_NBR</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">PROMO_GRP_NM</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PROMO_GRP_NM</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">UNIT_TYP_CD</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">DIV_ID</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">PROMO_GROUP_VENDOR</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">VENDOR_CONTACT_NAME</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">CONTACT_EMAIL_ADDR</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">CONTACT_PH_NBR</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">BRKR_NM</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">BRKR_EMAIL_TXT</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">BRKR_PH_NBR</span><span class="p">,</span>
+<span class="n">PGC</span><span class="p">.</span><span class="n">BRKR_ROLE_NM</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">ITEMS</span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_BIZOPS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;OMNI&quot;</span><span class="p">.</span><span class="ss">&quot;PROMO_GROUP_CONTACTS&quot;</span><span class="w"> </span><span class="n">PGC</span>
+<span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">ITEMS</span><span class="p">.</span><span class="n">CIG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PGC</span><span class="p">.</span><span class="n">CIG</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">ITEMS</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PGC</span><span class="p">.</span><span class="n">CICS_ATTACHED</span><span class="p">)</span>
 </code></pre></div>
 
 
