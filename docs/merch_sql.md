@@ -1274,7 +1274,7 @@ AND T1.DIVISION_NM = T2.DIVISION_NM AND T1.WEEK_ID = T2.WEEK_ID) ) TB
 GROUP BY 1,2,3,4,5
 ```
 
-### ads, page, mods 
+## ads, page, mods 
 ```sql
 select 
 PAGE_IMAGE,
