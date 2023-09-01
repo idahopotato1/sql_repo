@@ -1419,7 +1419,7 @@ LEFT JOIN "EDM_BIZOPS_PRD"."OMNI"."PROMO_GROUP_CONTACTS" PGC
 ON (ITEMS.CIG = PGC.CIG OR ITEMS.CORP_ITEM_CD = PGC.CICS_ATTACHED)
 ```
 
-### AGP Household 
+## AGP Household 
 ```sql
 select
 ty.quarter_id
