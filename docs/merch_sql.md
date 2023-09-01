@@ -1419,5 +1419,87 @@ LEFT JOIN "EDM_BIZOPS_PRD"."OMNI"."PROMO_GROUP_CONTACTS" PGC
 ON (ITEMS.CIG = PGC.CIG OR ITEMS.CORP_ITEM_CD = PGC.CICS_ATTACHED)
 ```
 
+### AGP Household 
+```sql
+select
+ty.quarter_id
+,ty.period_id
+,ty.segment
+,ty.sales
+,ly.sales
+,ty.units
+,ly.units
+,ty.households
+,ly.households
+,ty.agp
+,ly.agp
+
+ 
+
+from
+(select
+QUARTER_ID
+,PERIOD_ID
+,case
+when PERIODIC_LEVEL2_SEGMENT_ID in (1,2) then 'ELITE_BEST'
+when PERIODIC_LEVEL2_SEGMENT_ID in (3,4) then 'GOOD'
+when PERIODIC_LEVEL2_SEGMENT_ID in (5,6) then 'OCCASIONAL'
+when PERIODIC_LEVEL2_SEGMENT_ID = 99 then 'UNIDENTIFIED'
+end as SEGMENT
+,sum(NET_SALES) as Sales
+,sum(ITEM_QTY) as Units
+,count(distinct household_id) as Households
+,sum(AGP_TOT) as AGP
+
+ 
+
+from edm_bizops_prd.omni.EB_HH_STORE_WKLY_AGP_ALLDIV_VIEW_WITH_SEGMENT_TABLE
+
+ 
+
+where quarter_id between 202203 and 202301
+
+ 
+
+group by 1,2,3)ty
+
+ 
+
+full outer join
+
+ 
+
+(select
+QUARTER_ID
+,PERIOD_ID
+,case
+when PERIODIC_LEVEL2_SEGMENT_ID in (1,2) then 'ELITE_BEST'
+when PERIODIC_LEVEL2_SEGMENT_ID in (3,4) then 'GOOD'
+when PERIODIC_LEVEL2_SEGMENT_ID in (5,6) then 'OCCASIONAL'
+when PERIODIC_LEVEL2_SEGMENT_ID = 99 then 'UNIDENTIFIED'
+end as SEGMENT
+,sum(NET_SALES) as Sales
+,sum(ITEM_QTY) as Units
+,count(distinct household_id) as Households
+,sum(AGP_TOT) as AGP
+
+ 
+
+from edm_bizops_prd.omni.EB_HH_STORE_WKLY_AGP_ALLDIV_VIEW_WITH_SEGMENT_TABLE
+
+ 
+
+where quarter_id between 202103 and 202201
+
+ 
+
+group by 1,2,3)ly
+
+ 
+
+on ty.quarter_id = ly.quarter_id + 100
+and ty.period_id = ly.period_id + 100
+and ty.segment = ly.segment
+```
 
 [admonitions]: admonitions.md

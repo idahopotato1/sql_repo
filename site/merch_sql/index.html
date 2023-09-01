@@ -347,6 +347,19 @@
     NCRC and OLD NEW CRC
   </a>
   
+    <nav class="md-nav" aria-label="NCRC and OLD NEW CRC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agp-household" class="md-nav__link">
+    AGP Household
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -649,6 +662,19 @@
   <a href="#ncrc-and-old-new-crc" class="md-nav__link">
     NCRC and OLD NEW CRC
   </a>
+  
+    <nav class="md-nav" aria-label="NCRC and OLD NEW CRC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agp-household" class="md-nav__link">
+    AGP Household
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2042,6 +2068,87 @@
 
 <span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;EDM_BIZOPS_PRD&quot;</span><span class="p">.</span><span class="ss">&quot;OMNI&quot;</span><span class="p">.</span><span class="ss">&quot;PROMO_GROUP_CONTACTS&quot;</span><span class="w"> </span><span class="n">PGC</span>
 <span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">ITEMS</span><span class="p">.</span><span class="n">CIG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PGC</span><span class="p">.</span><span class="n">CIG</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">ITEMS</span><span class="p">.</span><span class="n">CORP_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PGC</span><span class="p">.</span><span class="n">CICS_ATTACHED</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="agp-household">AGP Household<a class="headerlink" href="#agp-household" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">select</span>
+<span class="n">ty</span><span class="p">.</span><span class="n">quarter_id</span>
+<span class="p">,</span><span class="n">ty</span><span class="p">.</span><span class="n">period_id</span>
+<span class="p">,</span><span class="n">ty</span><span class="p">.</span><span class="n">segment</span>
+<span class="p">,</span><span class="n">ty</span><span class="p">.</span><span class="n">sales</span>
+<span class="p">,</span><span class="n">ly</span><span class="p">.</span><span class="n">sales</span>
+<span class="p">,</span><span class="n">ty</span><span class="p">.</span><span class="n">units</span>
+<span class="p">,</span><span class="n">ly</span><span class="p">.</span><span class="n">units</span>
+<span class="p">,</span><span class="n">ty</span><span class="p">.</span><span class="n">households</span>
+<span class="p">,</span><span class="n">ly</span><span class="p">.</span><span class="n">households</span>
+<span class="p">,</span><span class="n">ty</span><span class="p">.</span><span class="n">agp</span>
+<span class="p">,</span><span class="n">ly</span><span class="p">.</span><span class="n">agp</span>
+
+
+
+<span class="k">from</span>
+<span class="p">(</span><span class="k">select</span>
+<span class="n">QUARTER_ID</span>
+<span class="p">,</span><span class="n">PERIOD_ID</span>
+<span class="p">,</span><span class="k">case</span>
+<span class="k">when</span><span class="w"> </span><span class="n">PERIODIC_LEVEL2_SEGMENT_ID</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;ELITE_BEST&#39;</span>
+<span class="k">when</span><span class="w"> </span><span class="n">PERIODIC_LEVEL2_SEGMENT_ID</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;GOOD&#39;</span>
+<span class="k">when</span><span class="w"> </span><span class="n">PERIODIC_LEVEL2_SEGMENT_ID</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;OCCASIONAL&#39;</span>
+<span class="k">when</span><span class="w"> </span><span class="n">PERIODIC_LEVEL2_SEGMENT_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">99</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;UNIDENTIFIED&#39;</span>
+<span class="k">end</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">SEGMENT</span>
+<span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">NET_SALES</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Sales</span>
+<span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">ITEM_QTY</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Units</span>
+<span class="p">,</span><span class="k">count</span><span class="p">(</span><span class="k">distinct</span><span class="w"> </span><span class="n">household_id</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Households</span>
+<span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">AGP_TOT</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">AGP</span>
+
+
+
+<span class="k">from</span><span class="w"> </span><span class="n">edm_bizops_prd</span><span class="p">.</span><span class="n">omni</span><span class="p">.</span><span class="n">EB_HH_STORE_WKLY_AGP_ALLDIV_VIEW_WITH_SEGMENT_TABLE</span>
+
+
+
+<span class="k">where</span><span class="w"> </span><span class="n">quarter_id</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="mi">202203</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="mi">202301</span>
+
+
+
+<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="n">ty</span>
+
+
+
+<span class="k">full</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span>
+
+
+
+<span class="p">(</span><span class="k">select</span>
+<span class="n">QUARTER_ID</span>
+<span class="p">,</span><span class="n">PERIOD_ID</span>
+<span class="p">,</span><span class="k">case</span>
+<span class="k">when</span><span class="w"> </span><span class="n">PERIODIC_LEVEL2_SEGMENT_ID</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;ELITE_BEST&#39;</span>
+<span class="k">when</span><span class="w"> </span><span class="n">PERIODIC_LEVEL2_SEGMENT_ID</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;GOOD&#39;</span>
+<span class="k">when</span><span class="w"> </span><span class="n">PERIODIC_LEVEL2_SEGMENT_ID</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;OCCASIONAL&#39;</span>
+<span class="k">when</span><span class="w"> </span><span class="n">PERIODIC_LEVEL2_SEGMENT_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">99</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;UNIDENTIFIED&#39;</span>
+<span class="k">end</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">SEGMENT</span>
+<span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">NET_SALES</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Sales</span>
+<span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">ITEM_QTY</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Units</span>
+<span class="p">,</span><span class="k">count</span><span class="p">(</span><span class="k">distinct</span><span class="w"> </span><span class="n">household_id</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Households</span>
+<span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">AGP_TOT</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">AGP</span>
+
+
+
+<span class="k">from</span><span class="w"> </span><span class="n">edm_bizops_prd</span><span class="p">.</span><span class="n">omni</span><span class="p">.</span><span class="n">EB_HH_STORE_WKLY_AGP_ALLDIV_VIEW_WITH_SEGMENT_TABLE</span>
+
+
+
+<span class="k">where</span><span class="w"> </span><span class="n">quarter_id</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="mi">202103</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="mi">202201</span>
+
+
+
+<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="n">ly</span>
+
+
+
+<span class="k">on</span><span class="w"> </span><span class="n">ty</span><span class="p">.</span><span class="n">quarter_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ly</span><span class="p">.</span><span class="n">quarter_id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">100</span>
+<span class="k">and</span><span class="w"> </span><span class="n">ty</span><span class="p">.</span><span class="n">period_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ly</span><span class="p">.</span><span class="n">period_id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">100</span>
+<span class="k">and</span><span class="w"> </span><span class="n">ty</span><span class="p">.</span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ly</span><span class="p">.</span><span class="n">segment</span>
 </code></pre></div>
 
 
