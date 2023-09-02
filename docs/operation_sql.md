@@ -831,3 +831,62 @@ STEP 8 -
 create or replace table EDM_BIZOPS_PRD.SUPPLY_CHAIN.store_ps_logic_new_table as 
 select * from EDM_BIZOPS_PRD.MERCHAPPS.store_ps_logic_new_table
 ~~~
+
+## Store inventory audit
+~~~sql 
+select store_id, inventory_dt as last_count_dt, try_cast(inv.primary_item_id as decimal(14,0)) as upc_id, sum(unit_cnt) as last_count 
+from edm_views_prd.dw_edw_views.ri_ranking inv where store_id = 391 and inventory_dt = 
+(select distinct inventory_dt from edm_views_prd.dw_edw_views.ri_ranking where store_id = 391 
+and inventory_dt < (select to_date(min(count_ts)) from  EDM_SANDBOX_PRD.ROPS.PIGAP_SALES_ADJ a
+ join (select store_id, upc_id, max(last_update_ts) as last_update_ts from EDM_SANDBOX_PRD.ROPS.PIGAP_SALES_ADJ group by 1,2)b
+ on a.store_id=b.store_id and a.upc_id = b.upc_id and a.last_update_ts = b.last_update_ts
+where a.store_id = 391) order by inventory_dt desc limit 1)
+group by 1,2,3
+~~~
+
+## store inventory - current
+~~~sql
+select csc.U_CONSUMER_SELLING_CD as csc, a.corp_item_cd, a.store_id, cic.upc_nbr as upc_id, cic.shelf_unit_pack_dsc as pack,cic.shelf_unit_size_dsc as size, upc.INTERNET_ITEM_DSC,
+a.PI_ADJ_QTY as starting_pi,a.FILE_TS as starting_pi_ts, inv_count, count_ts, tag.DEPT_SECTION_ID as retail_sect, 
+-- tag.AISLE_NBR, tag.SECT_NBR, tag.SHELF_CD,
+sum(item_qty) as sold_since_check, inv_count-sum(item_qty) as current_pi, 
+case when sum(item_qty) is null then inv_count else inv_count-sum(item_qty) end as updated_adj_pi
+
+from EDM_SANDBOX_PRD.ROPS.PIGAP_BEG_INV a 
+join (select store_id, max(FILE_TS) as FILE_TS from EDM_SANDBOX_PRD.ROPS.PIGAP_BEG_INV group by 1)b
+on a.store_id = b.store_id and a.FILE_TS = b.FILE_TS
+join EDM_BIZOPS_PRD.MERCHAPPS.CIC_UPC_ROG cic on cic.corporate_item_cd=a.corp_item_cd 
+and cic.primary_upc_ind = 'Y' 
+join EDM_BIZOPS_PRD.MERCHAPPS.LU_STORE s on s.store_id = a.store_id and s.rog_cd = cic.rog_id
+join EDM_BIZOPS_PRD.MERCHAPPS.ZHU_VERSION_LU_UPC upc on upc.upc_id = cic.upc_nbr
+and a.store_id = 391 and upc.upc_id = 980080005
+
+left join 
+
+(select a.store_id, a.upc_id, count_ts as count_ts, adj_qty as inv_count from  EDM_SANDBOX_PRD.ROPS.PIGAP_SALES_ADJ a
+ join (select store_id, upc_id, max(last_update_ts) as last_update_ts from EDM_SANDBOX_PRD.ROPS.PIGAP_SALES_ADJ group by 1,2)b
+ on a.store_id=b.store_id and a.upc_id = b.upc_id and a.last_update_ts = b.last_update_ts
+where a.store_id = 391  group by 1,2,3,4)c 
+on a.store_id = c.store_id and cic.upc_nbr = c.upc_id
+
+left join 
+(select facility_nbr::integer as store_id, upc_nbr as upc_id, txn.transaction_ts, item_qty from 
+    edm_views_prd.dw_views.transaction_hdr txn
+ INNER JOIN edm_views_prd.dw_views.transaction_item sales
+ ON sales.transaction_hdr_integration_id = txn.transaction_hdr_integration_id
+ and txn.TRANSACTION_DT = (
+select to_date(min(count_ts)) from  EDM_SANDBOX_PRD.ROPS.PIGAP_SALES_ADJ a
+ join (select store_id, upc_id, max(last_update_ts) as last_update_ts from EDM_SANDBOX_PRD.ROPS.PIGAP_SALES_ADJ group by 1,2)b
+ on a.store_id=b.store_id and a.upc_id = b.upc_id and a.last_update_ts = b.last_update_ts
+where a.store_id = 391 and upc_nbr = 980080005
+ )
+ and facility_nbr::integer = 391
+) m
+on m.store_id = a.store_id and m.upc_id=upc.upc_id and m.transaction_ts > count_ts
+
+left join (select corp_item_cd, upc_id, store_id, dept_section_id from EDM_BIZOPS_PRD.MERCH_ITEM.TAG_SUBSCRIPTION group by 1,2,3,4) tag on tag.corp_item_cd = cic.corp_item_cd and tag.upc_id = cic.upc_nbr and tag.store_id = a.store_id
+
+left join EDM_BIZOPS_PRD.merchapps.csc_upc_cic_view csc on csc.corporate_item_cd = cic.corp_item_cd and csc.upc_nbr = cic.upc_nbr
+where PI_ADJ_QTY > 0
+group by 1,2,3,4,5,6,7,8,9,10,11,12
+~~~
