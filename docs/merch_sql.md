@@ -1641,4 +1641,13 @@ AND CIURR.ROG_ID = 'SPRT'
 AND PDAY.PROMOTION_WEEK_ID = 202333
 AND DRS.RETAIL_STORE_FACILITY_NBR = '2627'
 ```
+
+## meat primal and base
+```sql
+select a.division_id,   a.corporate_item_cd as primal_item_cd, primal_item_dsc, a.base_corporate_item_cd, BASE_ITEM_DSC, a.yield_pct, c.upc_id from EDM_VIEWS_PRD.DW_VIEWS.BASE_MEAT_ITEM_YIELD a 
+join EDM_VIEWS_PRD.DW_VIEWS.PRIMAL_MEAT_ITEM_YIELD b on a.corporate_item_cd = b.corporate_item_cd and a.division_id = b.division_id 
+left join (select division_id, upc_nbr as upc_id, corp_item_cd from EDM_BIZOPS_PRD.MERCHAPPS.CIC_UPC_ROG group by 1,2,3) c on a.base_corporate_item_cd = c.corp_item_cd
+and a.division_id=c.division_id
+where a.division_id = 5 and a.corporate_item_cd = 88020096
+```
 [admonitions]: admonitions.md

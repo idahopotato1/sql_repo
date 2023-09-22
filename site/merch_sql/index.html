@@ -363,6 +363,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#meat-primal-and-base" class="md-nav__link">
+    meat primal and base
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -676,6 +683,13 @@
         <li class="md-nav__item">
   <a href="#promotion-sql" class="md-nav__link">
     Promotion Sql
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meat-primal-and-base" class="md-nav__link">
+    meat primal and base
   </a>
   
 </li>
@@ -2289,6 +2303,13 @@
 <span class="k">AND</span><span class="w"> </span><span class="n">CIURR</span><span class="p">.</span><span class="n">ROG_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SPRT&#39;</span>
 <span class="k">AND</span><span class="w"> </span><span class="n">PDAY</span><span class="p">.</span><span class="n">PROMOTION_WEEK_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">202333</span>
 <span class="k">AND</span><span class="w"> </span><span class="n">DRS</span><span class="p">.</span><span class="n">RETAIL_STORE_FACILITY_NBR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2627&#39;</span>
+</code></pre></div>
+<h2 id="meat-primal-and-base">meat primal and base<a class="headerlink" href="#meat-primal-and-base" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="p">,</span><span class="w">   </span><span class="n">a</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">primal_item_cd</span><span class="p">,</span><span class="w"> </span><span class="n">primal_item_dsc</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">base_corporate_item_cd</span><span class="p">,</span><span class="w"> </span><span class="n">BASE_ITEM_DSC</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">yield_pct</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">upc_id</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">BASE_MEAT_ITEM_YIELD</span><span class="w"> </span><span class="n">a</span><span class="w"> </span>
+<span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">PRIMAL_MEAT_ITEM_YIELD</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span>
+<span class="k">left</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">division_id</span><span class="p">,</span><span class="w"> </span><span class="n">upc_nbr</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">upc_id</span><span class="p">,</span><span class="w"> </span><span class="n">corp_item_cd</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EDM_BIZOPS_PRD</span><span class="p">.</span><span class="n">MERCHAPPS</span><span class="p">.</span><span class="n">CIC_UPC_ROG</span><span class="w"> </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">base_corporate_item_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">corp_item_cd</span>
+<span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="o">=</span><span class="k">c</span><span class="p">.</span><span class="n">division_id</span>
+<span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">88020096</span>
 </code></pre></div>
 
 
