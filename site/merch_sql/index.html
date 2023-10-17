@@ -370,6 +370,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ncrc" class="md-nav__link">
+    NCRC
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -690,6 +697,13 @@
         <li class="md-nav__item">
   <a href="#meat-primal-and-base" class="md-nav__link">
     meat primal and base
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ncrc" class="md-nav__link">
+    NCRC
   </a>
   
 </li>
@@ -2310,6 +2324,74 @@
 <span class="k">left</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">division_id</span><span class="p">,</span><span class="w"> </span><span class="n">upc_nbr</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">upc_id</span><span class="p">,</span><span class="w"> </span><span class="n">corp_item_cd</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EDM_BIZOPS_PRD</span><span class="p">.</span><span class="n">MERCHAPPS</span><span class="p">.</span><span class="n">CIC_UPC_ROG</span><span class="w"> </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">base_corporate_item_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">corp_item_cd</span>
 <span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="o">=</span><span class="k">c</span><span class="p">.</span><span class="n">division_id</span>
 <span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">corporate_item_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">88020096</span>
+</code></pre></div>
+<h2 id="ncrc">NCRC<a class="headerlink" href="#ncrc" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">    </span><span class="n">PGI</span><span class="p">.</span><span class="n">PRICE_GROUP_ID</span><span class="w">       </span><span class="k">AS</span><span class="w"> </span><span class="n">NCRC</span>
+<span class="p">,</span><span class="w"> </span><span class="n">PG</span><span class="p">.</span><span class="n">PRICE_GROUP_DSC</span><span class="w">       </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;NCRC DESC&quot;</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span><span class="w">     </span><span class="k">AS</span><span class="w"> </span><span class="n">CIC</span>
+<span class="p">,</span><span class="w"> </span><span class="n">PGI</span><span class="p">.</span><span class="n">UNIT_TYPE_NBR</span><span class="w">        </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;UNIT TYPE NBR&quot;</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">ITEM_DSC</span><span class="w">              </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;ITEM DSC&quot;</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CR</span><span class="p">.</span><span class="n">ROG_ID</span><span class="w">                </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;ROG ID&quot;</span>
+<span class="p">,</span><span class="w"> </span><span class="n">PGAD</span><span class="p">.</span><span class="n">PRICE_GROUP_ROG_DSC</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;NCRC ROG DESC&quot;</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;GROUP CD&quot;</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">SMIC_CATEGORY_CD</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;CATEGORY CD&quot;</span>
+<span class="p">,</span><span class="w"> </span><span class="n">MR</span><span class="p">.</span><span class="n">CATEGORY_RESPONSIBILITY_NM</span>
+<span class="p">,</span><span class="w"> </span><span class="n">MR</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">common_retail_cd</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="ss">&quot;CRC&quot;</span>
+
+<span class="k">FROM</span><span class="w">      </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">PRICE_GROUP_ITEM</span><span class="w"> </span><span class="n">PGI</span>
+
+<span class="k">JOIN</span><span class="w">      </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">CORPORATE_ITEM</span><span class="w"> </span><span class="n">CI</span><span class="w"> </span>
+<span class="k">ON</span><span class="w">        </span><span class="n">CI</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PGI</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">CI</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">CI</span><span class="p">.</span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span>
+
+<span class="k">JOIN</span><span class="w">      </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">PRICE_GROUP</span><span class="w"> </span><span class="n">PG</span><span class="w"> </span>
+<span class="k">ON</span><span class="w">        </span><span class="n">PG</span><span class="p">.</span><span class="n">PRICE_GROUP_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PGI</span><span class="p">.</span><span class="n">PRICE_GROUP_ID</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">PG</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">PG</span><span class="p">.</span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span>
+
+<span class="k">JOIN</span><span class="w">      </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">CORPORATE_ITEM_UPC_ROG_REFERENCE</span><span class="w"> </span><span class="n">CR</span>
+<span class="k">ON</span><span class="w">        </span><span class="n">CR</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">CORPORATE_ITEM_INTEGRATION_ID</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">CR</span><span class="p">.</span><span class="n">UPC_PACK_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PGI</span><span class="p">.</span><span class="n">UNIT_TYPE_NBR</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">CR</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">CR</span><span class="p">.</span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">DIM_ROG</span><span class="w"> </span><span class="n">ROG</span><span class="w"> </span>
+<span class="k">on</span><span class="w"> </span><span class="n">ROG</span><span class="p">.</span><span class="n">ROG_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CR</span><span class="p">.</span><span class="n">ROG_ID</span>
+<span class="k">and</span><span class="w"> </span><span class="n">rog</span><span class="p">.</span><span class="n">dw_logical_delete_ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span><span class="w"> </span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">PRICE_GROUP_ALTERNATE_DESCRIPTION</span><span class="w"> </span><span class="n">PGAD</span>
+<span class="k">ON</span><span class="w">        </span><span class="n">PGAD</span><span class="p">.</span><span class="n">ROG_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CR</span><span class="p">.</span><span class="n">ROG_ID</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">PGAD</span><span class="p">.</span><span class="n">PRICE_GROUP_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">REGEXP_REPLACE</span><span class="p">(</span><span class="n">PGI</span><span class="p">.</span><span class="n">PRICE_GROUP_ID</span><span class="p">,</span><span class="s1">&#39;-.*&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">PGAD</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">PGAD</span><span class="p">.</span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">MERCHANDISING_RESPONSIBILITY</span><span class="w"> </span><span class="n">MR</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">MR</span><span class="p">.</span><span class="n">DIVISION_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rog</span><span class="p">.</span><span class="n">division_id</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">MR</span><span class="p">.</span><span class="n">SMIC_CATEGORY_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">CI</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">SMIC_CATEGORY_CD</span><span class="p">)</span>
+
+
+<span class="k">WHERE</span><span class="w">     </span><span class="n">CR</span><span class="p">.</span><span class="n">ROG_ID</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ASHA&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">PGI</span><span class="p">.</span><span class="n">DW_CURRENT_VERSION_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
+<span class="k">AND</span><span class="w">       </span><span class="n">PGI</span><span class="p">.</span><span class="n">DW_LOGICAL_DELETE_IND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w">  </span><span class="n">PGI</span><span class="p">.</span><span class="n">PRICE_GROUP_ID</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span>
+<span class="p">,</span><span class="w"> </span><span class="n">PGI</span><span class="p">.</span><span class="n">UNIT_TYPE_NBR</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">ITEM_DSC</span>
+<span class="p">,</span><span class="w"> </span><span class="n">PG</span><span class="p">.</span><span class="n">PRICE_GROUP_DSC</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CR</span><span class="p">.</span><span class="n">ROG_ID</span>
+<span class="p">,</span><span class="w"> </span><span class="n">PGAD</span><span class="p">.</span><span class="n">PRICE_GROUP_ROG_DSC</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">SMIC_GROUP_CD</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">SMIC_CATEGORY_CD</span>
+<span class="p">,</span><span class="w"> </span><span class="n">MR</span><span class="p">.</span><span class="n">CATEGORY_RESPONSIBILITY_NM</span>
+<span class="p">,</span><span class="w"> </span><span class="n">MR</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">common_retail_cd</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w">  </span><span class="n">TRY_TO_NUMBER</span><span class="p">(</span><span class="n">REGEXP_REPLACE</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">PGI</span><span class="p">.</span><span class="n">PRICE_GROUP_ID</span><span class="p">),</span><span class="s1">&#39;-.*&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span>
+<span class="p">,</span><span class="w"> </span><span class="n">CR</span><span class="p">.</span><span class="n">ROG_ID</span>
+<span class="p">,</span><span class="w"> </span><span class="n">PGI</span><span class="p">.</span><span class="n">UNIT_TYPE_NBR</span>
 </code></pre></div>
 
 
