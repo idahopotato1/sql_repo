@@ -1723,13 +1723,27 @@ ORDER BY  TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(PGI.PRICE_GROUP_ID),'-.*',''))
 
 ## average price over time 
 ```sql
-select day_dt, upc_id, DESCRIPTION, avg(avg_price) as price
-from EDM_BIZOPS_PRD.omni.zhu_version_store_upc_daily_avg_price_view_with_inventory a
-join EDM_VIEWS_PRD.DW_EDW_VIEWS.STORE_PRICE_AREA b on try_to_number(a.store_id) = b.store_id and price_area_id = 1 and loc_retail_sect_id = '301'
-join edm_bizops_prd.merchapps.zhu_version_lu_upc c on a.upc_id = c.upc_id
-where div = 25 and c.group_id = 32 and day_dt > current_date - 365
-group by 1,2,3
-order by 1,2
+select s.division_id as DIVISION_NBR, s.division_nm as DIVISION_NAME, a.upc_id, internet_item_dsc,
+
+u.category_id as category_nbr, u.category_nm as category_name, u.group_id as group_nbr, u.group_nm as group_name, week_id as week_nbr, 
+week_id as week_id,
+round(div0(sum(SUM_GROSS_AMT), sum(SUM_ITEM_QTY)),2) as avg_price
+
+from 
+(select store_id, upc_id, day_dt,SUM_GROSS_AMT, sum_net_amt, SUM_ITEM_QTY, SUM_ITEM_MEAS_QTY, SUM_MKDN_AMT, SUM_MKDN_QTY, MKDN_WOD_TOTAL_AMT, MKDN_POD_TOTAL_AMT, AVG_UPC_UNIT_CST, AVG_UPC_EXT_CST,
+ agp_ext_amt, retail_allow_ext_amt, buying_allow_ext_amt, COST_OF_GOODS_AMT, 0 as whse_shipped_unit_qty, 0 as bdr_shipped_unit_qty
+from EDM_BIZOPS_PRD.MERCHAPPS.ZHU_VERSION_STORE_UPC_AGP sua
+where day_dt > current_date - 365 and AVG_UPC_UNIT_CST > 0
+)a
+
+join EDM_BIZOPS_PRD.MERCHAPPS.ZHU_VERSION_LU_UPC u on u.upc_id = a.upc_id
+join EDM_BIZOPS_PRD.MERCHAPPS.LU_STORE s on s.store_id = a.store_id
+join EDM_VIEWS_PRD.DW_EDW_VIEWS.STORE_PRICE_AREA c on a.store_id = c.store_id and c.loc_retail_sect_id = '301' and price_area_id = 1
+join EDM_SANDBOX_PRD.MERCHAPPS.LU_DAY_MERGE d on d.d_date = a.day_dt
+where u.group_id = 32 and s.division_id = 25
+
+        
+group by 1,2,3,4,5,6,7,8,9,10
 ```
 
 [admonitions]: admonitions.md
