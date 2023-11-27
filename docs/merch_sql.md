@@ -1720,4 +1720,16 @@ ORDER BY  TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(PGI.PRICE_GROUP_ID),'-.*',''))
 , CR.ROG_ID
 , PGI.UNIT_TYPE_NBR
 ```
+
+## average price over time 
+```sql
+select day_dt, upc_id, DESCRIPTION, avg(avg_price) as price
+from EDM_BIZOPS_PRD.omni.zhu_version_store_upc_daily_avg_price_view_with_inventory a
+join EDM_VIEWS_PRD.DW_EDW_VIEWS.STORE_PRICE_AREA b on try_to_number(a.store_id) = b.store_id and price_area_id = 1 and loc_retail_sect_id = '301'
+join edm_bizops_prd.merchapps.zhu_version_lu_upc c on a.upc_id = c.upc_id
+where div = 25 and c.group_id = 32 and day_dt > current_date - 365
+group by 1,2,3
+order by 1,2
+```
+
 [admonitions]: admonitions.md

@@ -377,6 +377,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#average-price-over-time" class="md-nav__link">
+    average price over time
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -704,6 +711,13 @@
         <li class="md-nav__item">
   <a href="#ncrc" class="md-nav__link">
     NCRC
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#average-price-over-time" class="md-nav__link">
+    average price over time
   </a>
   
 </li>
@@ -2392,6 +2406,15 @@
 <span class="p">,</span><span class="w"> </span><span class="n">CI</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span>
 <span class="p">,</span><span class="w"> </span><span class="n">CR</span><span class="p">.</span><span class="n">ROG_ID</span>
 <span class="p">,</span><span class="w"> </span><span class="n">PGI</span><span class="p">.</span><span class="n">UNIT_TYPE_NBR</span>
+</code></pre></div>
+<h2 id="average-price-over-time">average price over time<a class="headerlink" href="#average-price-over-time" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">day_dt</span><span class="p">,</span><span class="w"> </span><span class="n">upc_id</span><span class="p">,</span><span class="w"> </span><span class="n">DESCRIPTION</span><span class="p">,</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">avg_price</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">price</span>
+<span class="k">from</span><span class="w"> </span><span class="n">EDM_BIZOPS_PRD</span><span class="p">.</span><span class="n">omni</span><span class="p">.</span><span class="n">zhu_version_store_upc_daily_avg_price_view_with_inventory</span><span class="w"> </span><span class="n">a</span>
+<span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_EDW_VIEWS</span><span class="p">.</span><span class="n">STORE_PRICE_AREA</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">try_to_number</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">store_id</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">store_id</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">price_area_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">loc_retail_sect_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;301&#39;</span>
+<span class="k">join</span><span class="w"> </span><span class="n">edm_bizops_prd</span><span class="p">.</span><span class="n">merchapps</span><span class="p">.</span><span class="n">zhu_version_lu_upc</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">upc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">upc_id</span>
+<span class="k">where</span><span class="w"> </span><span class="n">div</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">group_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">day_dt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">365</span>
+<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span>
+<span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span>
 </code></pre></div>
 
 
