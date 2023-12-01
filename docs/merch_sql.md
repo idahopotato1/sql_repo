@@ -1746,4 +1746,31 @@ where u.group_id = 32 and s.division_id = 25
 group by 1,2,3,4,5,6,7,8,9,10
 ```
 
+## comp and abs promo frequency
+```sql
+select a.*, case when b.upc_id is null then 'inactive' else 'active' end as item_status, sum(ITEM_QTY) as ITEM_QTY, sum(GROSS_AMT) as GROSS_AMT, sum(MARKDOWN_AMT+ TOTAL_MARKDOWN_WOD_AMT+TOTAL_MARKDOWN_POD_AMT) as markdown_amt, sum(PROMO_NET_SALES) as PROMO_NET_SALES, sum(PROMO_ITEM_QTY) as PROMO_ITEM_QTY,
+ sum(AVERAGE_COST_EXTENDED_AMT) as cogs from
+ 
+(select competition, a.category_id, cat_role, a.upc_id, item_role, internet_item_dsc, a.division_id, 
+round(cmp_on_promo_freq,4) as cmp_on_promo_freq, round(abs_on_promo_freq,4) as abs_on_promo_freq, week_count 
+from edm_bizops_prd.merchapps.comp_abs_cat_upc_div_promo_freq a 
+join EDM_BIZOPS_PRD.MERCHAPPS.ZHU_VERSION_LU_UPC b 
+on a.upc_id = b.upc_id 
+join 
+(select upc_id, division_id, cat_role, item_role 
+from EDM_BIZOPS_PRD.OMNI.DIM_FULL_CAT_ITEM_ROLES a
+join EDM_BIZOPS_PRD.MERCHAPPS.LU_ROG b on a.rog_id = b.rog_cd
+group by 1,2,3,4)c
+on a.upc_id = c.upc_id and a.division_id = c.division_id
+where a.division_id = 30 and a.category_id = 101
+group by all)a 
+left join 
+( select division_id, upc_id from EDM_SANDBOX_PRD.MERCHAPPS.T_PE_DSD_WHSE_FINAL_D group by 1,2 )b
+ on a.division_id = b.division_id and a.upc_id = b.upc_id
+left join EDM_VIEWS_PRD.DW_BIZOPS_VIEWS.UPCFINWK_DATA_COMBINED c 
+on a.upc_id = c.upc_nbr and a.division_id = c.division_id where c.fiscal_week_id between 202236 and 202335
+group by 1,2,3,4,5,6,7,8,9,10,11
+
+```
+
 [admonitions]: admonitions.md
