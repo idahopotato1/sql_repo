@@ -1773,4 +1773,23 @@ group by 1,2,3,4,5,6,7,8,9,10,11
 
 ```
 
+## get sales from promo group
+```sql 
+select b.promo_grp_sk, b.corp_item_cd, ifnull(sum(SUM_NET_AMT),0) as sales 
+
+from EDM_VIEWS_PRD.DW_EDW_VIEWS.CIC_UPC_DIV a 
+ join 
+( select a.promo_grp_sk, corp_item_cd from 
+EDM_BIZOPS_PRD.OMNI.PPAPPRGP_TABLE_COPY a 
+join EDM_BIZOPS_PRD.OMNI.PPAPPGCG b on a.promo_grp_sk = b.promo_grp_sk 
+and a.div_id = b.div_id and a.promo_grp_sk in () 
+join EDM_VIEWS_PRD.DW_AIM_VIEWS.SSIMS_PPAPPDI c on b.div_promo_grp_cd = c.div_promo_grp_cd 
+and b.div_id = c.division_id and c.division_id = 5
+join EDM_VIEWS_PRD.DW_VIEWS.D1_CORPORATE_ITEM d on d.CORPORATE_ITEM_CD = corp_item_cd 
+group by all) b on a.corp_item_cd = b.corp_item_cd and a.division_id = 5
+left join EDM_VIEWS_PRD.DW_EDW_VIEWS.DIV_UPC_AGP_ALL c on c.division_id = a.division_id and a.upc_id = c.upc_id 
+group by 1,2
+```
+
+
 [admonitions]: admonitions.md

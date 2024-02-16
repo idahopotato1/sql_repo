@@ -391,6 +391,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#get-sales-from-promo-group" class="md-nav__link">
+    get sales from promo group
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -732,6 +739,13 @@
         <li class="md-nav__item">
   <a href="#comp-and-abs-promo-frequency" class="md-nav__link">
     comp and abs promo frequency
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-sales-from-promo-group" class="md-nav__link">
+    get sales from promo group
   </a>
   
 </li>
@@ -2467,6 +2481,22 @@
 <span class="k">left</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_BIZOPS_VIEWS</span><span class="p">.</span><span class="n">UPCFINWK_DATA_COMBINED</span><span class="w"> </span><span class="k">c</span><span class="w"> </span>
 <span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">upc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">upc_nbr</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">fiscal_week_id</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="mi">202236</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="mi">202335</span>
 <span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span>
+</code></pre></div>
+<h2 id="get-sales-from-promo-group">get sales from promo group<a class="headerlink" href="#get-sales-from-promo-group" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">promo_grp_sk</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">corp_item_cd</span><span class="p">,</span><span class="w"> </span><span class="n">ifnull</span><span class="p">(</span><span class="k">sum</span><span class="p">(</span><span class="n">SUM_NET_AMT</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sales</span><span class="w"> </span>
+
+<span class="k">from</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_EDW_VIEWS</span><span class="p">.</span><span class="n">CIC_UPC_DIV</span><span class="w"> </span><span class="n">a</span><span class="w"> </span>
+<span class="w"> </span><span class="k">join</span><span class="w"> </span>
+<span class="p">(</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">promo_grp_sk</span><span class="p">,</span><span class="w"> </span><span class="n">corp_item_cd</span><span class="w"> </span><span class="k">from</span><span class="w"> </span>
+<span class="n">EDM_BIZOPS_PRD</span><span class="p">.</span><span class="n">OMNI</span><span class="p">.</span><span class="n">PPAPPRGP_TABLE_COPY</span><span class="w"> </span><span class="n">a</span><span class="w"> </span>
+<span class="k">join</span><span class="w"> </span><span class="n">EDM_BIZOPS_PRD</span><span class="p">.</span><span class="n">OMNI</span><span class="p">.</span><span class="n">PPAPPGCG</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">promo_grp_sk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">promo_grp_sk</span><span class="w"> </span>
+<span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">div_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">div_id</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">promo_grp_sk</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+<span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_AIM_VIEWS</span><span class="p">.</span><span class="n">SSIMS_PPAPPDI</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">div_promo_grp_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">div_promo_grp_cd</span><span class="w"> </span>
+<span class="k">and</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">div_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
+<span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_VIEWS</span><span class="p">.</span><span class="n">D1_CORPORATE_ITEM</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">CORPORATE_ITEM_CD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">corp_item_cd</span><span class="w"> </span>
+<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="k">all</span><span class="p">)</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">corp_item_cd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">corp_item_cd</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
+<span class="k">left</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">EDM_VIEWS_PRD</span><span class="p">.</span><span class="n">DW_EDW_VIEWS</span><span class="p">.</span><span class="n">DIV_UPC_AGP_ALL</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">division_id</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">upc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">upc_id</span><span class="w"> </span>
+<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span>
 </code></pre></div>
 
 
